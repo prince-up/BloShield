@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { 
   LayoutDashboard, 
   FileText, 
@@ -17,6 +18,13 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ activeView, setActiveView }: SidebarProps) {
+  const [buildNumber, setBuildNumber] = useState('1042');
+
+  useEffect(() => {
+    // Set build number on client side only to avoid hydration mismatch
+    setBuildNumber(Math.floor(Math.random() * 9000 + 1000).toString());
+  }, []);
+
   const menuItems = [
     { id: 'overview', label: 'Overview', icon: LayoutDashboard },
     { id: 'logs', label: 'API Logs', icon: FileText },
@@ -72,7 +80,7 @@ export default function Sidebar({ activeView, setActiveView }: SidebarProps) {
           <span style={{ fontWeight: 500 }}>Logout</span>
         </div>
         <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '1rem', textAlign: 'center' }}>
-          v1.0.0 • Build {Math.floor(Math.random() * 9000 + 1000)}
+          v1.0.0 • Build {buildNumber}
         </div>
       </div>
     </aside>
