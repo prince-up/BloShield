@@ -144,6 +144,26 @@ async def get_stats():
         "recent_logs": recent_logs
     }
 
+@app.get("/chart-data")
+async def get_chart_data():
+    # In a real app, this would be a MongoDB aggregation
+    # For this mock, we'll return some trends based on existing logs
+    logs = await db.api_logs.to_list()
+    
+    # Group by hour
+    hours = {}
+    for log in logs:
+        hr = log["timestamp"].strftime("%H:00")
+        if hr not in hours:
+            hours[hr] = {"time": hr, "requests": 0, "anomalies": 0}
+        hours[hr]["requests"] += 1
+        if log.get("is_anomaly"):
+            hours[hr]["anomalies"] += 1
+            
+    # Sort by time
+    sorted_hours = sorted(hours.values(), key=lambda x: x["time"])
+    return sorted_hours if sorted_hours else [{"time": "00:00", "requests": 0, "anomalies": 0}]
+
 @app.get("/anomalies")
 async def get_anomalies():
     cursor = db.anomalies.find().sort("timestamp", -1).limit(50)

@@ -10,7 +10,20 @@ import {
   ShieldAlert
 } from 'lucide-react';
 
-export default function Sidebar() {
+interface SidebarProps {
+  activeView: string;
+  setActiveView: (view: string) => void;
+}
+
+export default function Sidebar({ activeView, setActiveView }: SidebarProps) {
+  const menuItems = [
+    { id: 'overview', label: 'Overview', icon: LayoutDashboard },
+    { id: 'logs', label: 'API Logs', icon: FileText },
+    { id: 'alerts', label: 'Alerts', icon: AlertTriangle },
+    { id: 'insights', label: 'AI Insights', icon: Zap },
+    { id: 'analytics', label: 'Analytics', icon: PieChart },
+  ];
+
   return (
     <aside className="sidebar">
       <div style={{ marginBottom: '2.5rem', display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -28,26 +41,16 @@ export default function Sidebar() {
       </div>
 
       <nav style={{ flex: 1 }}>
-        <div className="nav-item active">
-          <LayoutDashboard size={20} />
-          <span>Overview</span>
-        </div>
-        <div className="nav-item">
-          <FileText size={20} />
-          <span>API Logs</span>
-        </div>
-        <div className="nav-item">
-          <AlertTriangle size={20} />
-          <span>Alerts</span>
-        </div>
-        <div className="nav-item">
-          <Zap size={20} />
-          <span>AI Insights</span>
-        </div>
-        <div className="nav-item">
-          <PieChart size={20} />
-          <span>Analytics</span>
-        </div>
+        {menuItems.map(({ id, label, icon: Icon }) => (
+          <div 
+            key={id}
+            className={`nav-item ${activeView === id ? 'active' : ''}`}
+            onClick={() => setActiveView(id)}
+          >
+            <Icon size={20} />
+            <span>{label}</span>
+          </div>
+        ))}
       </nav>
 
       <div className="nav-item" style={{ marginTop: 'auto' }}>
