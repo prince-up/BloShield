@@ -29,7 +29,7 @@ const IPhoneFrame = () => {
         position: 'absolute',
         width: '380px',
         height: '750px',
-        background: 'radial-gradient(circle, rgba(59, 130, 246, 0.2), transparent)',
+        background: 'radial-gradient(circle, rgba(6, 182, 212, 0.2), transparent)',
         borderRadius: '60px',
         filter: 'blur(40px)',
         pointerEvents: 'none'
@@ -43,7 +43,7 @@ const IPhoneFrame = () => {
         background: '#000',
         borderRadius: '50px',
         padding: '12px',
-        boxShadow: '0 30px 80px rgba(59, 130, 246, 0.3), 0 0 0 1px rgba(59, 130, 246, 0.1)',
+        boxShadow: '0 30px 80px rgba(6, 182, 212, 0.3), 0 0 0 1px rgba(6, 182, 212, 0.1)',
         border: '8px solid #1a1a1a'
       }}>
         {/* Notch */}
@@ -67,7 +67,7 @@ const IPhoneFrame = () => {
           position: 'relative',
           width: '100%',
           height: '100%',
-          background: 'linear-gradient(135deg, #0a0e27 0%, #1a0e3f 100%)',
+          background: 'linear-gradient(135deg, #060d1a 0%, #0f1729 100%)',
           borderRadius: '45px',
           overflow: 'hidden',
           display: 'flex',
@@ -96,8 +96,8 @@ const IPhoneFrame = () => {
             {/* Header */}
             <div style={{ marginBottom: '1rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
-                <Shield size={20} color="var(--primary)" />
-                <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--primary)' }}>Blostem Sentinel</span>
+                <Shield size={20} color="#0ea5e9" />
+                <span style={{ fontSize: '12px', fontWeight: 700, color: '#0ea5e9' }}>Blostem Sentinel</span>
               </div>
               <h3 style={{ fontSize: '14px', fontWeight: 900, color: '#fff' }}>Transaction Status</h3>
             </div>
@@ -190,28 +190,28 @@ const FeatureCard = ({ icon: Icon, title, description, stat, statLabel }) => (
   <div style={{
     padding: '2rem',
     borderRadius: '16px',
-    background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(124, 58, 237, 0.08))',
-    border: '1px solid rgba(59, 130, 246, 0.2)',
+    background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.08), rgba(10, 165, 233, 0.08))',
+    border: '1px solid rgba(6, 182, 212, 0.2)',
     backdropFilter: 'blur(10px)',
     transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
     cursor: 'pointer',
     animation: 'fadeInUp 0.8s ease-out'
   }}
   onMouseEnter={(e) => {
-    e.currentTarget.style.background = 'linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(124, 58, 237, 0.15))';
-    e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.4)';
+    e.currentTarget.style.background = 'linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(10, 165, 233, 0.15))';
+    e.currentTarget.style.borderColor = 'rgba(6, 182, 212, 0.4)';
     e.currentTarget.style.transform = 'translateY(-5px)';
-    e.currentTarget.style.boxShadow = '0 20px 50px rgba(59, 130, 246, 0.2)';
+    e.currentTarget.style.boxShadow = '0 20px 50px rgba(6, 182, 212, 0.2)';
   }}
   onMouseLeave={(e) => {
-    e.currentTarget.style.background = 'linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(124, 58, 237, 0.08))';
-    e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.2)';
+    e.currentTarget.style.background = 'linear-gradient(135deg, rgba(6, 182, 212, 0.08), rgba(10, 165, 233, 0.08))';
+    e.currentTarget.style.borderColor = 'rgba(6, 182, 212, 0.2)';
     e.currentTarget.style.transform = 'translateY(0)';
     e.currentTarget.style.boxShadow = 'none';
   }}>
     <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', marginBottom: '1.5rem' }}>
-      <div style={{ padding: '10px', background: 'rgba(59, 130, 246, 0.15)', borderRadius: '12px', display: 'flex' }}>
-        <Icon size={24} color="var(--primary)" />
+      <div style={{ padding: '10px', background: 'rgba(6, 182, 212, 0.15)', borderRadius: '12px', display: 'flex' }}>
+        <Icon size={24} color="#0ea5e9" />
       </div>
       <div style={{ flex: 1 }}>
         <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '4px' }}>{title}</h3>
@@ -219,11 +219,11 @@ const FeatureCard = ({ icon: Icon, title, description, stat, statLabel }) => (
       </div>
     </div>
     {stat && (
-      <div style={{ paddingTop: '1rem', borderTop: '1px solid rgba(59, 130, 246, 0.1)' }}>
-        <div style={{ fontSize: '2rem', fontWeight: 900, background: 'linear-gradient(135deg, var(--primary), #7c3aed)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', marginBottom: '4px' }}>
+      <div style={{ paddingTop: '1rem', borderTop: '1px solid rgba(6, 182, 212, 0.1)' }}>
+        <div style={{ fontSize: '2rem', fontWeight: 900, background: 'linear-gradient(135deg, #0ea5e9, #a78bfa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', marginBottom: '4px', letterSpacing: '-1px' }}>
           {stat}
         </div>
-        <div style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+        <div style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>
           {statLabel}
         </div>
       </div>
@@ -256,47 +256,94 @@ export default function Home() {
   const OverviewView = () => (
     <>
       {/* Hero Section */}
-      <section style={{ flex: 1, display: 'flex', alignItems: 'center', padding: '3rem 2rem' }}>
+      <section style={{ flex: 1, display: 'flex', alignItems: 'center', padding: '4rem 2rem' }}>
         <div style={{ 
           maxWidth: '1400px', 
           margin: '0 auto',
           width: '100%',
           display: 'grid',
           gridTemplateColumns: '1fr 1fr',
-          gap: '5rem',
+          gap: '6rem',
           alignItems: 'center'
         }}>
           <div style={{ animation: 'fadeInUp 0.8s ease-out' }}>
-            <h1 style={{ fontSize: '4.5rem', fontWeight: 900, lineHeight: 1.1, marginBottom: '1.5rem', letterSpacing: '-0.02em' }}>
+            <h1 style={{ fontSize: '4.5rem', fontWeight: 800, lineHeight: 1.1, marginBottom: '2rem', letterSpacing: '-1px' }}>
               Real-Time Fraud
               <br />
-              <span style={{ background: 'linear-gradient(90deg, #3b82f6 0%, #7c3aed 50%, #ef4444 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent' }}>
+              <span style={{ background: 'linear-gradient(90deg, #0ea5e9 0%, #06b6d4 50%, #ec4899 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', display: 'block' }}>
                 Detection Engine
               </span>
             </h1>
-            <p style={{ fontSize: '1.15rem', color: '#cbd5e1', marginBottom: '2.5rem', lineHeight: 1.8, maxWidth: '550px', fontWeight: 400 }}>
+            <p style={{ fontSize: '1.15rem', color: '#cbd5e1', marginBottom: '2.5rem', lineHeight: 1.8, maxWidth: '550px', fontWeight: 400, fontFamily: 'Inter, sans-serif' }}>
               Protect your users with AI-powered anomaly detection, spending limits, and RBI fraud intelligence. Reduce fraud by 99% with millisecond response times.
             </p>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, auto)', gap: '2rem' }}>
-              <div style={{ animation: 'fadeInUp 0.8s ease-out 0.1s' }}>
-                <div style={{ fontSize: '2.2rem', fontWeight: 900, background: 'linear-gradient(135deg, var(--primary), #7c3aed)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', marginBottom: '4px' }}>
-                  {stats.transactions.toLocaleString()}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '2rem', marginBottom: '3rem' }}>
+              {[
+                { label: 'API Requests', value: stats.transactions.toLocaleString(), gradient: 'linear-gradient(135deg, #0ea5e9, #06b6d4)' },
+                { label: 'Success Rate', value: `${stats.success}%`, gradient: 'linear-gradient(135deg, #10b981, #059669)' },
+                { label: 'Threats Blocked', value: stats.threats, gradient: 'linear-gradient(135deg, #ef4444, #dc2626)' },
+              ].map((stat, i) => (
+                <div key={i} style={{
+                  position: 'relative',
+                  borderRadius: '14px',
+                  border: '1px solid rgba(6, 182, 212, 0.2)',
+                  background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(10, 165, 233, 0.05))',
+                  backdropFilter: 'blur(20px)',
+                  padding: '2rem',
+                  overflow: 'hidden',
+                  animation: `fadeInUp 0.6s ease-out ${i * 0.1}s`,
+                  transition: 'all 0.3s ease',
+                  cursor: 'pointer'
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.borderColor = 'rgba(6, 182, 212, 0.4)';
+                  e.currentTarget.style.background = 'linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(10, 165, 233, 0.08))';
+                  e.currentTarget.style.boxShadow = '0 0 30px rgba(6, 182, 212, 0.2)';
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.borderColor = 'rgba(6, 182, 212, 0.2)';
+                  e.currentTarget.style.background = 'linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(10, 165, 233, 0.05))';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}>
+                  <div style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    height: '4px',
+                    background: stat.gradient
+                  }} />
+                  <div style={{ fontSize: '0.8rem', color: '#94a3b8', marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '0.05em', fontFamily: 'Inter, sans-serif', fontWeight: 600 }}>{stat.label}</div>
+                  <div style={{ fontSize: '2.5rem', fontWeight: 800, background: stat.gradient, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', letterSpacing: '-1px' }}>
+                    {stat.value}
+                  </div>
                 </div>
-                <div style={{ fontSize: '0.8rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>API Requests</div>
-              </div>
-              <div style={{ animation: 'fadeInUp 0.8s ease-out 0.2s' }}>
-                <div style={{ fontSize: '2.2rem', fontWeight: 900, background: 'linear-gradient(135deg, var(--success), #34d399)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', marginBottom: '4px' }}>
-                  {stats.success}%
-                </div>
-                <div style={{ fontSize: '0.8rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Success Rate</div>
-              </div>
-              <div style={{ animation: 'fadeInUp 0.8s ease-out 0.3s' }}>
-                <div style={{ fontSize: '2.2rem', fontWeight: 900, background: 'linear-gradient(135deg, var(--danger), #ff6b6b)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', marginBottom: '4px' }}>
-                  {stats.threats}
-                </div>
-                <div style={{ fontSize: '0.8rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Threats Blocked</div>
-              </div>
+              ))}
             </div>
+            <button style={{
+              padding: '14px 32px',
+              borderRadius: '12px',
+              border: 'none',
+              background: 'linear-gradient(135deg, #0ea5e9, #06b6d4)',
+              color: '#fff',
+              fontSize: '1rem',
+              fontWeight: 800,
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+              boxShadow: '0 0 30px rgba(6, 182, 212, 0.3)',
+              letterSpacing: '-0.5px',
+              fontFamily: 'Inter, sans-serif'
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.transform = 'translateY(-3px)';
+              e.currentTarget.style.boxShadow = '0 0 40px rgba(6, 182, 212, 0.5)';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 0 30px rgba(6, 182, 212, 0.3)';
+            }}>
+              Launch Dashboard →
+            </button>
           </div>
           <div style={{ animation: 'fadeInScale 1s ease-out', display: 'flex', justifyContent: 'center', position: 'relative' }}>
             <IPhoneFrame />
@@ -304,11 +351,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Premium Features Section */}
-      <section style={{ padding: '4rem 2rem', background: 'rgba(10, 14, 39, 0.5)', borderTop: '1px solid rgba(59, 130, 246, 0.1)' }}>
+      {/* Features Section */}
+      <section style={{ padding: '5rem 2rem', background: 'linear-gradient(180deg, rgba(6, 13, 26, 0.5), rgba(6, 13, 26, 0.8))', borderTop: '1px solid rgba(6, 182, 212, 0.1)' }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-          <h2 style={{ fontSize: '3rem', fontWeight: 900, marginBottom: '4rem', letterSpacing: '-0.02em', textAlign: 'center' }}>Enterprise Features</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem' }}>
+          <h2 style={{ fontSize: '3rem', fontWeight: 800, marginBottom: '4rem', letterSpacing: '-1px', textAlign: 'center', background: 'linear-gradient(90deg, #0ea5e9, #06b6d4, #a78bfa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+            Enterprise Features
+          </h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
             <FeatureCard icon={AlertTriangle} title="Real-Time Anomaly Detection" description="AI-powered machine learning detects suspicious patterns instantly" stat="99%" statLabel="Detection Rate" />
             <FeatureCard icon={Gauge} title="Daily Spending Limits" description="Customizable limits with 7-day rolling analytics" stat="24/7" statLabel="Monitoring" />
             <FeatureCard icon={Cpu} title="Gemini AI Insights" description="Advanced AI analysis with Google Gemini integration" stat="<50ms" statLabel="Response Time" />
@@ -325,47 +374,69 @@ export default function Home() {
     <section style={{ padding: '3rem 2rem', flex: 1 }}>
       <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
         <div style={{ marginBottom: '3rem' }}>
-          <h1 style={{ fontSize: '2.5rem', fontWeight: 900, marginBottom: '0.5rem' }}>API Logs</h1>
+          <h1 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '0.5rem', letterSpacing: '-1px', background: 'linear-gradient(90deg, #0ea5e9, #06b6d4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>API Logs</h1>
           <p style={{ color: '#94a3b8', fontSize: '1rem' }}>Real-time monitoring of all API requests and responses</p>
         </div>
 
         {/* Stats Overview */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem', marginBottom: '3rem' }}>
           {[
-            { label: 'Total Requests', value: '12,458', icon: '📊', color: '#3b82f6' },
-            { label: 'Success Rate', value: '99.8%', icon: '✅', color: '#22c55e' },
-            { label: 'Avg Latency', value: '47ms', icon: '⚡', color: '#f59e0b' },
-            { label: 'Error Rate', value: '0.2%', icon: '❌', color: '#ef4444' },
+            { label: 'Total Requests', value: '12,458', icon: '📊', gradient: 'linear-gradient(135deg, #0ea5e9, #06b6d4)' },
+            { label: 'Success Rate', value: '99.8%', icon: '✅', gradient: 'linear-gradient(135deg, #22c55e, #059669)' },
+            { label: 'Avg Latency', value: '47ms', icon: '⚡', gradient: 'linear-gradient(135deg, #f59e0b, #d97706)' },
+            { label: 'Error Rate', value: '0.2%', icon: '❌', gradient: 'linear-gradient(135deg, #ef4444, #dc2626)' },
           ].map((stat, i) => (
             <div key={i} style={{
-              background: `linear-gradient(135deg, rgba(${stat.color === '#3b82f6' ? '59, 130, 246' : stat.color === '#22c55e' ? '34, 197, 94' : stat.color === '#f59e0b' ? '245, 158, 11' : '239, 68, 68'}, 0.1), rgba(${stat.color === '#3b82f6' ? '59, 130, 246' : stat.color === '#22c55e' ? '34, 197, 94' : stat.color === '#f59e0b' ? '245, 158, 11' : '239, 68, 68'}, 0.05))`,
-              border: `2px solid ${stat.color}20`,
+              background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(10, 165, 233, 0.05))',
+              border: '1px solid rgba(6, 182, 212, 0.2)',
               borderRadius: '16px',
               padding: '1.5rem',
-              animation: 'fadeInUp 0.6s ease-out'
+              animation: 'fadeInUp 0.6s ease-out',
+              transition: 'all 0.3s ease',
+              cursor: 'pointer',
+              position: 'relative',
+              overflow: 'hidden'
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.borderColor = 'rgba(6, 182, 212, 0.4)';
+              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(10, 165, 233, 0.08))';
+              e.currentTarget.style.boxShadow = '0 0 30px rgba(6, 182, 212, 0.2)';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.borderColor = 'rgba(6, 182, 212, 0.2)';
+              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(10, 165, 233, 0.05))';
+              e.currentTarget.style.boxShadow = 'none';
             }}>
+              <div style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                height: '4px',
+                background: stat.gradient
+              }} />
               <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>{stat.icon}</div>
-              <div style={{ fontSize: '0.85rem', color: '#94a3b8', marginBottom: '0.5rem' }}>{stat.label}</div>
-              <div style={{ fontSize: '1.8rem', fontWeight: 900, background: `linear-gradient(135deg, ${stat.color}, ${stat.color}dd)`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>{stat.value}</div>
+              <div style={{ fontSize: '0.85rem', color: '#94a3b8', marginBottom: '0.5rem', textTransform: 'uppercase', fontWeight: 600, letterSpacing: '0.05em' }}>{stat.label}</div>
+              <div style={{ fontSize: '1.8rem', fontWeight: 800, background: stat.gradient, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', letterSpacing: '-1px' }}>{stat.value}</div>
             </div>
           ))}
         </div>
 
         {/* Detailed Logs Table */}
-        <div style={{ background: 'rgba(59, 130, 246, 0.08)', border: '2px solid rgba(59, 130, 246, 0.2)', borderRadius: '16px', overflow: 'hidden', animation: 'fadeInUp 0.8s ease-out' }}>
-          <div style={{ padding: '1.5rem', borderBottom: '1px solid rgba(59, 130, 246, 0.1)' }}>
+        <div style={{ background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.08), rgba(10, 165, 233, 0.05))', border: '1px solid rgba(6, 182, 212, 0.2)', borderRadius: '16px', overflow: 'hidden', animation: 'fadeInUp 0.8s ease-out' }}>
+          <div style={{ padding: '1.5rem', borderBottom: '1px solid rgba(6, 182, 212, 0.1)' }}>
             <h3 style={{ fontSize: '1.2rem', fontWeight: 700, margin: 0 }}>Recent API Requests</h3>
           </div>
           <div style={{ overflowX: 'auto' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', color: '#cbd5e1' }}>
               <thead>
-                <tr style={{ background: 'rgba(59, 130, 246, 0.05)' }}>
-                  <th style={{ textAlign: 'left', padding: '1rem 1.5rem', fontWeight: 700, color: 'var(--primary)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Timestamp</th>
-                  <th style={{ textAlign: 'left', padding: '1rem 1.5rem', fontWeight: 700, color: 'var(--primary)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Endpoint</th>
-                  <th style={{ textAlign: 'left', padding: '1rem 1.5rem', fontWeight: 700, color: 'var(--primary)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Method</th>
-                  <th style={{ textAlign: 'left', padding: '1rem 1.5rem', fontWeight: 700, color: 'var(--primary)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Status</th>
-                  <th style={{ textAlign: 'left', padding: '1rem 1.5rem', fontWeight: 700, color: 'var(--primary)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Latency</th>
-                  <th style={{ textAlign: 'left', padding: '1rem 1.5rem', fontWeight: 700, color: 'var(--primary)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>IP Address</th>
+                <tr style={{ background: 'rgba(6, 182, 212, 0.05)' }}>
+                  <th style={{ textAlign: 'left', padding: '1rem 1.5rem', fontWeight: 700, color: '#06b6d4', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Timestamp</th>
+                  <th style={{ textAlign: 'left', padding: '1rem 1.5rem', fontWeight: 700, color: '#06b6d4', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Endpoint</th>
+                  <th style={{ textAlign: 'left', padding: '1rem 1.5rem', fontWeight: 700, color: '#06b6d4', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Method</th>
+                  <th style={{ textAlign: 'left', padding: '1rem 1.5rem', fontWeight: 700, color: '#06b6d4', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Status</th>
+                  <th style={{ textAlign: 'left', padding: '1rem 1.5rem', fontWeight: 700, color: '#06b6d4', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Latency</th>
+                  <th style={{ textAlign: 'left', padding: '1rem 1.5rem', fontWeight: 700, color: '#06b6d4', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>IP Address</th>
                 </tr>
               </thead>
               <tbody>
@@ -377,9 +448,11 @@ export default function Home() {
                   { time: '14:31:50', endpoint: '/user/spending-limit', method: 'GET', status: '200', latency: '18ms', ip: '192.168.1.41' },
                   { time: '14:31:48', endpoint: '/anomalies', method: 'GET', status: '200', latency: '52ms', ip: '192.168.1.39' },
                 ].map((log, i) => (
-                  <tr key={i} style={{ borderBottom: '1px solid rgba(59, 130, 246, 0.1)', transition: 'all 0.3s ease', cursor: 'pointer' }} onMouseEnter={e => e.currentTarget.style.background = 'rgba(59, 130, 246, 0.05)'} onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+                  <tr key={i} style={{ borderBottom: '1px solid rgba(6, 182, 212, 0.1)', transition: 'all 0.3s ease', cursor: 'pointer' }} 
+                    onMouseEnter={e => e.currentTarget.style.background = 'rgba(6, 182, 212, 0.05)'} 
+                    onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
                     <td style={{ padding: '1rem 1.5rem', fontSize: '0.9rem', fontWeight: 500 }}>{log.time}</td>
-                    <td style={{ padding: '1rem 1.5rem', fontSize: '0.9rem', fontFamily: 'monospace', color: 'var(--primary)' }}>{log.endpoint}</td>
+                    <td style={{ padding: '1rem 1.5rem', fontSize: '0.9rem', fontFamily: 'monospace', color: '#0ea5e9' }}>{log.endpoint}</td>
                     <td style={{ padding: '1rem 1.5rem' }}><span style={{ background: 'rgba(34, 197, 94, 0.25)', color: '#86efac', padding: '4px 10px', borderRadius: '6px', fontSize: '0.85rem', fontWeight: 600 }}>{log.method}</span></td>
                     <td style={{ padding: '1rem 1.5rem' }}><span style={{ background: log.status === '200' ? 'rgba(34, 197, 94, 0.25)' : 'rgba(239, 68, 68, 0.25)', padding: '4px 10px', borderRadius: '6px', fontSize: '0.85rem', fontWeight: 600, color: log.status === '200' ? '#86efac' : '#fca5a5' }}>{log.status}</span></td>
                     <td style={{ padding: '1rem 1.5rem', fontSize: '0.9rem' }}><span style={{ background: 'rgba(245, 158, 11, 0.2)', color: '#fbbf24', padding: '2px 8px', borderRadius: '4px' }}>{log.latency}</span></td>
@@ -398,7 +471,7 @@ export default function Home() {
     <section style={{ padding: '3rem 2rem', flex: 1 }}>
       <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
         <div style={{ marginBottom: '3rem' }}>
-          <h1 style={{ fontSize: '2.5rem', fontWeight: 900, marginBottom: '0.5rem' }}>Active Security Alerts</h1>
+          <h1 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '0.5rem', letterSpacing: '-1px', background: 'linear-gradient(90deg, #0ea5e9, #06b6d4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Active Security Alerts</h1>
           <p style={{ color: '#94a3b8', fontSize: '1rem' }}>Real-time threat intelligence and anomaly detection</p>
         </div>
 
@@ -412,14 +485,24 @@ export default function Home() {
           ].map((alert, i) => (
             <div key={i} style={{
               background: `linear-gradient(135deg, ${alert.color}15, ${alert.color}08)`,
-              border: `2px solid ${alert.color}40`,
+              border: `1px solid ${alert.color}40`,
               borderRadius: '16px',
               padding: '1.5rem',
               textAlign: 'center',
-              animation: `fadeInUp 0.6s ease-out ${i * 0.1}s`
+              animation: `fadeInUp 0.6s ease-out ${i * 0.1}s`,
+              transition: 'all 0.3s ease',
+              cursor: 'pointer'
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.transform = 'translateY(-4px)';
+              e.currentTarget.style.boxShadow = `0 0 30px ${alert.color}30`;
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = 'none';
             }}>
               <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>{alert.emoji}</div>
-              <div style={{ fontSize: '0.85rem', color: '#94a3b8', marginBottom: '0.5rem' }}>{alert.label}</div>
+              <div style={{ fontSize: '0.85rem', color: '#94a3b8', marginBottom: '0.5rem', textTransform: 'uppercase', fontWeight: 600 }}>{alert.label}</div>
               <div style={{ fontSize: '2.2rem', fontWeight: 900, color: alert.color }}>{alert.count}</div>
             </div>
           ))}
@@ -436,7 +519,7 @@ export default function Home() {
           ].map((alert, i) => (
             <div key={i} style={{
               background: `linear-gradient(135deg, ${alert.severity === 'high' ? 'rgba(239, 68, 68, 0.12)' : alert.severity === 'medium' ? 'rgba(245, 158, 11, 0.12)' : 'rgba(34, 197, 94, 0.12)'}, transparent)`,
-              border: `2px solid ${alert.severity === 'high' ? 'rgba(239, 68, 68, 0.3)' : alert.severity === 'medium' ? 'rgba(245, 158, 11, 0.3)' : 'rgba(34, 197, 94, 0.3)'}`,
+              border: `1px solid ${alert.severity === 'high' ? 'rgba(239, 68, 68, 0.3)' : alert.severity === 'medium' ? 'rgba(245, 158, 11, 0.3)' : 'rgba(34, 197, 94, 0.3)'}`,
               borderRadius: '16px',
               padding: '1.5rem',
               display: 'flex',
@@ -474,7 +557,7 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-              <button style={{ padding: '8px 16px', borderRadius: '8px', border: 'none', background: alert.severity === 'high' ? 'rgba(239, 68, 68, 0.2)' : 'rgba(245, 158, 11, 0.2)', color: 'var(--primary)', cursor: 'pointer', fontWeight: 600, fontSize: '0.85rem' }}>
+              <button style={{ padding: '8px 16px', borderRadius: '8px', border: 'none', background: alert.severity === 'high' ? 'rgba(239, 68, 68, 0.2)' : 'rgba(245, 158, 11, 0.2)', color: '#06b6d4', cursor: 'pointer', fontWeight: 600, fontSize: '0.85rem' }}>
                 Investigate
               </button>
             </div>
@@ -488,7 +571,7 @@ export default function Home() {
     <section style={{ padding: '3rem 2rem', flex: 1 }}>
       <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
         <div style={{ marginBottom: '3rem' }}>
-          <h1 style={{ fontSize: '2.5rem', fontWeight: 900, marginBottom: '0.5rem' }}>AI-Powered Insights</h1>
+          <h1 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '0.5rem', letterSpacing: '-1px', background: 'linear-gradient(90deg, #ec4899, #a78bfa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>AI-Powered Insights</h1>
           <p style={{ color: '#94a3b8', fontSize: '1rem' }}>Machine learning analysis of transaction patterns and fraud risks</p>
         </div>
 
@@ -501,7 +584,7 @@ export default function Home() {
               metric: 'Risk Score',
               content: 'Daily spending decreased 12% this month. Peak transactions occur between 2-4 PM on weekdays. Recommend monitoring for unusual deviations.',
               trend: '↓ -12%',
-              color: '#3b82f6'
+              color: '#0ea5e9'
             },
             { 
               icon: '🎯', 
@@ -551,7 +634,7 @@ export default function Home() {
           ].map((insight, i) => (
             <div key={i} style={{
               background: `linear-gradient(135deg, ${insight.color}15, ${insight.color}06)`,
-              border: `2px solid ${insight.color}30`,
+              border: `1px solid ${insight.color}30`,
               borderRadius: '16px',
               padding: '2rem',
               position: 'relative',
@@ -566,11 +649,13 @@ export default function Home() {
               e.currentTarget.style.background = `linear-gradient(135deg, ${insight.color}25, ${insight.color}10)`;
               e.currentTarget.style.transform = 'translateY(-8px)';
               e.currentTarget.style.boxShadow = `0 20px 60px ${insight.color}30`;
+              e.currentTarget.style.borderColor = `${insight.color}50`;
             }}
             onMouseLeave={e => {
               e.currentTarget.style.background = `linear-gradient(135deg, ${insight.color}15, ${insight.color}06)`;
               e.currentTarget.style.transform = 'translateY(0)';
               e.currentTarget.style.boxShadow = 'none';
+              e.currentTarget.style.borderColor = `${insight.color}30`;
             }}>
               <div style={{ position: 'absolute', top: '-20px', right: '-20px', fontSize: '4rem', opacity: 0.1 }}>{insight.icon}</div>
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', marginBottom: '1.5rem' }}>
@@ -583,18 +668,27 @@ export default function Home() {
                       fontWeight: 900, 
                       background: `linear-gradient(135deg, ${insight.color}, ${insight.color}dd)`,
                       WebkitBackgroundClip: 'text',
-                      WebkitTextFillColor: 'transparent'
+                      WebkitTextFillColor: 'transparent',
+                      letterSpacing: '-1px'
                     }}>
                       {insight.score}
                     </div>
-                    <div style={{ fontSize: '0.75rem', color: '#94a3b8', textTransform: 'uppercase' }}>{insight.metric}</div>
+                    <div style={{ fontSize: '0.75rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 600 }}>{insight.metric}</div>
                   </div>
                 </div>
               </div>
               <p style={{ color: '#cbd5e1', fontSize: '0.95rem', lineHeight: 1.6, marginBottom: '1.5rem', flex: 1 }}>{insight.content}</p>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '1rem', borderTop: `1px solid ${insight.color}20` }}>
                 <span style={{ fontSize: '0.85rem', color: insight.color, fontWeight: 600 }}>{insight.trend}</span>
-                <button style={{ padding: '6px 14px', borderRadius: '6px', border: `1px solid ${insight.color}40`, background: `${insight.color}15`, color: insight.color, cursor: 'pointer', fontWeight: 600, fontSize: '0.8rem' }}>
+                <button style={{ padding: '6px 14px', borderRadius: '6px', border: `1px solid ${insight.color}40`, background: `${insight.color}15`, color: insight.color, cursor: 'pointer', fontWeight: 600, fontSize: '0.8rem', transition: 'all 0.3s ease' }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.background = `${insight.color}25`;
+                  e.currentTarget.style.transform = 'translateX(4px)';
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.background = `${insight.color}15`;
+                  e.currentTarget.style.transform = 'translateX(0)';
+                }}>
                   Learn More →
                 </button>
               </div>
@@ -609,33 +703,57 @@ export default function Home() {
     <section style={{ padding: '3rem 2rem', flex: 1 }}>
       <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
         <div style={{ marginBottom: '3rem' }}>
-          <h1 style={{ fontSize: '2.5rem', fontWeight: 900, marginBottom: '0.5rem' }}>Analytics Dashboard</h1>
+          <h1 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '0.5rem', letterSpacing: '-1px', background: 'linear-gradient(90deg, #0ea5e9, #06b6d4, #a78bfa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Analytics Dashboard</h1>
           <p style={{ color: '#94a3b8', fontSize: '1rem' }}>Comprehensive performance metrics and data visualization</p>
         </div>
 
         {/* Top KPIs */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem', marginBottom: '3rem' }}>
           {[
-            { label: 'Total Transactions', value: '12,458', icon: '💳', change: '+18.3%', color: '#3b82f6' },
-            { label: 'Success Rate', value: '99.82%', icon: '✅', change: '+0.5%', color: '#22c55e' },
-            { label: 'Threats Blocked', value: '347', icon: '🛡️', change: '+24.1%', color: '#ef4444' },
-            { label: 'Avg Response Time', value: '42ms', icon: '⚡', change: '-8.2%', color: '#f59e0b' },
+            { label: 'Total Transactions', value: '12,458', icon: '💳', change: '+18.3%', gradient: 'linear-gradient(135deg, #0ea5e9, #06b6d4)' },
+            { label: 'Success Rate', value: '99.82%', icon: '✅', change: '+0.5%', gradient: 'linear-gradient(135deg, #22c55e, #059669)' },
+            { label: 'Threats Blocked', value: '347', icon: '🛡️', change: '+24.1%', gradient: 'linear-gradient(135deg, #ef4444, #dc2626)' },
+            { label: 'Avg Response Time', value: '42ms', icon: '⚡', change: '-8.2%', gradient: 'linear-gradient(135deg, #f59e0b, #d97706)' },
           ].map((metric, i) => (
             <div key={i} style={{
-              background: `linear-gradient(135deg, ${metric.color}15, ${metric.color}06)`,
-              border: `2px solid ${metric.color}30`,
+              background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(10, 165, 233, 0.05))',
+              border: '1px solid rgba(6, 182, 212, 0.2)',
               borderRadius: '16px',
               padding: '2rem',
-              animation: `fadeInUp 0.6s ease-out ${i * 0.1}s`
+              animation: `fadeInUp 0.6s ease-out ${i * 0.1}s`,
+              transition: 'all 0.3s ease',
+              cursor: 'pointer',
+              position: 'relative',
+              overflow: 'hidden'
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.borderColor = 'rgba(6, 182, 212, 0.4)';
+              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(10, 165, 233, 0.08))';
+              e.currentTarget.style.transform = 'translateY(-4px)';
+              e.currentTarget.style.boxShadow = '0 0 30px rgba(6, 182, 212, 0.2)';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.borderColor = 'rgba(6, 182, 212, 0.2)';
+              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(10, 165, 233, 0.05))';
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = 'none';
             }}>
+              <div style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                height: '4px',
+                background: metric.gradient
+              }} />
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
                 <span style={{ fontSize: '2.5rem' }}>{metric.icon}</span>
                 <span style={{ fontSize: '0.8rem', fontWeight: 600, color: metric.change.startsWith('+') ? '#22c55e' : '#f59e0b', background: metric.change.startsWith('+') ? 'rgba(34, 197, 94, 0.2)' : 'rgba(245, 158, 11, 0.2)', padding: '4px 10px', borderRadius: '6px' }}>
                   {metric.change}
                 </span>
               </div>
-              <div style={{ fontSize: '0.85rem', color: '#94a3b8', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{metric.label}</div>
-              <div style={{ fontSize: '2.2rem', fontWeight: 900, background: `linear-gradient(135deg, ${metric.color}, ${metric.color}dd)`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+              <div style={{ fontSize: '0.85rem', color: '#94a3b8', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>{metric.label}</div>
+              <div style={{ fontSize: '2.2rem', fontWeight: 900, background: metric.gradient, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', letterSpacing: '-1px' }}>
                 {metric.value}
               </div>
             </div>
@@ -645,29 +763,32 @@ export default function Home() {
         {/* Charts and Data */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginBottom: '3rem' }}>
           {/* Transaction Trend */}
-          <div style={{ background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(124, 58, 237, 0.1))', border: '2px solid rgba(59, 130, 246, 0.2)', borderRadius: '16px', padding: '2rem', animation: 'fadeInUp 0.8s ease-out' }}>
-            <h3 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '1.5rem' }}>Transaction Trend</h3>
+          <div style={{ background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.08), rgba(10, 165, 233, 0.05))', border: '1px solid rgba(6, 182, 212, 0.2)', borderRadius: '16px', padding: '2rem', animation: 'fadeInUp 0.8s ease-out' }}>
+            <h3 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '1.5rem', background: 'linear-gradient(90deg, #0ea5e9, #06b6d4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', letterSpacing: '-0.5px' }}>Transaction Trend</h3>
             <div style={{ height: '200px', display: 'flex', alignItems: 'flex-end', gap: '8px', justifyContent: 'space-around' }}>
               {[65, 78, 92, 85, 95, 88, 102].map((val, i) => (
                 <div key={i} style={{
                   width: '100%',
                   height: `${(val / 102) * 100}%`,
-                  background: `linear-gradient(180deg, #3b82f6, #7c3aed)`,
+                  background: 'linear-gradient(180deg, #0ea5e9, #06b6d4)',
                   borderRadius: '8px 8px 0 0',
                   position: 'relative',
                   transition: 'all 0.3s ease',
                   cursor: 'pointer',
-                  opacity: 0.7
+                  opacity: 0.7,
+                  boxShadow: '0 0 15px rgba(6, 182, 212, 0.3)'
                 }}
                 onMouseEnter={e => {
                   e.currentTarget.style.opacity = '1';
                   e.currentTarget.style.filter = 'brightness(1.2)';
+                  e.currentTarget.style.boxShadow = '0 0 25px rgba(6, 182, 212, 0.5)';
                 }}
                 onMouseLeave={e => {
                   e.currentTarget.style.opacity = '0.7';
                   e.currentTarget.style.filter = 'brightness(1)';
+                  e.currentTarget.style.boxShadow = '0 0 15px rgba(6, 182, 212, 0.3)';
                 }}>
-                  <div style={{ position: 'absolute', top: '-25px', left: '50%', transform: 'translateX(-50%)', fontSize: '0.75rem', color: '#cbd5e1', fontWeight: 600 }}>{val}</div>
+                  <div style={{ position: 'absolute', top: '-25px', left: '50%', transform: 'translateX(-50%)', fontSize: '0.75rem', color: '#0ea5e9', fontWeight: 700 }}>{val}</div>
                 </div>
               ))}
             </div>
@@ -677,8 +798,8 @@ export default function Home() {
           </div>
 
           {/* Risk Distribution */}
-          <div style={{ background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(124, 58, 237, 0.1))', border: '2px solid rgba(59, 130, 246, 0.2)', borderRadius: '16px', padding: '2rem', animation: 'fadeInUp 0.8s ease-out' }}>
-            <h3 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '1.5rem' }}>Risk Distribution</h3>
+          <div style={{ background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.08), rgba(10, 165, 233, 0.05))', border: '1px solid rgba(6, 182, 212, 0.2)', borderRadius: '16px', padding: '2rem', animation: 'fadeInUp 0.8s ease-out' }}>
+            <h3 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '1.5rem', background: 'linear-gradient(90deg, #ec4899, #a78bfa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', letterSpacing: '-0.5px' }}>Risk Distribution</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
               {[
                 { label: 'Low Risk (Safe)', value: 85, color: '#22c55e' },
@@ -707,19 +828,19 @@ export default function Home() {
         </div>
 
         {/* Detailed Statistics Table */}
-        <div style={{ background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(124, 58, 237, 0.08))', border: '2px solid rgba(59, 130, 246, 0.2)', borderRadius: '16px', overflow: 'hidden', animation: 'fadeInUp 1s ease-out' }}>
-          <div style={{ padding: '1.5rem', borderBottom: '1px solid rgba(59, 130, 246, 0.1)' }}>
+        <div style={{ background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.08), rgba(10, 165, 233, 0.05))', border: '1px solid rgba(6, 182, 212, 0.2)', borderRadius: '16px', overflow: 'hidden', animation: 'fadeInUp 1s ease-out' }}>
+          <div style={{ padding: '1.5rem', borderBottom: '1px solid rgba(6, 182, 212, 0.1)' }}>
             <h3 style={{ fontSize: '1.2rem', fontWeight: 700, margin: 0 }}>Detailed Performance Metrics</h3>
           </div>
           <div style={{ overflowX: 'auto' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', color: '#cbd5e1' }}>
               <thead>
-                <tr style={{ background: 'rgba(59, 130, 246, 0.05)' }}>
-                  <th style={{ textAlign: 'left', padding: '1rem 1.5rem', fontWeight: 700, color: 'var(--primary)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Metric</th>
-                  <th style={{ textAlign: 'left', padding: '1rem 1.5rem', fontWeight: 700, color: 'var(--primary)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Today</th>
-                  <th style={{ textAlign: 'left', padding: '1rem 1.5rem', fontWeight: 700, color: 'var(--primary)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Yesterday</th>
-                  <th style={{ textAlign: 'left', padding: '1rem 1.5rem', fontWeight: 700, color: 'var(--primary)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>This Week</th>
-                  <th style={{ textAlign: 'left', padding: '1rem 1.5rem', fontWeight: 700, color: 'var(--primary)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Change</th>
+                <tr style={{ background: 'rgba(6, 182, 212, 0.05)' }}>
+                  <th style={{ textAlign: 'left', padding: '1rem 1.5rem', fontWeight: 700, color: '#06b6d4', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Metric</th>
+                  <th style={{ textAlign: 'left', padding: '1rem 1.5rem', fontWeight: 700, color: '#06b6d4', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Today</th>
+                  <th style={{ textAlign: 'left', padding: '1rem 1.5rem', fontWeight: 700, color: '#06b6d4', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Yesterday</th>
+                  <th style={{ textAlign: 'left', padding: '1rem 1.5rem', fontWeight: 700, color: '#06b6d4', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>This Week</th>
+                  <th style={{ textAlign: 'left', padding: '1rem 1.5rem', fontWeight: 700, color: '#06b6d4', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Change</th>
                 </tr>
               </thead>
               <tbody>
@@ -730,8 +851,8 @@ export default function Home() {
                   { metric: 'Avg Latency', today: '42ms', yesterday: '48ms', week: '45ms', change: '-12.5%' },
                   { metric: 'Blocked Threats', today: '156', yesterday: '127', week: '1,024', change: '+22.8%' },
                 ].map((row, i) => (
-                  <tr key={i} style={{ borderBottom: '1px solid rgba(59, 130, 246, 0.1)', transition: 'background 0.3s ease', cursor: 'pointer' }}
-                    onMouseEnter={e => e.currentTarget.style.background = 'rgba(59, 130, 246, 0.08)'}
+                  <tr key={i} style={{ borderBottom: '1px solid rgba(6, 182, 212, 0.1)', transition: 'background 0.3s ease', cursor: 'pointer' }}
+                    onMouseEnter={e => e.currentTarget.style.background = 'rgba(6, 182, 212, 0.08)'}
                     onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
                     <td style={{ padding: '1rem 1.5rem', fontSize: '0.95rem', fontWeight: 600 }}>{row.metric}</td>
                     <td style={{ padding: '1rem 1.5rem', fontSize: '0.95rem' }}><span style={{ background: 'rgba(34, 197, 94, 0.2)', color: '#86efac', padding: '4px 10px', borderRadius: '6px' }}>{row.today}</span></td>
@@ -749,7 +870,7 @@ export default function Home() {
   );
 
   return (
-    <div style={{ background: 'linear-gradient(135deg, #0a0e27 0%, #1a0e3f 100%)', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ background: 'linear-gradient(135deg, #060d1a 0%, #0f1729 100%)', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <Navbar activeView={activeView} setActiveView={setActiveView} />
       {activeView === 'home' || activeView === 'overview' ? <OverviewView /> : activeView === 'logs' ? <APILogsView /> : activeView === 'alerts' ? <AlertsView /> : activeView === 'insights' ? <InsightsView /> : <AnalyticsView />}
     </div>
