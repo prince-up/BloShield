@@ -685,11 +685,11 @@ export default function Home() {
             <p style={{ fontSize: '1.15rem', color: '#cbd5e1', marginBottom: '2.5rem', lineHeight: 1.8, maxWidth: '550px', fontWeight: 400, fontFamily: 'Inter, sans-serif' }}>
               Protect your users with AI-powered anomaly detection, spending limits, and RBI fraud intelligence. Reduce fraud by 99% with millisecond response times.
             </p>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '2rem', marginBottom: '3rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '2rem', marginBottom: '3rem' }}>
               {[
-                { label: 'API Requests', value: stats.transactions.toLocaleString(), gradient: 'linear-gradient(135deg, #0ea5e9, #06b6d4)' },
-                { label: 'Success Rate', value: `${stats.success}%`, gradient: 'linear-gradient(135deg, #10b981, #059669)' },
-                { label: 'Threats Blocked', value: stats.threats, gradient: 'linear-gradient(135deg, #ef4444, #dc2626)' },
+                { label: 'API Requests', value: stats.transactions.toLocaleString(), gradient: 'linear-gradient(135deg, #0ea5e9, #06b6d4)', icon: '⚡' },
+                { label: 'Success Rate', value: `${stats.success}%`, gradient: 'linear-gradient(135deg, #10b981, #059669)', icon: '✅' },
+                { label: 'Threats Blocked', value: stats.threats, gradient: 'linear-gradient(135deg, #ef4444, #dc2626)', icon: '🛡️' },
               ].map((stat, i) => (
                 <div key={i} style={{
                   position: 'relative',
@@ -697,7 +697,7 @@ export default function Home() {
                   border: '1px solid rgba(6, 182, 212, 0.2)',
                   background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(10, 165, 233, 0.05))',
                   backdropFilter: 'blur(20px)',
-                  padding: '2rem',
+                  padding: '2rem 1.5rem',
                   overflow: 'hidden',
                   animation: `fadeInUp 0.6s ease-out ${i * 0.1}s`,
                   transition: 'all 0.3s ease',
@@ -707,11 +707,13 @@ export default function Home() {
                   e.currentTarget.style.borderColor = 'rgba(6, 182, 212, 0.4)';
                   e.currentTarget.style.background = 'linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(10, 165, 233, 0.08))';
                   e.currentTarget.style.boxShadow = '0 0 30px rgba(6, 182, 212, 0.2)';
+                  e.currentTarget.style.transform = 'translateY(-4px)';
                 }}
                 onMouseLeave={e => {
                   e.currentTarget.style.borderColor = 'rgba(6, 182, 212, 0.2)';
                   e.currentTarget.style.background = 'linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(10, 165, 233, 0.05))';
                   e.currentTarget.style.boxShadow = 'none';
+                  e.currentTarget.style.transform = 'translateY(0)';
                 }}>
                   <div style={{
                     position: 'absolute',
@@ -721,8 +723,9 @@ export default function Home() {
                     height: '4px',
                     background: stat.gradient
                   }} />
+                  <div style={{ fontSize: '2.5rem', marginBottom: '0.75rem' }}>{stat.icon}</div>
                   <div style={{ fontSize: '0.8rem', color: '#94a3b8', marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '0.05em', fontFamily: 'Inter, sans-serif', fontWeight: 600 }}>{stat.label}</div>
-                  <div style={{ fontSize: '2.5rem', fontWeight: 800, background: stat.gradient, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', letterSpacing: '-1px' }}>
+                  <div style={{ fontSize: '2.2rem', fontWeight: 800, background: stat.gradient, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', letterSpacing: '-1px' }}>
                     {stat.value}
                   </div>
                 </div>
@@ -799,6 +802,207 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Integrations Section */}
+      <section style={{ padding: '5rem 2rem', background: 'linear-gradient(180deg, rgba(6, 13, 26, 0.5), rgba(6, 13, 26, 0.8))', borderTop: '1px solid rgba(6, 182, 212, 0.1)' }}>
+        <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+          <h2 style={{ fontSize: '3rem', fontWeight: 800, marginBottom: '1rem', letterSpacing: '-1px', textAlign: 'center', background: 'linear-gradient(90deg, #0ea5e9, #06b6d4, #a78bfa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+            Works With Everything
+          </h2>
+          <p style={{ fontSize: '1.1rem', color: '#94a3b8', marginBottom: '4rem', textAlign: 'center', maxWidth: '600px', margin: '0 auto 4rem' }}>
+            Seamlessly integrate with major payment platforms and financial services
+          </p>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: '2rem', marginBottom: '4rem', padding: '3rem', background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.08), rgba(10, 165, 233, 0.05))', borderRadius: '16px', border: '1px solid rgba(6, 182, 212, 0.2)' }}>
+            {[
+              { name: 'Google Pay', emoji: '🔵', color: '#4285F4' },
+              { name: 'PayPal', emoji: '💳', color: '#0070BA' },
+              { name: 'Mobikwik', emoji: '📱', color: '#FF6B6B' },
+              { name: 'PhonePe', emoji: '📲', color: '#5B21B6' },
+              { name: 'Razorpay', emoji: '💰', color: '#02042B' },
+              { name: 'Amazon Pay', emoji: '🛒', color: '#FF9900' },
+            ].map((integration, i) => (
+              <div key={i} style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '2rem 1rem',
+                background: 'rgba(6, 13, 26, 0.5)',
+                border: `1px solid rgba(${integration.color === '#4285F4' ? '66, 133, 244' : '255, 107, 107'}, 0.2)`,
+                borderRadius: '12px',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                animation: 'fadeInUp 0.6s ease-out'
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.background = 'rgba(6, 13, 26, 0.7)';
+                e.currentTarget.style.borderColor = `rgba(${integration.color === '#4285F4' ? '66, 133, 244' : '255, 107, 107'}, 0.5)`;
+                e.currentTarget.style.transform = 'translateY(-4px)';
+                e.currentTarget.style.boxShadow = `0 0 25px ${integration.color}40`;
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.background = 'rgba(6, 13, 26, 0.5)';
+                e.currentTarget.style.borderColor = `rgba(${integration.color === '#4285F4' ? '66, 133, 244' : '255, 107, 107'}, 0.2)`;
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+              }}>
+                <div style={{ fontSize: '3rem', marginBottom: '0.5rem' }}>{integration.emoji}</div>
+                <div style={{ fontSize: '0.9rem', fontWeight: 600, color: '#e2e8f0', textAlign: 'center' }}>{integration.name}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer style={{ padding: '4rem 2rem', background: 'linear-gradient(180deg, #0a1117 0%, #0f1729 100%)', borderTop: '1px solid rgba(6, 182, 212, 0.1)' }}>
+        <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '3rem', marginBottom: '3rem' }}>
+            {/* Brand */}
+            <div>
+              <h3 style={{ fontSize: '1.5rem', fontWeight: 800, marginBottom: '1rem', background: 'linear-gradient(90deg, #0ea5e9, #06b6d4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                BloShield
+              </h3>
+              <p style={{ color: '#94a3b8', fontSize: '0.95rem', lineHeight: '1.6' }}>
+                Enterprise-grade fraud detection and financial security. Protecting your users with AI-powered real-time monitoring.
+              </p>
+            </div>
+
+            {/* Quick Links */}
+            <div>
+              <h4 style={{ fontSize: '0.95rem', fontWeight: 700, marginBottom: '1rem', color: '#e2e8f0', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                Product
+              </h4>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                {['Features', 'Pricing', 'Security', 'API Docs'].map(link => (
+                  <li key={link}>
+                    <a href="#" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '0.9rem', transition: 'color 0.3s ease' }}
+                      onMouseEnter={e => e.currentTarget.style.color = '#0ea5e9'}
+                      onMouseLeave={e => e.currentTarget.style.color = '#94a3b8'}>
+                      {link}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Company */}
+            <div>
+              <h4 style={{ fontSize: '0.95rem', fontWeight: 700, marginBottom: '1rem', color: '#e2e8f0', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                Company
+              </h4>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                {['About', 'Blog', 'Careers', 'Contact'].map(link => (
+                  <li key={link}>
+                    <a href="#" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '0.9rem', transition: 'color 0.3s ease' }}
+                      onMouseEnter={e => e.currentTarget.style.color = '#0ea5e9'}
+                      onMouseLeave={e => e.currentTarget.style.color = '#94a3b8'}>
+                      {link}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Developer */}
+            <div>
+              <h4 style={{ fontSize: '0.95rem', fontWeight: 700, marginBottom: '1rem', color: '#e2e8f0', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                Developer
+              </h4>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                <a href="https://github.com/prince-up" target="_blank" rel="noopener noreferrer" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '0.9rem', transition: 'color 0.3s ease', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+                  onMouseEnter={e => e.currentTarget.style.color = '#0ea5e9'}
+                  onMouseLeave={e => e.currentTarget.style.color = '#94a3b8'}>
+                  <span>👨‍💻 GitHub</span>
+                </a>
+                <a href="https://www.linkedin.com/in/prince-yadav-4t/" target="_blank" rel="noopener noreferrer" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '0.9rem', transition: 'color 0.3s ease', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+                  onMouseEnter={e => e.currentTarget.style.color = '#0ea5e9'}
+                  onMouseLeave={e => e.currentTarget.style.color = '#94a3b8'}>
+                  <span>💼 LinkedIn</span>
+                </a>
+                <a href="https://x.com/prince__up" target="_blank" rel="noopener noreferrer" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '0.9rem', transition: 'color 0.3s ease', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+                  onMouseEnter={e => e.currentTarget.style.color = '#0ea5e9'}
+                  onMouseLeave={e => e.currentTarget.style.color = '#94a3b8'}>
+                  <span>🐦 Twitter/X</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Divider */}
+          <div style={{ borderTop: '1px solid rgba(6, 182, 212, 0.1)', paddingTop: '2rem', marginTop: '3rem' }}>
+            {/* Creator Info */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem', marginBottom: '2rem' }}>
+              <div>
+                <h4 style={{ fontSize: '0.95rem', fontWeight: 700, marginBottom: '0.75rem', color: '#0ea5e9' }}>
+                  👨‍💻 Creator
+                </h4>
+                <p style={{ color: '#cbd5e1', fontSize: '0.9rem', marginBottom: '0.25rem' }}>
+                  <strong>Name:</strong> Prince Yadav
+                </p>
+                <p style={{ color: '#cbd5e1', fontSize: '0.9rem', marginBottom: '0.25rem' }}>
+                  <strong>Email:</strong> <a href="mailto:prince@blosshield.com" style={{ color: '#0ea5e9', textDecoration: 'none' }}>prince@blosshield.com</a>
+                </p>
+                <p style={{ color: '#cbd5e1', fontSize: '0.9rem', marginBottom: '0.25rem' }}>
+                  <strong>Education:</strong> B.Tech 3rd Year Student
+                </p>
+              </div>
+
+              <div>
+                <h4 style={{ fontSize: '0.95rem', fontWeight: 700, marginBottom: '0.75rem', color: '#0ea5e9' }}>
+                  🔗 Connect
+                </h4>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  <a href="https://github.com/prince-up" target="_blank" rel="noopener noreferrer" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '0.9rem', transition: 'color 0.3s ease' }}
+                    onMouseEnter={e => e.currentTarget.style.color = '#0ea5e9'}
+                    onMouseLeave={e => e.currentTarget.style.color = '#94a3b8'}>
+                    🐙 GitHub: github.com/prince-up
+                  </a>
+                  <a href="https://www.linkedin.com/in/prince-yadav-4t/" target="_blank" rel="noopener noreferrer" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '0.9rem', transition: 'color 0.3s ease' }}
+                    onMouseEnter={e => e.currentTarget.style.color = '#0ea5e9'}
+                    onMouseLeave={e => e.currentTarget.style.color = '#94a3b8'}>
+                    💼 LinkedIn: /in/prince-yadav-4t/
+                  </a>
+                  <a href="https://x.com/prince__up" target="_blank" rel="noopener noreferrer" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '0.9rem', transition: 'color 0.3s ease' }}
+                    onMouseEnter={e => e.currentTarget.style.color = '#0ea5e9'}
+                    onMouseLeave={e => e.currentTarget.style.color = '#94a3b8'}>
+                    🐦 Twitter/X: @prince__up
+                  </a>
+                </div>
+              </div>
+
+              <div>
+                <h4 style={{ fontSize: '0.95rem', fontWeight: 700, marginBottom: '0.75rem', color: '#0ea5e9' }}>
+                  📊 Stats
+                </h4>
+                <p style={{ color: '#cbd5e1', fontSize: '0.9rem', marginBottom: '0.25rem' }}>
+                  ✅ 8 UI Components Created
+                </p>
+                <p style={{ color: '#cbd5e1', fontSize: '0.9rem', marginBottom: '0.25rem' }}>
+                  ✅ Real-Time WebSocket Integration
+                </p>
+                <p style={{ color: '#cbd5e1', fontSize: '0.9rem', marginBottom: '0.25rem' }}>
+                  ✅ Supabase Authentication
+                </p>
+                <p style={{ color: '#cbd5e1', fontSize: '0.9rem' }}>
+                  ✅ AI-Powered Fraud Detection
+                </p>
+              </div>
+            </div>
+
+            {/* Copyright */}
+            <div style={{ textAlign: 'center', paddingTop: '2rem', borderTop: '1px solid rgba(6, 182, 212, 0.1)' }}>
+              <p style={{ color: '#64748b', fontSize: '0.85rem' }}>
+                © 2026 BloShield. Built by Prince Yadav | All rights reserved.
+              </p>
+              <p style={{ color: '#64748b', fontSize: '0.85rem', marginTop: '0.5rem' }}>
+                Made with ❤️ for enterprise-grade financial security
+              </p>
+            </div>
+          </div>
+        </div>
+      </footer>
       </>
     );
   };
