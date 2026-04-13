@@ -9,3 +9,7 @@ pydantic
 python-dotenv
 google-generativeai
 requests
+supabase
+python-jose[cryptography]
+passlib[bcrypt]
+python-multipart

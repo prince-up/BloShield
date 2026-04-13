@@ -11,6 +11,7 @@ from ml_engine import ml_engine, get_risk_level
 from spending_monitor import spending_monitor
 from rbi_alerts import rbi_alerts
 from gemini_engine import GeminiInsightEngine
+from supabase_auth import register_user, login_user, get_user_profile, update_user_profile, logout_user, verify_token, UserSignUp, UserLogin
 
 app = FastAPI(title="BloShield API Gateway")
 
@@ -476,6 +477,44 @@ async def get_blostem_dashboard(user_id: str):
             "user_id": user_id,
             "system_status": "ERROR"
         }
+
+# ============= AUTHENTICATION ENDPOINTS =============
+
+@app.post("/auth/signup")
+async def signup(user_data: UserSignUp):
+    """Register a new user"""
+    result = await register_user(user_data)
+    return result
+
+@app.post("/auth/login")
+async def login(credentials: UserLogin):
+    """Login user and return session token"""
+    result = await login_user(credentials)
+    return result
+
+@app.get("/auth/profile/{user_id}")
+async def get_profile(user_id: str):
+    """Get user profile"""
+    result = await get_user_profile(user_id)
+    return result
+
+@app.put("/auth/profile/{user_id}")
+async def update_profile(user_id: str, updates: dict):
+    """Update user profile"""
+    result = await update_user_profile(user_id, updates)
+    return result
+
+@app.post("/auth/logout/{user_id}")
+async def logout(user_id: str):
+    """Logout user"""
+    result = await logout_user(user_id)
+    return result
+
+@app.post("/auth/verify")
+async def verify(token: str):
+    """Verify JWT token"""
+    result = await verify_token(token)
+    return result
 
 if __name__ == "__main__":
     import uvicorn
