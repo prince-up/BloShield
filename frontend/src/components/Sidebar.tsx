@@ -7,7 +7,8 @@ import {
   Zap, 
   Settings, 
   PieChart,
-  ShieldAlert
+  ShieldAlert,
+  LogOut
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -26,18 +27,25 @@ export default function Sidebar({ activeView, setActiveView }: SidebarProps) {
 
   return (
     <aside className="sidebar">
-      <div style={{ marginBottom: '2.5rem', display: 'flex', alignItems: 'center', gap: '10px' }}>
+      <div style={{ marginBottom: '3rem', display: 'flex', alignItems: 'center', gap: '12px' }}>
         <div style={{ 
-          background: 'var(--primary)', 
-          padding: '8px', 
-          borderRadius: '8px',
-          boxShadow: '0 0 15px var(--primary-glow)'
+          background: 'linear-gradient(135deg, var(--primary), #7c3aed)',
+          padding: '10px', 
+          borderRadius: '10px',
+          boxShadow: '0 0 20px rgba(59, 130, 246, 0.6)',
+          animation: 'pulse-glow 2s ease-in-out infinite',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
         }}>
           <ShieldAlert size={24} color="white" />
         </div>
-        <h1 style={{ fontSize: '1.5rem', fontWeight: 800, letterSpacing: '-0.02em' }}>
-          Blo<span style={{ color: 'var(--primary)' }}>Shield</span>
-        </h1>
+        <div>
+          <h1 style={{ fontSize: '1.5rem', fontWeight: 800, letterSpacing: '-0.02em' }}>
+            Blo<span style={{ background: 'linear-gradient(135deg, var(--primary), #7c3aed)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Shield</span>
+          </h1>
+          <p style={{ fontSize: '0.7rem', color: '#94a3b8', marginTop: '2px', fontWeight: 500 }}>Fraud Detection</p>
+        </div>
       </div>
 
       <nav style={{ flex: 1 }}>
@@ -46,17 +54,29 @@ export default function Sidebar({ activeView, setActiveView }: SidebarProps) {
             key={id}
             className={`nav-item ${activeView === id ? 'active' : ''}`}
             onClick={() => setActiveView(id)}
+            style={{ animation: `slideRight 0.5s ease-out 0.${menuItems.indexOf({ id, label, icon: Icon })}s forwards`, opacity: 0 }}
           >
             <Icon size={20} />
-            <span>{label}</span>
+            <span style={{ fontWeight: 500 }}>{label}</span>
           </div>
         ))}
       </nav>
 
-      <div className="nav-item" style={{ marginTop: 'auto' }}>
-        <Settings size={20} />
-        <span>Settings</span>
+      <div style={{ borderTop: '1px solid rgba(59, 130, 246, 0.1)', paddingTop: '1.5rem', marginTop: 'auto' }}>
+        <div className="nav-item" style={{ 
+          background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.05))',
+          border: '1px solid rgba(239, 68, 68, 0.2)',
+          marginBottom: 0
+        }}>
+          <LogOut size={20} />
+          <span style={{ fontWeight: 500 }}>Logout</span>
+        </div>
+        <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '1rem', textAlign: 'center' }}>
+          v1.0.0 • Build {Math.floor(Math.random() * 9000 + 1000)}
+        </div>
       </div>
     </aside>
+  );
+}
   );
 }
