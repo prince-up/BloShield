@@ -663,8 +663,30 @@ export default function Home() {
   const OverviewView = () => {
     return (
       <>
+      {/* Top Badge */}
+      <section style={{ padding: '3rem 2rem 1rem', background: 'transparent' }}>
+        <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', justifyContent: 'center' }}>
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.75rem',
+            padding: '0.75rem 1.5rem',
+            background: 'rgba(6, 182, 212, 0.1)',
+            border: '1px solid rgba(6, 182, 212, 0.3)',
+            borderRadius: '50px',
+            fontSize: '0.9rem',
+            color: '#06b6d4',
+            fontWeight: 600,
+            animation: 'fadeInDown 0.6s ease-out'
+          }}>
+            <span>⚡</span>
+            <span>Backed by Rainmatter (Zerodha) • Mobikwik • AC Ventures</span>
+          </div>
+        </div>
+      </section>
+
       {/* Hero Section */}
-      <section style={{ flex: 1, display: 'flex', alignItems: 'center', padding: '4rem 2rem' }}>
+      <section style={{ flex: 1, display: 'flex', alignItems: 'center', padding: '3rem 2rem 5rem' }}>
         <div style={{ 
           maxWidth: '1400px', 
           margin: '0 auto',
@@ -675,87 +697,121 @@ export default function Home() {
           alignItems: 'center'
         }}>
           <div style={{ animation: 'fadeInUp 0.8s ease-out' }}>
-            <h1 style={{ fontSize: '4.5rem', fontWeight: 800, lineHeight: 1.1, marginBottom: '2rem', letterSpacing: '-1px' }}>
+            {/* Main Headline */}
+            <h1 style={{ 
+              fontSize: '5.5rem', 
+              fontWeight: 900, 
+              lineHeight: 1.1, 
+              marginBottom: '1.5rem', 
+              letterSpacing: '-2px',
+              color: '#fff'
+            }}>
               Real-Time Fraud
               <br />
-              <span style={{ background: 'linear-gradient(90deg, #0ea5e9 0%, #06b6d4 50%, #ec4899 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', display: 'block' }}>
+              <span style={{ 
+                background: 'linear-gradient(90deg, #06b6d4, #0ea5e9)', 
+                WebkitBackgroundClip: 'text', 
+                WebkitTextFillColor: 'transparent',
+                display: 'inline-block'
+              }}>
                 Detection Engine
               </span>
             </h1>
-            <p style={{ fontSize: '1.15rem', color: '#cbd5e1', marginBottom: '2.5rem', lineHeight: 1.8, maxWidth: '550px', fontWeight: 400, fontFamily: 'Inter, sans-serif' }}>
-              Protect your users with AI-powered anomaly detection, spending limits, and RBI fraud intelligence. Reduce fraud by 99% with millisecond response times.
+
+            {/* Subheading */}
+            <p style={{ 
+              fontSize: '1.25rem', 
+              color: '#cbd5e1', 
+              marginBottom: '3rem', 
+              lineHeight: 1.6,
+              maxWidth: '550px',
+              fontWeight: 400
+            }}>
+              One API. 99.8% accuracy. Live in minutes.
             </p>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '2rem', marginBottom: '3rem' }}>
+
+            {/* Trust Badges */}
+            <div style={{ 
+              display: 'flex', 
+              gap: '2rem', 
+              marginBottom: '3rem',
+              flexWrap: 'wrap',
+              alignItems: 'center'
+            }}>
               {[
-                { label: 'API Requests', value: stats.transactions.toLocaleString(), gradient: 'linear-gradient(135deg, #0ea5e9, #06b6d4)', icon: '⚡' },
-                { label: 'Success Rate', value: `${stats.success}%`, gradient: 'linear-gradient(135deg, #10b981, #059669)', icon: '✅' },
-                { label: 'Threats Blocked', value: stats.threats, gradient: 'linear-gradient(135deg, #ef4444, #dc2626)', icon: '🛡️' },
-              ].map((stat, i) => (
-                <div key={i} style={{
-                  position: 'relative',
-                  borderRadius: '14px',
-                  border: '1px solid rgba(6, 182, 212, 0.2)',
-                  background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(10, 165, 233, 0.05))',
-                  backdropFilter: 'blur(20px)',
-                  padding: '2rem 1.5rem',
-                  overflow: 'hidden',
-                  animation: `fadeInUp 0.6s ease-out ${i * 0.1}s`,
-                  transition: 'all 0.3s ease',
-                  cursor: 'pointer'
-                }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.borderColor = 'rgba(6, 182, 212, 0.4)';
-                  e.currentTarget.style.background = 'linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(10, 165, 233, 0.08))';
-                  e.currentTarget.style.boxShadow = '0 0 30px rgba(6, 182, 212, 0.2)';
-                  e.currentTarget.style.transform = 'translateY(-4px)';
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.borderColor = 'rgba(6, 182, 212, 0.2)';
-                  e.currentTarget.style.background = 'linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(10, 165, 233, 0.05))';
-                  e.currentTarget.style.boxShadow = 'none';
-                  e.currentTarget.style.transform = 'translateY(0)';
+                { icon: '✓', text: 'ISO 27001 Certified' },
+                { icon: '🔐', text: 'Bank-Grade Security' },
+                { icon: '⚙️', text: 'Single Integration' }
+              ].map((badge, i) => (
+                <div key={i} style={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: '0.5rem',
+                  color: '#cbd5e1',
+                  fontSize: '0.95rem',
+                  fontWeight: 500
                 }}>
-                  <div style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    height: '4px',
-                    background: stat.gradient
-                  }} />
-                  <div style={{ fontSize: '2.5rem', marginBottom: '0.75rem' }}>{stat.icon}</div>
-                  <div style={{ fontSize: '0.8rem', color: '#94a3b8', marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '0.05em', fontFamily: 'Inter, sans-serif', fontWeight: 600 }}>{stat.label}</div>
-                  <div style={{ fontSize: '2.2rem', fontWeight: 800, background: stat.gradient, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', letterSpacing: '-1px' }}>
-                    {stat.value}
-                  </div>
+                  <span style={{ color: '#06b6d4', fontSize: '1.2rem' }}>{badge.icon}</span>
+                  {badge.text}
                 </div>
               ))}
             </div>
-            <button style={{
-              padding: '14px 32px',
-              borderRadius: '12px',
-              border: 'none',
-              background: 'linear-gradient(135deg, #0ea5e9, #06b6d4)',
-              color: '#fff',
-              fontSize: '1rem',
-              fontWeight: 800,
-              cursor: 'pointer',
-              transition: 'all 0.3s ease',
-              boxShadow: '0 0 30px rgba(6, 182, 212, 0.3)',
-              letterSpacing: '-0.5px',
-              fontFamily: 'Inter, sans-serif'
-            }}
-            onMouseEnter={e => {
-              e.currentTarget.style.transform = 'translateY(-3px)';
-              e.currentTarget.style.boxShadow = '0 0 40px rgba(6, 182, 212, 0.5)';
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = '0 0 30px rgba(6, 182, 212, 0.3)';
-            }}>
-              Launch Dashboard →
-            </button>
+
+            {/* CTA Buttons */}
+            <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap' }}>
+              <button style={{
+                padding: '14px 32px',
+                borderRadius: '8px',
+                border: 'none',
+                background: 'linear-gradient(135deg, #0ea5e9, #06b6d4)',
+                color: '#fff',
+                fontSize: '1rem',
+                fontWeight: 700,
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                boxShadow: '0 10px 30px rgba(6, 182, 212, 0.3)',
+                letterSpacing: '0px',
+                fontFamily: 'Inter, sans-serif'
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 15px 40px rgba(6, 182, 212, 0.4)';
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 10px 30px rgba(6, 182, 212, 0.3)';
+              }}>
+                Book a Demo
+              </button>
+              <button style={{
+                padding: '14px 32px',
+                borderRadius: '8px',
+                border: '1px solid rgba(6, 182, 212, 0.4)',
+                background: 'transparent',
+                color: '#e2e8f0',
+                fontSize: '1rem',
+                fontWeight: 700,
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                letterSpacing: '0px',
+                fontFamily: 'Inter, sans-serif'
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.borderColor = 'rgba(6, 182, 212, 0.8)';
+                e.currentTarget.style.background = 'rgba(6, 182, 212, 0.1)';
+                e.currentTarget.style.color = '#06b6d4';
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.borderColor = 'rgba(6, 182, 212, 0.4)';
+                e.currentTarget.style.background = 'transparent';
+                e.currentTarget.style.color = '#e2e8f0';
+              }}>
+                See How It Works
+              </button>
+            </div>
           </div>
+
+          {/* Right Side - iPhone */}
           <div style={{ animation: 'fadeInScale 1s ease-out', display: 'flex', justifyContent: 'center', position: 'relative' }}>
             <IPhoneFrame />
           </div>
@@ -804,51 +860,56 @@ export default function Home() {
       </section>
 
       {/* Integrations Section */}
-      <section style={{ padding: '5rem 2rem', background: 'linear-gradient(180deg, rgba(6, 13, 26, 0.5), rgba(6, 13, 26, 0.8))', borderTop: '1px solid rgba(6, 182, 212, 0.1)' }}>
+      <section style={{ padding: '4rem 2rem', background: 'linear-gradient(180deg, rgba(6, 13, 26, 0.5), rgba(6, 13, 26, 0.8))', borderTop: '1px solid rgba(6, 182, 212, 0.1)' }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-          <h2 style={{ fontSize: '3rem', fontWeight: 800, marginBottom: '1rem', letterSpacing: '-1px', textAlign: 'center', background: 'linear-gradient(90deg, #0ea5e9, #06b6d4, #a78bfa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-            Works With Everything
-          </h2>
-          <p style={{ fontSize: '1.1rem', color: '#94a3b8', marginBottom: '4rem', textAlign: 'center', maxWidth: '600px', margin: '0 auto 4rem' }}>
-            Seamlessly integrate with major payment platforms and financial services
-          </p>
+          <h3 style={{ fontSize: '0.85rem', color: '#64748b', marginBottom: '2rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 700, textAlign: 'center' }}>
+            ISSUER & DISTRIBUTION PARTNERS
+          </h3>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: '2rem', marginBottom: '4rem', padding: '3rem', background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.08), rgba(10, 165, 233, 0.05))', borderRadius: '16px', border: '1px solid rgba(6, 182, 212, 0.2)' }}>
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', 
+            gap: '2rem', 
+            padding: '2rem',
+            background: 'rgba(255, 255, 255, 0.03)',
+            borderRadius: '12px',
+            border: '1px solid rgba(255, 255, 255, 0.05)',
+            alignItems: 'center'
+          }}>
             {[
-              { name: 'Google Pay', emoji: '🔵', color: '#4285F4' },
-              { name: 'PayPal', emoji: '💳', color: '#0070BA' },
-              { name: 'Mobikwik', emoji: '📱', color: '#FF6B6B' },
-              { name: 'PhonePe', emoji: '📲', color: '#5B21B6' },
-              { name: 'Razorpay', emoji: '💰', color: '#02042B' },
-              { name: 'Amazon Pay', emoji: '🛒', color: '#FF9900' },
-            ].map((integration, i) => (
+              { name: 'Google Pay', emoji: '🔵' },
+              { name: 'PayPal', emoji: '💳' },
+              { name: 'Mobikwik', emoji: '📱' },
+              { name: 'PhonePe', emoji: '📲' },
+              { name: 'Razorpay', emoji: '💰' },
+              { name: 'Amazon Pay', emoji: '🛒' },
+            ].map((partner, i) => (
               <div key={i} style={{
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                padding: '2rem 1rem',
-                background: 'rgba(6, 13, 26, 0.5)',
-                border: `1px solid rgba(${integration.color === '#4285F4' ? '66, 133, 244' : '255, 107, 107'}, 0.2)`,
-                borderRadius: '12px',
+                padding: '1.5rem 1rem',
+                background: 'rgba(255, 255, 255, 0.05)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                borderRadius: '10px',
                 cursor: 'pointer',
                 transition: 'all 0.3s ease',
-                animation: 'fadeInUp 0.6s ease-out'
+                fontSize: '3rem',
+                textAlign: 'center'
               }}
               onMouseEnter={e => {
-                e.currentTarget.style.background = 'rgba(6, 13, 26, 0.7)';
-                e.currentTarget.style.borderColor = `rgba(${integration.color === '#4285F4' ? '66, 133, 244' : '255, 107, 107'}, 0.5)`;
+                e.currentTarget.style.background = 'rgba(6, 182, 212, 0.15)';
+                e.currentTarget.style.borderColor = 'rgba(6, 182, 212, 0.5)';
                 e.currentTarget.style.transform = 'translateY(-4px)';
-                e.currentTarget.style.boxShadow = `0 0 25px ${integration.color}40`;
               }}
               onMouseLeave={e => {
-                e.currentTarget.style.background = 'rgba(6, 13, 26, 0.5)';
-                e.currentTarget.style.borderColor = `rgba(${integration.color === '#4285F4' ? '66, 133, 244' : '255, 107, 107'}, 0.2)`;
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
                 e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = 'none';
               }}>
-                <div style={{ fontSize: '3rem', marginBottom: '0.5rem' }}>{integration.emoji}</div>
-                <div style={{ fontSize: '0.9rem', fontWeight: 600, color: '#e2e8f0', textAlign: 'center' }}>{integration.name}</div>
+                <div>{partner.emoji}</div>
+                <div style={{ fontSize: '0.8rem', color: '#cbd5e1', marginTop: '0.5rem', fontWeight: 600 }}>{partner.name}</div>
               </div>
             ))}
           </div>
