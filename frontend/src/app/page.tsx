@@ -176,34 +176,45 @@ export default function Dashboard() {
               <span style={{ fontSize: '0.75rem', color: 'var(--primary)', cursor: 'pointer', fontWeight: 600 }}>View all <ArrowRight size={12} style={{ display: 'inline' }} /></span>
             </div>
             
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', flex: 1 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', flex: 1 }}>
               {anomalies.length > 0 ? anomalies.slice(0, 4).map((anomaly: any, i) => (
                 <div key={i} style={{ 
-                  padding: '14px', 
+                  padding: '13px', 
                   borderRadius: '12px', 
-                  background: 'rgba(239, 68, 68, 0.08)', 
+                  background: 'rgba(239, 68, 68, 0.06)', 
                   border: '1px solid rgba(239, 68, 68, 0.2)',
                   display: 'flex',
-                  gap: '12px',
+                  gap: '11px',
                   alignItems: 'flex-start',
-                  transition: 'all 0.3s ease',
+                  transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
                   cursor: 'pointer',
-                  animation: 'slideRight 0.6s ease-out'
+                  animation: `slideRight 0.6s ease-out ${i * 0.1}s`,
+                  backdropFilter: 'blur(8px)',
+                  position: 'relative',
+                  overflow: 'hidden'
                 }}>
-                  <div style={{ padding: '6px', background: 'rgba(239, 68, 68, 0.2)', borderRadius: '8px', flexShrink: 0 }}>
-                    <AlertCircle size={16} color="var(--danger)" />
+                  <div style={{ 
+                    position: 'absolute', 
+                    left: 0, 
+                    top: 0, 
+                    width: '3px', 
+                    height: '100%', 
+                    background: 'rgba(239, 68, 68, 0.6)' 
+                  }}></div>
+                  <div style={{ padding: '6px', background: 'rgba(239, 68, 68, 0.15)', borderRadius: '8px', flexShrink: 0 }}>
+                    <AlertCircle size={15} color="var(--danger)" />
                   </div>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontSize: '0.85rem', fontWeight: 600, marginBottom: '2px' }}>High Risk Transaction</div>
-                    <div style={{ fontSize: '0.75rem', color: '#94a3b8', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>${anomaly.amount?.toFixed(2) || 'N/A'} - {anomaly.user_id}</div>
+                  <div style={{ flex: 1, minWidth: 0, paddingLeft: '2px' }}>
+                    <div style={{ fontSize: '0.85rem', fontWeight: 700, marginBottom: '3px', color: '#fca5a5' }}>High Risk Transaction</div>
+                    <div style={{ fontSize: '0.73rem', color: '#a1a1a6', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>${anomaly.amount?.toFixed(2) || 'N/A'} - {anomaly.user_id}</div>
                   </div>
-                  <div style={{ padding: '4px 8px', background: 'rgba(239, 68, 68, 0.15)', borderRadius: '6px', fontSize: '0.7rem', fontWeight: 700, color: 'var(--danger)', flexShrink: 0 }}>
+                  <div style={{ padding: '5px 9px', background: 'rgba(239, 68, 68, 0.2)', borderRadius: '6px', fontSize: '0.7rem', fontWeight: 800, color: '#ff6b6b', flexShrink: 0 }}>
                     {(anomaly.risk_score * 100).toFixed(0)}%
                   </div>
                 </div>
               )) : (
                 <div style={{ textAlign: 'center', color: '#94a3b8', padding: '2rem 0', fontSize: '0.9rem' }}>
-                  <CheckCircle size={32} style={{ margin: '0 auto 10px', opacity: 0.5 }} />
+                  <CheckCircle size={32} style={{ margin: '0 auto 10px', opacity: 0.4 }} />
                   No active threats
                 </div>
               )}
@@ -224,19 +235,32 @@ export default function Dashboard() {
               {insights.length > 0 ? insights.map((insight: any, i) => (
                 <div key={i} style={{ 
                   padding: '14px', 
-                  borderRadius: '12px',
-                  border: insight.severity === 'HIGH' ? '1px solid rgba(239, 68, 68, 0.4)' : insight.severity === 'MEDIUM' ? '1px solid rgba(245, 158, 11, 0.4)' : '1px solid rgba(16, 185, 129, 0.4)',
-                  background: insight.severity === 'HIGH' ? 'rgba(239, 68, 68, 0.08)' : insight.severity === 'MEDIUM' ? 'rgba(245, 158, 11, 0.08)' : 'rgba(16, 185, 129, 0.08)',
+                  borderRadius: '13px',
+                  border: insight.severity === 'HIGH' ? '1px solid rgba(239, 68, 68, 0.3)' : insight.severity === 'MEDIUM' ? '1px solid rgba(245, 158, 11, 0.3)' : '1px solid rgba(16, 185, 129, 0.3)',
+                  background: insight.severity === 'HIGH' ? 'rgba(239, 68, 68, 0.06)' : insight.severity === 'MEDIUM' ? 'rgba(245, 158, 11, 0.06)' : 'rgba(16, 185, 129, 0.06)',
                   display: 'flex',
                   gap: '12px',
-                  animation: 'fadeInUp 0.6s ease-out'
+                  animation: `fadeInScale 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) ${i * 0.1}s`,
+                  backdropFilter: 'blur(8px)',
+                  transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                  cursor: 'pointer',
+                  position: 'relative',
+                  overflow: 'hidden'
                 }}>
-                  <div style={{ padding: '6px', background: insight.severity === 'HIGH' ? 'rgba(239, 68, 68, 0.2)' : insight.severity === 'MEDIUM' ? 'rgba(245, 158, 11, 0.2)' : 'rgba(16, 185, 129, 0.2)', borderRadius: '8px', flexShrink: 0 }}>
-                    <AlertTriangle size={16} color={insight.severity === 'HIGH' ? 'var(--danger)' : insight.severity === 'MEDIUM' ? 'var(--warning)' : 'var(--success)'} />
+                  <div style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    height: '1px',
+                    background: insight.severity === 'HIGH' ? 'rgba(239, 68, 68, 0.2)' : insight.severity === 'MEDIUM' ? 'rgba(245, 158, 11, 0.2)' : 'rgba(16, 185, 129, 0.2)'
+                  }}></div>
+                  <div style={{ padding: '7px', background: insight.severity === 'HIGH' ? 'rgba(239, 68, 68, 0.15)' : insight.severity === 'MEDIUM' ? 'rgba(245, 158, 11, 0.15)' : 'rgba(16, 185, 129, 0.15)', borderRadius: '8px', flexShrink: 0 }}>
+                    <AlertTriangle size={16} color={insight.severity === 'HIGH' ? '#ff6b6b' : insight.severity === 'MEDIUM' ? '#fbbf24' : '#34d399'} />
                   </div>
-                  <div>
-                    <div style={{ fontSize: '0.85rem', fontWeight: 600, marginBottom: '2px' }}>{insight.type}</div>
-                    <div style={{ fontSize: '0.8rem', color: '#cbd5e1', lineHeight: '1.4' }}>{insight.message}</div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: '0.85rem', fontWeight: 700, marginBottom: '3px', color: insight.severity === 'HIGH' ? '#fca5a5' : insight.severity === 'MEDIUM' ? '#fed7aa' : '#86efac' }}>{insight.type}</div>
+                    <div style={{ fontSize: '0.78rem', color: '#cbd5e1', lineHeight: '1.4' }}>{insight.message}</div>
                   </div>
                 </div>
               )) : (
