@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
+import { ArrowLeft } from 'lucide-react';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -26,19 +27,46 @@ export default function Login() {
     }
 
     if (data) {
-      router.push('/dashboard');
+      router.push('/profile');
     }
   };
 
   return (
     <div style={{
       display: 'flex',
+      flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
       minHeight: '100vh',
       background: 'linear-gradient(135deg, #060d1a 0%, #0f1729 100%)',
-      padding: '2rem'
+      padding: '2rem',
+      position: 'relative'
     }}>
+      <button onClick={() => router.push('/')} style={{
+        position: 'absolute',
+        top: '2rem',
+        left: '2rem',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '0.5rem',
+        background: 'transparent',
+        border: 'none',
+        color: '#0ea5e9',
+        cursor: 'pointer',
+        fontSize: '0.95rem',
+        fontWeight: 600,
+        transition: 'all 0.3s ease'
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.color = '#06b6d4';
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.color = '#0ea5e9';
+      }}>
+        <ArrowLeft size={20} />
+        Back Home
+      </button>
+      
       <div style={{
         background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(10, 165, 233, 0.05))',
         border: '1px solid rgba(6, 182, 212, 0.2)',
@@ -46,7 +74,8 @@ export default function Login() {
         padding: '3rem',
         maxWidth: '450px',
         width: '100%',
-        backdropFilter: 'blur(20px)'
+        backdropFilter: 'blur(20px)',
+        animation: 'fadeInUp 0.6s ease-out'
       }}>
         <h1 style={{
           fontSize: '2rem',
@@ -192,7 +221,7 @@ export default function Login() {
           </button>
 
           <div style={{ textAlign: 'center', color: '#94a3b8', fontSize: '0.9rem' }}>
-            Don't have an account? <a href="/signup" style={{ color: '#0ea5e9', textDecoration: 'none', fontWeight: 600 }}>Sign up</a>
+            Don't have an account? <a href="/signup" style={{ color: '#0ea5e9', textDecoration: 'none', fontWeight: 600, transition: 'all 0.3s ease' }} onMouseEnter={(e) => e.currentTarget.style.textDecoration = 'underline'} onMouseLeave={(e) => e.currentTarget.style.textDecoration = 'none'}>Sign up</a>
           </div>
         </form>
       </div>

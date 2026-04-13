@@ -3,7 +3,228 @@
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import { useWebSocket } from '@/hooks/useWebSocket';
-import { Shield, AlertTriangle, TrendingUp, Lock, Zap, ArrowRight, BarChart3, CheckCircle, Gauge, Cpu } from 'lucide-react';
+import { Shield, AlertTriangle, TrendingUp, Lock, Zap, ArrowRight, BarChart3, CheckCircle, Gauge, Cpu, ArrowLeft } from 'lucide-react';
+
+// Mobile Carousel Component with Auto-Changing Screens
+const MobileCarousel = () => {
+  const [currentScreen, setCurrentScreen] = useState(0);
+
+  const screens = [
+    {
+      title: 'Real-Time Detection',
+      subtitle: 'Instant fraud alerts',
+      icon: '⚡',
+      color: '#06b6d4',
+      features: ['AI-Powered', 'Millisecond response']
+    },
+    {
+      title: 'Built-in Compliance',
+      subtitle: 'RBI compliant',
+      icon: '✓',
+      color: '#10b981',
+      features: ['ISO 27001', 'Bank-Grade']
+    },
+    {
+      title: 'White-Label Ready',
+      subtitle: 'Deploy in days',
+      icon: '🎨',
+      color: '#a855f7',
+      features: ['Customizable UI', 'Fast integration']
+    },
+    {
+      title: '10+ Banks Connected',
+      subtitle: 'Seamless integration',
+      icon: '🏦',
+      color: '#3b82f6',
+      features: ['Multi-bank', 'Single API']
+    }
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentScreen((prev) => (prev + 1) % screens.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const screen = screens[currentScreen];
+
+  return (
+    <div style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '700px', perspective: '1000px' }}>
+      {/* Left Arrows - Features pointing from phone */}
+      <div style={{ position: 'absolute', left: '-200px', top: '50%', transform: 'translateY(-50%)', display: 'flex', flexDirection: 'column', gap: '3rem', zIndex: 5 }}>
+        {[
+          { label: 'Real-Time Detection', icon: '⚡', color: '#06b6d4' },
+          { label: 'Single SDK', icon: '🔧', color: '#0ea5e9' },
+          { label: 'Built-in Compliance', icon: '✓', color: '#10b981' },
+        ].map((feature, i) => (
+          <div key={i} style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: '1.5rem', animation: 'fadeInLeft 0.6s ease-out' }}>
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-end',
+              gap: '0.25rem'
+            }}>
+              <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#e2e8f0', whiteSpace: 'nowrap' }}>{feature.label}</div>
+              <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>Auto-detect • Instant</div>
+            </div>
+            {/* Arrow pointing to phone */}
+            <svg width="40" height="30" viewBox="0 0 40 30" style={{ color: feature.color }}>
+              <path d="M 0 15 L 30 15 M 25 10 L 30 15 L 25 20" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+        ))}
+      </div>
+
+      {/* Glow Effect */}
+      <div style={{
+        position: 'absolute',
+        width: '380px',
+        height: '750px',
+        background: `radial-gradient(circle, rgba(${screen.color === '#06b6d4' ? '6, 182, 212' : screen.color === '#10b981' ? '16, 185, 129' : '168, 85, 247'}, 0.25), transparent)`,
+        borderRadius: '60px',
+        filter: 'blur(40px)',
+        pointerEvents: 'none',
+        transition: 'all 1s ease'
+      }} />
+
+      {/* iPhone Frame */}
+      <div style={{
+        position: 'relative',
+        width: '320px',
+        height: '640px',
+        background: '#000',
+        borderRadius: '50px',
+        padding: '12px',
+        boxShadow: `0 30px 80px ${screen.color}40, 0 0 0 1px ${screen.color}20`,
+        border: '8px solid #1a1a1a',
+        transition: 'all 0.6s ease'
+      }}>
+        {/* Notch */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '140px',
+          height: '28px',
+          background: '#000',
+          borderBottomLeftRadius: '35px',
+          borderBottomRightRadius: '35px',
+          zIndex: 10,
+          border: '8px solid #1a1a1a',
+          borderTop: 'none'
+        }} />
+
+        {/* Screen Content */}
+        <div style={{
+          position: 'relative',
+          width: '100%',
+          height: '100%',
+          background: 'linear-gradient(135deg, #060d1a 0%, #0f1729 100%)',
+          borderRadius: '45px',
+          overflow: 'hidden',
+          display: 'flex',
+          flexDirection: 'column',
+          paddingTop: '8px',
+          justifyContent: 'center',
+          alignItems: 'center',
+          textAlign: 'center',
+          padding: '2rem 1.5rem'
+        }}>
+          <div style={{ fontSize: '4rem', marginBottom: '1rem', animation: 'fadeIn 0.6s ease-out' }}>{screen.icon}</div>
+          <h2 style={{ 
+            fontSize: '1.5rem', 
+            fontWeight: 900, 
+            color: '#fff',
+            marginBottom: '0.5rem',
+            animation: 'fadeIn 0.6s ease-out 0.1s backwards'
+          }}>
+            {screen.title}
+          </h2>
+          <p style={{ 
+            fontSize: '0.9rem', 
+            color: '#94a3b8',
+            marginBottom: '2rem',
+            animation: 'fadeIn 0.6s ease-out 0.2s backwards'
+          }}>
+            {screen.subtitle}
+          </p>
+
+          <div style={{ 
+            display: 'flex', 
+            gap: '1.5rem',
+            flexDirection: 'column',
+            width: '100%',
+            animation: 'fadeIn 0.6s ease-out 0.3s backwards'
+          }}>
+            {screen.features.map((feature, i) => (
+              <div key={i} style={{
+                padding: '1rem',
+                background: `${screen.color}20`,
+                border: `1px solid ${screen.color}40`,
+                borderRadius: '10px',
+                color: '#e2e8f0',
+                fontSize: '0.85rem',
+                fontWeight: 600
+              }}>
+                ✓ {feature}
+              </div>
+            ))}
+          </div>
+
+          {/* Progress Dots */}
+          <div style={{ 
+            display: 'flex', 
+            gap: '0.5rem',
+            marginTop: '2rem',
+            justifyContent: 'center'
+          }}>
+            {screens.map((_, i) => (
+              <div key={i} style={{
+                width: i === currentScreen ? '24px' : '8px',
+                height: '8px',
+                borderRadius: '4px',
+                background: i === currentScreen ? screen.color : 'rgba(255, 255, 255, 0.2)',
+                transition: 'all 0.4s ease',
+                cursor: 'pointer'
+              }}
+              onClick={() => setCurrentScreen(i)}
+               />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Right Info Labels */}
+      <div style={{ position: 'absolute', right: '-220px', top: '50%', transform: 'translateY(-50%)', display: 'flex', flexDirection: 'column', gap: '2rem', zIndex: 5 }}>
+        {[
+          { label: '10+ Banks Connected', value: '100%', icon: '🏦' },
+          { label: 'White-Label Ready', value: 'Ready', icon: '🎨' },
+          { label: 'Go Live in 7 Days', value: 'Fast', icon: '⚡' }
+        ].map((info, i) => (
+          <div key={i} style={{ 
+            display: 'flex',
+            alignItems: 'center',
+            gap: '1.5rem',
+            animation: 'fadeInRight 0.6s ease-out',
+            paddingLeft: '1.5rem',
+            borderLeft: '2px solid rgba(6, 182, 212, 0.3)'
+          }}>
+            {/* Arrow from phone */}
+            <svg width="40" height="30" viewBox="0 0 40 30" style={{ color: '#06b6d4' }}>
+              <path d="M 40 15 L 10 15 M 15 10 L 10 15 L 15 20" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            <div>
+              <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#e2e8f0' }}>{info.label}</div>
+              <div style={{ fontSize: '1.2rem', fontWeight: 900, background: 'linear-gradient(90deg, #0ea5e9, #06b6d4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', marginTop: '0.25rem' }}>{info.value}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 const IPhoneFrame = () => {
   const [alertIndex, setAlertIndex] = useState(0);
@@ -679,8 +900,8 @@ export default function Home() {
             fontWeight: 600,
             animation: 'fadeInDown 0.6s ease-out'
           }}>
-            <span>⚡</span>
-            <span>Backed by Rainmatter (Zerodha) • Mobikwik • AC Ventures</span>
+            <span>✨</span>
+            <span>Trusted by leading fintech & banks across India</span>
           </div>
         </div>
       </section>
@@ -722,12 +943,12 @@ export default function Home() {
             <p style={{ 
               fontSize: '1.25rem', 
               color: '#cbd5e1', 
-              marginBottom: '3rem', 
-              lineHeight: 1.6,
+              marginBottom: '2rem', 
+              lineHeight: 1.8,
               maxWidth: '550px',
               fontWeight: 400
             }}>
-              One API. 99.8% accuracy. Live in minutes.
+              One powerful API delivers 99.8% fraud detection accuracy. Deploy securely in minutes with our enterprise-grade infrastructure.
             </p>
 
             {/* Trust Badges */}
@@ -811,9 +1032,9 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Right Side - iPhone */}
-          <div style={{ animation: 'fadeInScale 1s ease-out', display: 'flex', justifyContent: 'center', position: 'relative' }}>
-            <IPhoneFrame />
+          {/* Right Side - iPhone Carousel */}
+          <div style={{ animation: 'fadeInScale 1s ease-out', display: 'flex', justifyContent: 'center', position: 'relative', paddingRight: '200px', paddingLeft: '200px' }}>
+            <MobileCarousel />
           </div>
         </div>
       </section>
@@ -1003,7 +1224,7 @@ export default function Home() {
                   <strong>Name:</strong> Prince Yadav
                 </p>
                 <p style={{ color: '#cbd5e1', fontSize: '0.9rem', marginBottom: '0.25rem' }}>
-                  <strong>Email:</strong> <a href="mailto:prince@blosshield.com" style={{ color: '#0ea5e9', textDecoration: 'none' }}>prince@blosshield.com</a>
+                  <strong>Email:</strong> <a href="mailto:princeyadav76001@gmail.com" style={{ color: '#0ea5e9', textDecoration: 'none' }}>princeyadav76001@gmail.com</a>
                 </p>
                 <p style={{ color: '#cbd5e1', fontSize: '0.9rem', marginBottom: '0.25rem' }}>
                   <strong>Education:</strong> B.Tech 3rd Year Student
@@ -1035,19 +1256,13 @@ export default function Home() {
 
               <div>
                 <h4 style={{ fontSize: '0.95rem', fontWeight: 700, marginBottom: '0.75rem', color: '#0ea5e9' }}>
-                  📊 Stats
+                  � About BloShield
                 </h4>
                 <p style={{ color: '#cbd5e1', fontSize: '0.9rem', marginBottom: '0.25rem' }}>
-                  ✅ 8 UI Components Created
+                  Enterprise fraud detection platform protecting millions of transactions
                 </p>
-                <p style={{ color: '#cbd5e1', fontSize: '0.9rem', marginBottom: '0.25rem' }}>
-                  ✅ Real-Time WebSocket Integration
-                </p>
-                <p style={{ color: '#cbd5e1', fontSize: '0.9rem', marginBottom: '0.25rem' }}>
-                  ✅ Supabase Authentication
-                </p>
-                <p style={{ color: '#cbd5e1', fontSize: '0.9rem' }}>
-                  ✅ AI-Powered Fraud Detection
+                <p style={{ color: '#64748b', fontSize: '0.85rem', marginTop: '0.75rem' }}>
+                  BloShield uses advanced AI/ML to detect fraudulent patterns in real-time, helping fintech companies and banks reduce fraud by 99%.
                 </p>
               </div>
             </div>
