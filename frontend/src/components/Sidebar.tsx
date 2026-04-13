@@ -49,12 +49,12 @@ export default function Sidebar({ activeView, setActiveView }: SidebarProps) {
       </div>
 
       <nav style={{ flex: 1 }}>
-        {menuItems.map(({ id, label, icon: Icon }) => (
+        {menuItems.map(({ id, label, icon: Icon }, idx) => (
           <div 
             key={id}
             className={`nav-item ${activeView === id ? 'active' : ''}`}
             onClick={() => setActiveView(id)}
-            style={{ animation: `slideRight 0.5s ease-out 0.${menuItems.indexOf({ id, label, icon: Icon })}s forwards`, opacity: 0 }}
+            style={{ animation: `slideRight 0.5s ease-out ${0.1 * idx}s forwards`, opacity: 1 }}
           >
             <Icon size={20} />
             <span style={{ fontWeight: 500 }}>{label}</span>
@@ -76,7 +76,5 @@ export default function Sidebar({ activeView, setActiveView }: SidebarProps) {
         </div>
       </div>
     </aside>
-  );
-}
   );
 }
