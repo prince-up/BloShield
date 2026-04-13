@@ -60,7 +60,11 @@ async def get_db():
 async def log_transaction(data):
     await db.api_logs.insert_one(data)
 
-async def get_recent_logs(limit=50):
+async def get_recent_logs(limit=50, user_id=None):
+    """Get recent logs, optionally filtered by user_id"""
+    if user_id:
+        filtered = [doc for doc in db.api_logs.data if doc.get("user_id") == user_id]
+        return sorted(filtered, key=lambda x: x.get("timestamp", ""), reverse=True)[:limit]
     return await db.api_logs.limit(limit).to_list()
 
 async def save_anomaly(anomaly_data):

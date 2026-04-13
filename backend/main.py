@@ -6,6 +6,9 @@ import random
 from models import SendMoneyRequest, PayBillRequest, TransactionLog, AnomalyResult
 from database import log_transaction, get_recent_logs, save_anomaly, db
 from ml_engine import ml_engine, get_risk_level
+from spending_monitor import spending_monitor
+from rbi_alerts import rbi_alerts
+from gemini_engine import GeminiInsightEngine
 
 app = FastAPI(title="BloShield API Gateway")
 
@@ -70,6 +73,16 @@ async def send_money(req: SendMoneyRequest):
     )
     
     await log_transaction(log_data.dict())
+    
+    # Track spending for daily limit monitoring
+    spending_monitor.add_transaction(req.user_id, req.amount)
+    
+    # Check for RBI fraud alert matches
+    rbi_match = rbi_alerts.check_transaction_against_alerts(
+        req.description if hasattr(req, 'description') else "send_money",
+        req.amount
+    )
+
     
     if is_anomaly:
         await save_anomaly({
@@ -203,6 +216,172 @@ async def get_insights():
     })
     
     return insights
+
+# ============= BLOSTEM SENTINEL: ENHANCED FEATURES =============
+
+# Daily Spending Limit Endpoints
+@app.post("/user/spending-limit")
+async def set_spending_limit(user_id: str, limit: float):
+    """Set daily spending limit for a user"""
+    result = spending_monitor.set_daily_limit(user_id, limit)
+    return {
+        "status": "success",
+        "message": f"Daily spending limit set to ${limit} for {user_id}",
+        "data": result
+    }
+
+@app.get("/user/spending-limit/{user_id}")
+async def get_spending_limit(user_id: str):
+    """Get user's daily spending limit"""
+    limit = spending_monitor.get_daily_limit(user_id)
+    return {
+        "user_id": user_id,
+        "daily_spending_limit": limit
+    }
+
+@app.get("/user/daily-spending/{user_id}")
+async def get_daily_spending(user_id: str):
+    """Get today's spending status"""
+    spending = spending_monitor.check_limit_exceeded(user_id)
+    daily_details = spending_monitor.get_daily_spending(user_id)
+    
+    return {
+        "user_id": user_id,
+        "daily_limit": daily_details["daily_limit"],
+        "total_spent": daily_details["total_spent"],
+        "remaining": daily_details["remaining_limit"],
+        "percent_used": daily_details["percent_used"],
+        "limit_exceeded": spending["limit_exceeded"],
+        "message": spending["message"],
+        "transaction_count": daily_details["transaction_count"]
+    }
+
+@app.get("/user/spending-summary/{user_id}")
+async def get_spending_summary(user_id: str, days: int = 7):
+    """Get spending summary for last N days"""
+    summary = spending_monitor.get_spending_summary(user_id, days)
+    return summary
+
+# RBI Fraud Alerts Endpoints
+@app.get("/rbi/active-alerts")
+async def get_rbi_alerts():
+    """Get all active RBI fraud alerts"""
+    alerts = rbi_alerts.get_active_alerts()
+    return {
+        "total_active_alerts": len(alerts),
+        "alerts": alerts
+    }
+
+@app.get("/rbi/alert/{alert_id}")
+async def get_rbi_alert(alert_id: str):
+    """Get specific RBI alert by ID"""
+    alert = rbi_alerts.get_alert_by_id(alert_id)
+    if not alert:
+        raise HTTPException(status_code=404, detail="Alert not found")
+    return alert
+
+@app.post("/rbi/check-transaction")
+async def check_transaction_against_rbi(description: str = "", amount: float = 0):
+    """Check if a transaction matches any RBI fraud alert"""
+    match = rbi_alerts.check_transaction_against_alerts(description, amount)
+    
+    return {
+        "matched": match is not None,
+        "alert": match if match else None
+    }
+
+# AI Insights Endpoints
+gemini_engine = GeminiInsightEngine()
+
+@app.get("/ai/insights/{user_id}")
+async def get_ai_insights(user_id: str):
+    """Generate AI insights for a user based on transaction history"""
+    try:
+        # Get recent transactions
+        recent_logs = await get_recent_logs(50, user_id)
+        if not recent_logs:
+            recent_logs = []
+        
+        # Get user profile
+        user_profile = {
+            "user_id": user_id,
+            "daily_spending_limit": spending_monitor.get_daily_limit(user_id)
+        }
+        
+        # Generate insights
+        insights = await gemini_engine.generate_insights(recent_logs, user_profile)
+        
+        return {
+            "user_id": user_id,
+            "insights_generated_at": datetime.utcnow().isoformat(),
+            "insights": insights,
+            "transactions_analyzed": len(recent_logs)
+        }
+    except Exception as e:
+        return {
+            "user_id": user_id,
+            "error": str(e),
+            "insights": []
+        }
+
+# Enhanced Dashboard Endpoint
+@app.get("/dashboard/blostem/{user_id}")
+async def get_blostem_dashboard(user_id: str):
+    """Get comprehensive Blostem Sentinel dashboard data"""
+    try:
+        # Get stats
+        total_requests = await db.api_logs.count_documents({"user_id": user_id})
+        success_count = await db.api_logs.count_documents({"user_id": user_id, "status": "success"})
+        anomaly_count = await db.api_logs.count_documents({"user_id": user_id, "is_anomaly": True})
+        
+        # Get spending info
+        daily_spending = spending_monitor.get_daily_spending(user_id)
+        spending_summary = spending_monitor.get_spending_summary(user_id, 7)
+        
+        # Get RBI alerts
+        rbi_matches = rbi_alerts.get_active_alerts()
+        
+        # Get insights
+        recent_logs = await get_recent_logs(50, user_id)
+        user_profile = {"user_id": user_id, "daily_spending_limit": spending_monitor.get_daily_limit(user_id)}
+        insights = await gemini_engine.generate_insights(recent_logs, user_profile)
+        
+        return {
+            "user_id": user_id,
+            "timestamp": datetime.utcnow().isoformat(),
+            "transaction_stats": {
+                "total_transactions": total_requests,
+                "success_rate": (success_count / total_requests * 100) if total_requests > 0 else 0,
+                "anomalies_detected": anomaly_count
+            },
+            "spending_status": {
+                "daily_spent": daily_spending["total_spent"],
+                "daily_limit": daily_spending["daily_limit"],
+                "percent_used": daily_spending["percent_used"],
+                "limit_exceeded": daily_spending["limit_exceeded"],
+                "remaining": daily_spending["remaining_limit"]
+            },
+            "weekly_summary": {
+                "total_spent": spending_summary["total_spent_period"],
+                "average_daily": spending_summary["avg_daily_spend"],
+                "days_exceeded": spending_summary["days_exceeded_limit"]
+            },
+            "rbi_fraud_alerts": {
+                "active_alerts_count": len(rbi_matches),
+                "alerts": rbi_matches[:5]  # Top 5 alerts
+            },
+            "ai_insights": {
+                "total_insights": len(insights),
+                "insights": insights[:3]  # Top 3 insights
+            },
+            "system_status": "LIVE"
+        }
+    except Exception as e:
+        return {
+            "error": str(e),
+            "user_id": user_id,
+            "system_status": "ERROR"
+        }
 
 if __name__ == "__main__":
     import uvicorn
