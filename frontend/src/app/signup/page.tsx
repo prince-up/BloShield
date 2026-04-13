@@ -59,8 +59,22 @@ export default function SignUp() {
       minHeight: '100vh',
       background: 'linear-gradient(135deg, #060d1a 0%, #0f1729 100%)',
       padding: '2rem',
-      position: 'relative'
+      position: 'relative',
+      overflow: 'hidden'
     }}>
+      {/* Glow Background */}
+      <div style={{
+        position: 'absolute',
+        top: '-50%',
+        left: '-10%',
+        width: '500px',
+        height: '500px',
+        background: 'radial-gradient(circle, rgba(6, 182, 212, 0.1), transparent)',
+        borderRadius: '50%',
+        filter: 'blur(80px)',
+        pointerEvents: 'none'
+      }} />
+
       <button onClick={() => router.push('/')} style={{
         position: 'absolute',
         top: '2rem',
@@ -74,46 +88,53 @@ export default function SignUp() {
         cursor: 'pointer',
         fontSize: '0.95rem',
         fontWeight: 600,
-        transition: 'all 0.3s ease'
+        transition: 'all 0.3s ease',
+        zIndex: 10
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.color = '#06b6d4';
+        e.currentTarget.style.transform = 'translateX(-4px)';
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.color = '#0ea5e9';
+        e.currentTarget.style.transform = 'translateX(0)';
       }}>
         <ArrowLeft size={20} />
         Back Home
       </button>
 
       <div style={{
-        background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(10, 165, 233, 0.05))',
+        background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.08), rgba(10, 165, 233, 0.04))',
         border: '1px solid rgba(6, 182, 212, 0.2)',
-        borderRadius: '16px',
-        padding: '3rem',
+        borderRadius: '20px',
+        padding: '3.5rem',
         maxWidth: '450px',
         width: '100%',
         backdropFilter: 'blur(20px)',
-        animation: 'fadeInUp 0.6s ease-out'
+        animation: 'fadeInUp 0.6s ease-out',
+        position: 'relative',
+        zIndex: 5,
+        boxShadow: '0 25px 50px rgba(0, 0, 0, 0.3), 0 0 1px rgba(6, 182, 212, 0.1)'
       }}>
-        <h1 style={{
-          fontSize: '2rem',
-          fontWeight: 800,
-          marginBottom: '0.5rem',
-          background: 'linear-gradient(90deg, #0ea5e9, #06b6d4)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          letterSpacing: '-1px'
-        }}>
-          Create Account
-        </h1>
-        <p style={{
-          color: '#94a3b8',
-          marginBottom: '2rem',
-          fontSize: '0.95rem'
-        }}>
-          Secure your transactions with AI-powered fraud detection
-        </p>
+        <div style={{ marginBottom: '2rem', textAlign: 'center' }}>
+          <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>✨</div>
+          <h1 style={{
+            fontSize: '2.2rem',
+            fontWeight: 900,
+            marginBottom: '0.75rem',
+            color: '#fff',
+            letterSpacing: '-1px'
+          }}>
+            Create Account
+          </h1>
+          <p style={{
+            color: '#94a3b8',
+            fontSize: '0.95rem',
+            lineHeight: '1.6'
+          }}>
+            Join thousands of companies protecting their users from fraud
+          </p>
+        </div>
 
         <form onSubmit={handleSignUp} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           <div>
