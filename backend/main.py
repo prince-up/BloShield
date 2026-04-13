@@ -1,8 +1,10 @@
-from fastapi import FastAPI, Request, HTTPException, Depends
+from fastapi import FastAPI, Request, HTTPException, Depends, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 import time
 from datetime import datetime
 import random
+import json
+import asyncio
 from models import SendMoneyRequest, PayBillRequest, TransactionLog, AnomalyResult
 from database import log_transaction, get_recent_logs, save_anomaly, db
 from ml_engine import ml_engine, get_risk_level
@@ -12,6 +14,59 @@ from gemini_engine import GeminiInsightEngine
 
 app = FastAPI(title="BloShield API Gateway")
 
+# WebSocket Connection Manager
+class ConnectionManager:
+    def __init__(self):
+        self.active_connections: list[WebSocket] = []
+
+    async def connect(self, websocket: WebSocket):
+        await websocket.accept()
+        self.active_connections.append(websocket)
+
+    def disconnect(self, websocket: WebSocket):
+        self.active_connections.remove(websocket)
+
+    async def broadcast(self, message: dict):
+        for connection in self.active_connections:
+            try:
+                await connection.send_json(message)
+            except:
+                pass
+
+manager = ConnectionManager()
+
+# Background task for simulating real-time transactions
+async def simulate_transactions():
+    """Simulate periodic transactions to demonstrate real-time updates"""
+    while True:
+        try:
+            await asyncio.sleep(random.uniform(5, 15))  # Send update every 5-15 seconds
+            
+            # Generate random transaction
+            users = ['User123', 'User456', 'UserABC', 'UserXYZ', 'User789']
+            amounts = [500, 1200, 5000, 8500, 15000, 2500, 3500, 4200]
+            
+            user_id = random.choice(users)
+            amount = random.choice(amounts)
+            is_anomaly = random.random() < 0.2  # 20% chance of anomaly
+            
+            transaction_id = str(random.randint(100000, 999999))
+            
+            await manager.broadcast({
+                "type": "transaction",
+                "data": {
+                    "transaction_id": transaction_id,
+                    "user_id": user_id,
+                    "amount": amount,
+                    "status": "success",
+                    "risk_level": "high" if is_anomaly else "low",
+                    "is_anomaly": is_anomaly,
+                    "timestamp": datetime.utcnow().isoformat()
+                }
+            })
+        except Exception as e:
+            print(f"Error in transaction simulator: {e}")
+
 # Enable CORS
 app.add_middleware(
     CORSMiddleware,
@@ -19,6 +74,22 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Start background task on app startup
+@app.on_event("startup")
+async def startup_event():
+    asyncio.create_task(simulate_transactions())
+
+# WebSocket endpoint for real-time updates
+@app.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket):
+    await manager.connect(websocket)
+    try:
+        while True:
+            data = await websocket.receive_text()
+            await manager.broadcast({"type": "message", "data": data})
+    except WebSocketDisconnect:
+        manager.disconnect(websocket)
 
 @app.middleware("http")
 async def monitor_traffic(request: Request, call_next):
@@ -94,9 +165,24 @@ async def send_money(req: SendMoneyRequest):
             "timestamp": datetime.utcnow()
         })
 
+    # Broadcast transaction to all connected WebSocket clients
+    transaction_id = str(random.randint(100000, 999999))
+    await manager.broadcast({
+        "type": "transaction",
+        "data": {
+            "transaction_id": transaction_id,
+            "user_id": req.user_id,
+            "amount": req.amount,
+            "status": status,
+            "risk_level": get_risk_level(risk_score),
+            "is_anomaly": is_anomaly,
+            "timestamp": datetime.utcnow().isoformat()
+        }
+    })
+
     return {
         "status": status,
-        "transaction_id": str(random.randint(100000, 999999)),
+        "transaction_id": transaction_id,
         "risk_assessment": {
             "score": risk_score,
             "level": get_risk_level(risk_score),
@@ -149,13 +235,21 @@ async def get_stats():
     # Convert ObjectIds to strings if necessary
     for log in recent_logs:
         log["_id"] = str(log["_id"])
-        
-    return {
+    
+    stats_data = {
         "total_requests": total_requests,
         "success_rate": (success_count / total_requests * 100) if total_requests > 0 else 0,
         "anomaly_count": anomaly_count,
         "recent_logs": recent_logs
     }
+    
+    # Broadcast stats update to all connected WebSocket clients
+    await manager.broadcast({
+        "type": "stats_update",
+        "data": stats_data
+    })
+    
+    return stats_data
 
 @app.get("/chart-data")
 async def get_chart_data():

@@ -45,7 +45,7 @@ export default function StatCard({ label, value, icon, trend, color, subtitle }:
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          backdrop: 'blur(10px)',
+          backdropFilter: 'blur(10px)',
           border: `1px solid ${color === 'var(--danger)' ? 'rgba(239, 68, 68, 0.2)' : color === 'var(--success)' ? 'rgba(16, 185, 129, 0.2)' : 'rgba(59, 130, 246, 0.2)'}`
         }}>
           {icon}

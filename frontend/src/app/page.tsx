@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
+import { useWebSocket } from '@/hooks/useWebSocket';
 import { Shield, AlertTriangle, TrendingUp, Lock, Zap, ArrowRight, BarChart3, CheckCircle, Gauge, Cpu } from 'lucide-react';
 
 const IPhoneFrame = () => {
@@ -186,7 +187,7 @@ const IPhoneFrame = () => {
   );
 };
 
-const FeatureCard = ({ icon: Icon, title, description, stat, statLabel }) => (
+const FeatureCard = ({ icon: Icon, title, description, stat, statLabel }: { icon: React.ComponentType<any>, title: string, description: string, stat?: string, statLabel?: string }) => (
   <div style={{
     padding: '2rem',
     borderRadius: '16px',
@@ -231,9 +232,379 @@ const FeatureCard = ({ icon: Icon, title, description, stat, statLabel }) => (
   </div>
 );
 
+// Risk Meter Gauge Component
+const RiskMeterGauge = ({ riskLevel = 'medium' }) => {
+  const riskValue = riskLevel === 'low' ? 30 : riskLevel === 'medium' ? 55 : 80;
+  const riskColor = riskLevel === 'low' ? '#22c55e' : riskLevel === 'medium' ? '#f59e0b' : '#ef4444';
+  
+  return (
+    <div style={{
+      background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(10, 165, 233, 0.05))',
+      border: '1px solid rgba(6, 182, 212, 0.2)',
+      borderRadius: '16px',
+      padding: '2rem',
+      textAlign: 'center',
+      position: 'relative',
+      animation: 'fadeInUp 0.8s ease-out'
+    }}>
+      <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '1.5rem' }}>Current Risk Level</h3>
+      <div style={{ position: 'relative', width: '140px', height: '140px', margin: '0 auto', marginBottom: '1.5rem' }}>
+        <svg width="140" height="140" style={{ transform: 'rotate(-90deg)' }}>
+          <circle cx="70" cy="70" r="60" fill="none" stroke="rgba(6, 182, 212, 0.2)" strokeWidth="8" />
+          <circle cx="70" cy="70" r="60" fill="none" stroke={riskColor} strokeWidth="8" strokeDasharray={`${(riskValue / 100) * 376} 376`} style={{ transition: 'stroke-dasharray 0.6s ease', filter: `drop-shadow(0 0 10px ${riskColor}80)` }} />
+        </svg>
+        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', textAlign: 'center' }}>
+          <div style={{ fontSize: '2.5rem', fontWeight: 900, color: riskColor }}>{riskValue}%</div>
+          <div style={{ fontSize: '0.75rem', color: '#94a3b8', textTransform: 'uppercase' }}>{riskLevel}</div>
+        </div>
+      </div>
+      <div style={{ color: riskColor, fontSize: '0.9rem', fontWeight: 600 }}>
+        {riskLevel === 'low' ? '🟢 Safe Zone' : riskLevel === 'medium' ? '🟡 Caution' : '🔴 High Alert'}
+      </div>
+    </div>
+  );
+};
+
+// User Behavior Graph Component
+const UserBehaviorGraph = () => {
+  const normalData = [45, 48, 52, 50, 48, 46, 49];
+  const anomalyData = [45, 48, 52, 50, 72, 85, 49];
+  const maxValue = 100;
+  
+  return (
+    <div style={{
+      background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(10, 165, 233, 0.05))',
+      border: '1px solid rgba(6, 182, 212, 0.2)',
+      borderRadius: '16px',
+      padding: '2rem',
+      animation: 'fadeInUp 0.8s ease-out'
+    }}>
+      <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '1.5rem', background: 'linear-gradient(90deg, #0ea5e9, #06b6d4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', letterSpacing: '-0.5px' }}>Behavior Analysis</h3>
+      <div style={{ height: '160px', display: 'flex', alignItems: 'flex-end', gap: '6px', justifyContent: 'space-between' }}>
+        {anomalyData.map((val, i) => (
+          <div key={i} style={{ position: 'relative', width: '100%', height: '100%', display: 'flex', alignItems: 'flex-end', gap: '2px' }}>
+            <div style={{
+              flex: 1,
+              height: `${(normalData[i] / maxValue) * 100}%`,
+              background: 'linear-gradient(180deg, #06b6d4, #0ea5e9)',
+              borderRadius: '4px 4px 0 0',
+              opacity: 0.5,
+              transition: 'all 0.3s ease',
+              cursor: 'pointer'
+            }} onMouseEnter={e => { e.currentTarget.style.opacity = '0.8'; }} onMouseLeave={e => { e.currentTarget.style.opacity = '0.5'; }} />
+            <div style={{
+              flex: 1,
+              height: `${(val / maxValue) * 100}%`,
+              background: val > 70 ? 'linear-gradient(180deg, #ef4444, #dc2626)' : 'linear-gradient(180deg, #0ea5e9, #06b6d4)',
+              borderRadius: '4px 4px 0 0',
+              boxShadow: val > 70 ? '0 0 15px rgba(239, 68, 68, 0.4)' : 'none',
+              transition: 'all 0.3s ease',
+              cursor: 'pointer'
+            }} onMouseEnter={e => { e.currentTarget.style.filter = 'brightness(1.2)'; }} onMouseLeave={e => { e.currentTarget.style.filter = 'brightness(1)'; }} />
+          </div>
+        ))}
+      </div>
+      <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginTop: '1rem', fontSize: '0.8rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <div style={{ width: '12px', height: '12px', background: '#0ea5e9', borderRadius: '2px' }} />
+          <span style={{ color: '#94a3b8' }}>Normal</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <div style={{ width: '12px', height: '12px', background: '#ef4444', borderRadius: '2px' }} />
+          <span style={{ color: '#94a3b8' }}>Anomaly</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// RBI Alert Card Component
+const RBIAlertCard = () => {
+  return (
+    <div style={{
+      background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.12), rgba(239, 68, 68, 0.05))',
+      border: '1px solid rgba(239, 68, 68, 0.3)',
+      borderRadius: '16px',
+      padding: '2rem',
+      fontSize: '0.95rem',
+      lineHeight: '1.6',
+      animation: 'fadeInUp 0.8s ease-out',
+      position: 'relative',
+      overflow: 'hidden'
+    }}>
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        height: '4px',
+        background: 'linear-gradient(90deg, #ef4444, #dc2626)'
+      }} />
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', marginBottom: '1rem' }}>
+        <span style={{ fontSize: '1.5rem' }}>🚨</span>
+        <div style={{ flex: 1 }}>
+          <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.5rem', color: '#fca5a5' }}>Active RBI Alert</h3>
+          <p style={{ color: '#fed7aa', marginBottom: '1rem' }}>Fake Loan App Scam - Immediate Risk</p>
+          <p style={{ color: '#cbd5e1', fontSize: '0.9rem', marginBottom: '1rem' }}>
+            🎯 <strong>Matched with current user activity:</strong> User attempted app installation from unknown source matching RBI alert signature
+          </p>
+          <div style={{ background: 'rgba(239, 68, 68, 0.1)', padding: '1rem', borderRadius: '8px', borderLeft: '3px solid #ef4444' }}>
+            <div style={{ fontSize: '0.85rem', color: '#fca5a5', fontWeight: 600, marginBottom: '0.5rem' }}>Risk Indicators:</div>
+            <ul style={{ fontSize: '0.8rem', color: '#cbd5e1', lineHeight: '1.8', paddingLeft: '1.5rem' }}>
+              <li>Download behavior matches scam patterns</li>
+              <li>Permission requests flagged by AI</li>
+              <li>IP geolocation anomaly detected</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <button style={{
+        padding: '8px 16px',
+        borderRadius: '8px',
+        border: '1px solid rgba(239, 68, 68, 0.4)',
+        background: 'rgba(239, 68, 68, 0.15)',
+        color: '#fca5a5',
+        cursor: 'pointer',
+        fontWeight: 600,
+        fontSize: '0.85rem',
+        transition: 'all 0.3s ease',
+        width: '100%'
+      }}
+      onMouseEnter={e => {
+        e.currentTarget.style.background = 'rgba(239, 68, 68, 0.25)';
+        e.currentTarget.style.transform = 'translateY(-2px)';
+      }}
+      onMouseLeave={e => {
+        e.currentTarget.style.background = 'rgba(239, 68, 68, 0.15)';
+        e.currentTarget.style.transform = 'translateY(0)';
+      }}>
+        Take Immediate Action →
+      </button>
+    </div>
+  );
+};
+
+// Daily Limit Progress Bar Component
+const DailyLimitProgressBar = ({ used = 180, limit = 200 }) => {
+  const percentage = (used / limit) * 100;
+  const isWarning = percentage > 80;
+  const isExceeded = used >= limit;
+  
+  return (
+    <div style={{
+      background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(10, 165, 233, 0.05))',
+      border: '1px solid rgba(6, 182, 212, 0.2)',
+      borderRadius: '16px',
+      padding: '2rem',
+      animation: 'fadeInUp 0.8s ease-out'
+    }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem' }}>
+        <div>
+          <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.5rem' }}>Daily Transaction Limit</h3>
+          <p style={{ fontSize: '0.85rem', color: '#94a3b8' }}>Your spending progress today</p>
+        </div>
+        <div style={{ textAlign: 'right' }}>
+          <div style={{ fontSize: '1.8rem', fontWeight: 900, background: isExceeded ? 'linear-gradient(135deg, #ef4444, #dc2626)' : isWarning ? 'linear-gradient(135deg, #f59e0b, #d97706)' : 'linear-gradient(135deg, #0ea5e9, #06b6d4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', letterSpacing: '-1px' }}>
+            ₹{used}
+          </div>
+          <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>of ₹{limit}</div>
+        </div>
+      </div>
+      <div style={{ height: '8px', background: 'rgba(255, 255, 255, 0.1)', borderRadius: '8px', overflow: 'hidden', marginBottom: '1rem' }}>
+        <div style={{
+          height: '100%',
+          width: `${Math.min(percentage, 100)}%`,
+          background: isExceeded ? 'linear-gradient(90deg, #ef4444, #dc2626)' : isWarning ? 'linear-gradient(90deg, #f59e0b, #d97706)' : 'linear-gradient(90deg, #0ea5e9, #06b6d4)',
+          transition: 'width 0.6s ease, background 0.3s ease',
+          borderRadius: '8px',
+          boxShadow: isExceeded ? '0 0 15px rgba(239, 68, 68, 0.5)' : isWarning ? '0 0 15px rgba(245, 158, 11, 0.5)' : '0 0 15px rgba(6, 182, 212, 0.5)'
+        }} />
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', color: '#94a3b8' }}>
+        <span>{percentage.toFixed(0)}% Used</span>
+        <span>₹{limit - used} Remaining</span>
+      </div>
+      {isExceeded && <div style={{ marginTop: '1rem', padding: '0.75rem', background: 'rgba(239, 68, 68, 0.2)', borderLeft: '3px solid #ef4444', borderRadius: '8px', color: '#fca5a5', fontSize: '0.85rem', fontWeight: 600 }}>🔴 Limit Exceeded - Transactions Blocked</div>}
+      {isWarning && !isExceeded && <div style={{ marginTop: '1rem', padding: '0.75rem', background: 'rgba(245, 158, 11, 0.2)', borderLeft: '3px solid #f59e0b', borderRadius: '8px', color: '#fbbf24', fontSize: '0.85rem', fontWeight: 600 }}>⚠️ Approaching Limit - {(limit - used)} remaining</div>}
+    </div>
+  );
+};
+
+// AI Insight Card Component
+const AIInsightCard = () => {
+  return (
+    <div style={{
+      background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.12), rgba(168, 85, 247, 0.05))',
+      border: '1px solid rgba(168, 85, 247, 0.3)',
+      borderRadius: '16px',
+      padding: '2rem',
+      animation: 'fadeInUp 0.8s ease-out',
+      position: 'relative',
+      overflow: 'hidden'
+    }}>
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        height: '4px',
+        background: 'linear-gradient(90deg, #a78bfa, #8b5cf6)'
+      }} />
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
+        <span style={{ fontSize: '1.5rem' }}>🤖</span>
+        <div style={{ flex: 1 }}>
+          <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.8rem', color: '#c084fc' }}>AI Behavior Analysis</h3>
+          <p style={{ color: '#cbd5e1', fontSize: '0.95rem', lineHeight: '1.6', marginBottom: '1rem' }}>
+            User behavior <strong>deviates by 23%</strong> from normal patterns. Detected anomalies:
+          </p>
+          <ul style={{ fontSize: '0.9rem', lineHeight: '1.8', paddingLeft: '1.5rem', color: '#cbd5e1', marginBottom: '1rem' }}>
+            <li>🔍 Transaction time shifted 2 hours earlier than usual</li>
+            <li>📍 Login location changed to new city (low confidence match)</li>
+            <li>💳 Device fingerprint shows minor variations</li>
+            <li>⏱️ Transaction velocity increased by 31%</li>
+          </ul>
+          <div style={{ padding: '0.75rem', background: 'rgba(168, 85, 247, 0.15)', borderLeft: '3px solid #a78bfa', borderRadius: '8px' }}>
+            <div style={{ fontSize: '0.85rem', color: '#ddd6fe', fontWeight: 600 }}>Recommendation:</div>
+            <div style={{ fontSize: '0.8rem', color: '#cbd5e1', marginTop: '0.25rem' }}>Enable biometric verification for next transaction. Risk score: 6.2/10</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Live Activity Feed Component
+const LiveActivityFeed = ({ activities = [] as any[] }: { activities?: any[] }) => {
+  const defaultActivities: any[] = [
+    { type: 'transaction', text: 'User123 sent ₹5,000', time: '2 mins ago', icon: '💸', color: '#0ea5e9' },
+    { type: 'alert', text: 'Suspicious activity detected', time: '5 mins ago', icon: '⚠️', color: '#f59e0b' },
+    { type: 'limit', text: 'Daily limit exceeded - 85%', time: '12 mins ago', icon: '🔴', color: '#ef4444' },
+    { type: 'success', text: 'Payment verified successfully', time: '18 mins ago', icon: '✅', color: '#22c55e' },
+    { type: 'transaction', text: 'Card payment ₹2,150', time: '25 mins ago', icon: '💳', color: '#0ea5e9' },
+  ];
+
+  const displayActivities = activities.length > 0 ? activities : defaultActivities;
+
+  return (
+    <div style={{
+      background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(10, 165, 233, 0.05))',
+      border: '1px solid rgba(6, 182, 212, 0.2)',
+      borderRadius: '16px',
+      padding: '2rem',
+      animation: 'fadeInUp 0.8s ease-out',
+      maxHeight: '400px',
+      overflowY: 'auto'
+    }}>
+      <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <span>📡</span> Live Activity Feed
+        <div style={{ marginLeft: 'auto', width: '8px', height: '8px', background: '#22c55e', borderRadius: '50%', animation: 'pulse 2s infinite' }} />
+      </h3>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        {displayActivities.map((activity: any, i: number) => (
+          <div key={i} style={{
+            padding: '1rem',
+            background: 'rgba(255, 255, 255, 0.05)',
+            borderLeft: `3px solid ${activity.color}`,
+            borderRadius: '8px',
+            display: 'flex',
+            gap: '1rem',
+            alignItems: 'flex-start',
+            transition: 'all 0.3s ease',
+            cursor: 'pointer',
+            animation: `slideDown 0.4s ease-out ${i * 0.05}s`
+          }}
+          onMouseEnter={e => {
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
+            e.currentTarget.style.transform = 'translateX(4px)';
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+            e.currentTarget.style.transform = 'translateX(0)';
+          }}>
+            <div style={{ fontSize: '1.2rem' }} >{activity.icon}</div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: '0.9rem', color: '#e2e8f0', fontWeight: 500 }}>{activity.text}</div>
+              <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.25rem' }}>{activity.timestamp || activity.time}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// Filter Bar Component
+const FilterBar = ({ onFilterChange }: { onFilterChange: (filters: any) => void }) => {
+  const [filters, setFilters] = useState({ risk: 'all', date: 'today' });
+
+  const handleFilter = (key: string, value: string) => {
+    const newFilters = { ...filters, [key]: value };
+    setFilters(newFilters);
+    onFilterChange(newFilters);
+  };
+
+  return (
+    <div style={{
+      display: 'flex',
+      gap: '1rem',
+      marginBottom: '2rem',
+      flexWrap: 'wrap',
+      alignItems: 'center',
+      padding: '1rem',
+      background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.08), rgba(10, 165, 233, 0.05))',
+      borderRadius: '12px',
+      border: '1px solid rgba(6, 182, 212, 0.2)'
+    }}>
+      <span style={{ fontSize: '0.9rem', fontWeight: 600, color: '#94a3b8' }}>Filter by:</span>
+      <select value={filters.risk} onChange={(e) => handleFilter('risk', e.target.value)} style={{
+        padding: '0.5rem 1rem',
+        borderRadius: '8px',
+        border: '1px solid rgba(6, 182, 212, 0.3)',
+        background: 'rgba(6, 13, 26, 0.5)',
+        color: '#e2e8f0',
+        cursor: 'pointer',
+        fontSize: '0.9rem',
+        transition: 'all 0.3s ease'
+      }}>
+        <option value="all">All Risk Levels</option>
+        <option value="high">High Risk</option>
+        <option value="medium">Medium Risk</option>
+        <option value="low">Low Risk</option>
+      </select>
+      <select value={filters.date} onChange={(e) => handleFilter('date', e.target.value)} style={{
+        padding: '0.5rem 1rem',
+        borderRadius: '8px',
+        border: '1px solid rgba(6, 182, 212, 0.3)',
+        background: 'rgba(6, 13, 26, 0.5)',
+        color: '#e2e8f0',
+        cursor: 'pointer',
+        fontSize: '0.9rem',
+        transition: 'all 0.3s ease'
+      }}>
+        <option value="today">Today</option>
+        <option value="week">This Week</option>
+        <option value="month">This Month</option>
+      </select>
+      <input type="search" placeholder="Search transactions..." style={{
+        padding: '0.5rem 1rem',
+        borderRadius: '8px',
+        border: '1px solid rgba(6, 182, 212, 0.3)',
+        background: 'rgba(6, 13, 26, 0.5)',
+        color: '#e2e8f0',
+        cursor: 'pointer',
+        fontSize: '0.9rem',
+        flex: '1',
+        minWidth: '200px'
+      }} />
+    </div>
+  );
+};
+
 export default function Home() {
   const [activeView, setActiveView] = useState('home');
   const [stats, setStats] = useState({ transactions: 0, success: 0, threats: 0 });
+  const [liveActivities, setLiveActivities] = useState<any[]>([]);
+  const { isConnected, subscribe } = useWebSocket('ws://localhost:8000/ws');
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -252,9 +623,46 @@ export default function Home() {
     fetchStats();
   }, []);
 
+  useEffect(() => {
+    // Subscribe to transaction updates
+    const unsubTransaction = subscribe('transaction', (message) => {
+      const newActivity = {
+        type: 'transaction',
+        icon: '💳',
+        text: `Transaction for ₹${message.data.amount} - ${message.data.status}`,
+        timestamp: new Date().toLocaleTimeString(),
+        color: message.data.is_anomaly ? '#ef4444' : '#22c55e'
+      };
+      
+      setLiveActivities(prev => [newActivity, ...prev].slice(0, 5));
+      
+      // Update stats
+      setStats(prev => ({
+        ...prev,
+        transactions: prev.transactions + 1,
+        threats: message.data.is_anomaly ? prev.threats + 1 : prev.threats
+      }));
+    });
+
+    // Subscribe to stats updates
+    const unsubStats = subscribe('stats_update', (message) => {
+      setStats({
+        transactions: message.data.total_requests || 0,
+        success: (message.data.success_rate || 0).toFixed(1),
+        threats: message.data.anomaly_count || 0
+      });
+    });
+
+    return () => {
+      unsubTransaction();
+      unsubStats();
+    };
+  }, [subscribe]);
+
   // View components
-  const OverviewView = () => (
-    <>
+  const OverviewView = () => {
+    return (
+      <>
       {/* Hero Section */}
       <section style={{ flex: 1, display: 'flex', alignItems: 'center', padding: '4rem 2rem' }}>
         <div style={{ 
@@ -351,6 +759,30 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Dashboard Intelligence Section */}
+      <section style={{ padding: '5rem 2rem', background: 'linear-gradient(180deg, rgba(6, 13, 26, 0.3), rgba(6, 13, 26, 0.5))', borderTop: '1px solid rgba(6, 182, 212, 0.1)' }}>
+        <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+          <h2 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '1rem', letterSpacing: '-1px', background: 'linear-gradient(90deg, #0ea5e9, #06b6d4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Smart Security Dashboard</h2>
+          <p style={{ fontSize: '1rem', color: '#94a3b8', marginBottom: '3rem' }}>Real-time AI monitoring with instant threat detection</p>
+          
+          {/* Risk & Behavior Metrics Grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', marginBottom: '3rem' }}>
+            <RiskMeterGauge riskLevel="medium" />
+            <UserBehaviorGraph />
+            <DailyLimitProgressBar used={180} limit={200} />
+          </div>
+
+          {/* Critical Alerts Row */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginBottom: '3rem' }}>
+            <RBIAlertCard />
+            <AIInsightCard />
+          </div>
+
+          {/* Live Activity Feed */}
+          <LiveActivityFeed activities={liveActivities} />
+        </div>
+      </section>
+
       {/* Features Section */}
       <section style={{ padding: '5rem 2rem', background: 'linear-gradient(180deg, rgba(6, 13, 26, 0.5), rgba(6, 13, 26, 0.8))', borderTop: '1px solid rgba(6, 182, 212, 0.1)' }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
@@ -367,16 +799,22 @@ export default function Home() {
           </div>
         </div>
       </section>
-    </>
-  );
+      </>
+    );
+  };
 
-  const APILogsView = () => (
-    <section style={{ padding: '3rem 2rem', flex: 1 }}>
-      <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-        <div style={{ marginBottom: '3rem' }}>
-          <h1 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '0.5rem', letterSpacing: '-1px', background: 'linear-gradient(90deg, #0ea5e9, #06b6d4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>API Logs</h1>
-          <p style={{ color: '#94a3b8', fontSize: '1rem' }}>Real-time monitoring of all API requests and responses</p>
-        </div>
+  const APILogsView = () => {
+    const [filters, setFilters] = useState({ risk: 'all', date: 'today' });
+
+    return (
+      <section style={{ padding: '3rem 2rem', flex: 1 }}>
+        <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+          <div style={{ marginBottom: '3rem' }}>
+            <h1 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '0.5rem', letterSpacing: '-1px', background: 'linear-gradient(90deg, #0ea5e9, #06b6d4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>API Logs</h1>
+            <p style={{ color: '#94a3b8', fontSize: '1rem' }}>Real-time monitoring of all API requests and responses</p>
+          </div>
+
+          <FilterBar onFilterChange={setFilters} />
 
         {/* Stats Overview */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem', marginBottom: '3rem' }}>
@@ -465,15 +903,21 @@ export default function Home() {
         </div>
       </div>
     </section>
-  );
+    );
+  };
 
-  const AlertsView = () => (
-    <section style={{ padding: '3rem 2rem', flex: 1 }}>
-      <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-        <div style={{ marginBottom: '3rem' }}>
-          <h1 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '0.5rem', letterSpacing: '-1px', background: 'linear-gradient(90deg, #0ea5e9, #06b6d4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Active Security Alerts</h1>
-          <p style={{ color: '#94a3b8', fontSize: '1rem' }}>Real-time threat intelligence and anomaly detection</p>
-        </div>
+  const AlertsView = () => {
+    const [filters, setFilters] = useState({ risk: 'all', date: 'today' });
+
+    return (
+      <section style={{ padding: '3rem 2rem', flex: 1 }}>
+        <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+          <div style={{ marginBottom: '3rem' }}>
+            <h1 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '0.5rem', letterSpacing: '-1px', background: 'linear-gradient(90deg, #0ea5e9, #06b6d4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Active Security Alerts</h1>
+            <p style={{ color: '#94a3b8', fontSize: '1rem' }}>Real-time threat intelligence and anomaly detection</p>
+          </div>
+
+          <FilterBar onFilterChange={setFilters} />
 
         {/* Alert Summary */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem', marginBottom: '3rem' }}>
@@ -565,20 +1009,26 @@ export default function Home() {
         </div>
       </div>
     </section>
-  );
+    );
+  };
 
-  const InsightsView = () => (
-    <section style={{ padding: '3rem 2rem', flex: 1 }}>
-      <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-        <div style={{ marginBottom: '3rem' }}>
-          <h1 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '0.5rem', letterSpacing: '-1px', background: 'linear-gradient(90deg, #ec4899, #a78bfa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>AI-Powered Insights</h1>
-          <p style={{ color: '#94a3b8', fontSize: '1rem' }}>Machine learning analysis of transaction patterns and fraud risks</p>
-        </div>
+  const InsightsView = () => {
+    const [filters, setFilters] = useState({ risk: 'all', date: 'today' });
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
-          {[
-            { 
-              icon: '📉', 
+    return (
+      <section style={{ padding: '3rem 2rem', flex: 1 }}>
+        <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+          <div style={{ marginBottom: '3rem' }}>
+            <h1 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '0.5rem', letterSpacing: '-1px', background: 'linear-gradient(90deg, #ec4899, #a78bfa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>AI-Powered Insights</h1>
+            <p style={{ color: '#94a3b8', fontSize: '1rem' }}>Machine learning analysis of transaction patterns and fraud risks</p>
+          </div>
+
+          <FilterBar onFilterChange={() => {}} />
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+            {[
+              { 
+                icon: '📉',
               title: 'Spending Pattern Alert', 
               score: '7.2/10',
               metric: 'Risk Score',
@@ -697,15 +1147,21 @@ export default function Home() {
         </div>
       </div>
     </section>
-  );
+    );
+  };
 
-  const AnalyticsView = () => (
-    <section style={{ padding: '3rem 2rem', flex: 1 }}>
-      <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-        <div style={{ marginBottom: '3rem' }}>
-          <h1 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '0.5rem', letterSpacing: '-1px', background: 'linear-gradient(90deg, #0ea5e9, #06b6d4, #a78bfa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Analytics Dashboard</h1>
-          <p style={{ color: '#94a3b8', fontSize: '1rem' }}>Comprehensive performance metrics and data visualization</p>
-        </div>
+  const AnalyticsView = () => {
+    const [filters, setFilters] = useState({ risk: 'all', date: 'today' });
+
+    return (
+      <section style={{ padding: '3rem 2rem', flex: 1 }}>
+        <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+          <div style={{ marginBottom: '3rem' }}>
+            <h1 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '0.5rem', letterSpacing: '-1px', background: 'linear-gradient(90deg, #0ea5e9, #06b6d4, #a78bfa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Analytics Dashboard</h1>
+            <p style={{ color: '#94a3b8', fontSize: '1rem' }}>Comprehensive performance metrics and data visualization</p>
+          </div>
+
+          <FilterBar onFilterChange={() => {}} />
 
         {/* Top KPIs */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem', marginBottom: '3rem' }}>
@@ -867,7 +1323,8 @@ export default function Home() {
         </div>
       </div>
     </section>
-  );
+    );
+  };
 
   return (
     <div style={{ background: 'linear-gradient(135deg, #060d1a 0%, #0f1729 100%)', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
