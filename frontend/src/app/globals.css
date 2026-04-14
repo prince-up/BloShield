@@ -50,6 +50,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   transition: var(--theme-transition);
+  width: 100%;
 }
 
 .light-theme body {

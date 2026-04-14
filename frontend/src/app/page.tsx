@@ -950,12 +950,12 @@ export default function Home() {
         }} />
         
         <div style={{ 
-          maxWidth: '1300px', 
+          maxWidth: '1200px', 
           margin: '0 auto',
           width: '100%',
           display: 'grid',
-          gridTemplateColumns: '1.1fr 0.9fr',
-          gap: '4rem',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+          gap: 'clamp(2rem, 5vw, 4rem)',
           alignItems: 'center',
           position: 'relative',
           zIndex: 1
