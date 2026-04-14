@@ -11,7 +11,7 @@ from ml_engine import ml_engine, get_risk_level
 from spending_monitor import spending_monitor
 from rbi_alerts import rbi_alerts
 from gemini_engine import GeminiInsightEngine
-from supabase_auth import register_user, login_user, get_user_profile, update_user_profile, logout_user, verify_token, UserSignUp, UserLogin
+from auth_handler import register_user, login_user, get_user_profile, update_user_profile, logout_user, verify_token, UserSignUp, UserLogin
 
 app = FastAPI(title="BloShield API Gateway")
 

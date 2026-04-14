@@ -46,14 +46,14 @@ export default function Profile() {
     <div style={{ background: 'linear-gradient(135deg, #060d1a 0%, #0f1729 100%)', minHeight: '100vh' }}>
       <Navbar activeView="profile" setActiveView={() => {}} />
       
-      <section style={{ padding: '3rem 2rem', flex: 1 }}>
-        <div style={{ maxWidth: '600px', margin: '0 auto' }}>
+      <section style={{ padding: '2rem 1rem', flex: 1 }}>
+        <div style={{ maxWidth: '700px', margin: '0 auto', width: '100%' }}>
           {/* Profile Header */}
           <div style={{
             background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(10, 165, 233, 0.05))',
             border: '1px solid rgba(6, 182, 212, 0.2)',
             borderRadius: '16px',
-            padding: '3rem',
+            padding: '2rem',
             marginBottom: '2rem',
             backdropFilter: 'blur(20px)'
           }}>

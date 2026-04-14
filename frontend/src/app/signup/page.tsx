@@ -58,7 +58,7 @@ export default function SignUp() {
       alignItems: 'center',
       minHeight: '100vh',
       background: 'linear-gradient(135deg, #060d1a 0%, #0f1729 100%)',
-      padding: '2rem',
+      padding: '1rem',
       position: 'relative',
       overflow: 'hidden'
     }}>

@@ -885,7 +885,7 @@ export default function Home() {
     return (
       <>
       {/* Top Badge */}
-      <section style={{ padding: '3rem 2rem 1rem', background: 'transparent' }}>
+      <section style={{ padding: '2rem 1rem 0.5rem', background: 'transparent' }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', justifyContent: 'center' }}>
           <div style={{
             display: 'inline-flex',
@@ -907,14 +907,14 @@ export default function Home() {
       </section>
 
       {/* Hero Section */}
-      <section style={{ flex: 1, display: 'flex', alignItems: 'center', padding: '3rem 2rem 5rem' }}>
+      <section style={{ flex: 1, display: 'flex', alignItems: 'center', padding: '2rem 1rem 3rem' }}>
         <div style={{ 
           maxWidth: '1400px', 
           margin: '0 auto',
           width: '100%',
           display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: '6rem',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
+          gap: '3rem',
           alignItems: 'center'
         }}>
           <div style={{ animation: 'fadeInUp 0.8s ease-out' }}>
@@ -1033,14 +1033,14 @@ export default function Home() {
           </div>
 
           {/* Right Side - iPhone Carousel */}
-          <div style={{ animation: 'fadeInScale 1s ease-out', display: 'flex', justifyContent: 'center', position: 'relative', paddingRight: '200px', paddingLeft: '200px' }}>
+          <div style={{ animation: 'fadeInScale 1s ease-out', display: 'flex', justifyContent: 'center', position: 'relative' }}>
             <MobileCarousel />
           </div>
         </div>
       </section>
 
       {/* Dashboard Intelligence Section */}
-      <section style={{ padding: '5rem 2rem', background: 'linear-gradient(180deg, rgba(6, 13, 26, 0.3), rgba(6, 13, 26, 0.5))', borderTop: '1px solid rgba(6, 182, 212, 0.1)' }}>
+      <section style={{ padding: '3rem 1rem', background: 'linear-gradient(180deg, rgba(6, 13, 26, 0.3), rgba(6, 13, 26, 0.5))', borderTop: '1px solid rgba(6, 182, 212, 0.1)' }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
           <h2 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '1rem', letterSpacing: '-1px', background: 'linear-gradient(90deg, #0ea5e9, #06b6d4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Smart Security Dashboard</h2>
           <p style={{ fontSize: '1rem', color: '#94a3b8', marginBottom: '3rem' }}>Real-time AI monitoring with instant threat detection</p>
@@ -1064,7 +1064,7 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section style={{ padding: '5rem 2rem', background: 'linear-gradient(180deg, rgba(6, 13, 26, 0.5), rgba(6, 13, 26, 0.8))', borderTop: '1px solid rgba(6, 182, 212, 0.1)' }}>
+      <section style={{ padding: '3rem 1rem', background: 'linear-gradient(180deg, rgba(6, 13, 26, 0.5), rgba(6, 13, 26, 0.8))', borderTop: '1px solid rgba(6, 182, 212, 0.1)' }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
           <h2 style={{ fontSize: '3rem', fontWeight: 800, marginBottom: '4rem', letterSpacing: '-1px', textAlign: 'center', background: 'linear-gradient(90deg, #0ea5e9, #06b6d4, #a78bfa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
             Enterprise Features
@@ -1081,7 +1081,7 @@ export default function Home() {
       </section>
 
       {/* Integrations Section */}
-      <section style={{ padding: '4rem 2rem', background: 'linear-gradient(180deg, rgba(6, 13, 26, 0.5), rgba(6, 13, 26, 0.8))', borderTop: '1px solid rgba(6, 182, 212, 0.1)' }}>
+      <section style={{ padding: '3rem 1rem', background: 'linear-gradient(180deg, rgba(6, 13, 26, 0.5), rgba(6, 13, 26, 0.8))', borderTop: '1px solid rgba(6, 182, 212, 0.1)' }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
           <h3 style={{ fontSize: '0.85rem', color: '#64748b', marginBottom: '2rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 700, textAlign: 'center' }}>
             ISSUER & DISTRIBUTION PARTNERS
@@ -1138,7 +1138,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer style={{ padding: '4rem 2rem', background: 'linear-gradient(180deg, #0a1117 0%, #0f1729 100%)', borderTop: '1px solid rgba(6, 182, 212, 0.1)' }}>
+      <footer style={{ padding: '3rem 1rem', background: 'linear-gradient(180deg, #0a1117 0%, #0f1729 100%)', borderTop: '1px solid rgba(6, 182, 212, 0.1)' }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '3rem', marginBottom: '3rem' }}>
             {/* Brand */}

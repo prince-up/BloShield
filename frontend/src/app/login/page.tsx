@@ -27,7 +27,10 @@ export default function Login() {
     }
 
     if (data) {
-      router.push('/profile');
+      // Wait a moment for auth state to update, then redirect to homepage
+      setTimeout(() => {
+        router.push('/');
+      }, 300);
     }
   };
 
@@ -39,7 +42,7 @@ export default function Login() {
       alignItems: 'center',
       minHeight: '100vh',
       background: 'linear-gradient(135deg, #060d1a 0%, #0f1729 100%)',
-      padding: '2rem',
+      padding: '1rem',
       position: 'relative',
       overflow: 'hidden'
     }}>
@@ -88,7 +91,7 @@ export default function Login() {
         background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.08), rgba(10, 165, 233, 0.04))',
         border: '1px solid rgba(6, 182, 212, 0.2)',
         borderRadius: '20px',
-        padding: '3.5rem',
+        padding: '2.5rem',
         maxWidth: '450px',
         width: '100%',
         backdropFilter: 'blur(20px)',
