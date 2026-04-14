@@ -836,13 +836,14 @@ export default function Home() {
   const [stats, setStats] = useState({ transactions: 0, success: 0, threats: 0 });
   const [liveActivities, setLiveActivities] = useState<any[]>([]);
   const [isDarkMode, setIsDarkMode] = useState(true);
-  const { isConnected, subscribe } = useWebSocket('ws://localhost:8000/ws');
+  const { isConnected, subscribe } = useWebSocket(process.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:8000/ws');
   const { isAuthenticated, loading: authLoading } = useAuth();
 
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const res = await fetch('http://localhost:8000/stats');
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+        const res = await fetch(`${apiUrl}/stats`);
         const data = await res.json();
         setStats({
           transactions: data.total_requests || 0,

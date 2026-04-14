@@ -17,8 +17,9 @@ export const useWebSocket = (url: string) => {
   useEffect(() => {
     const connectWebSocket = () => {
       try {
-        // Use localhost for development instead of window.location.hostname
-        const wsUrl = url.startsWith('ws') ? url : `ws://localhost:8000/ws`;
+        // Use environment variable for WebSocket URL
+        const defaultWsUrl = process.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:8000/ws';
+        const wsUrl = url.startsWith('ws') ? url : defaultWsUrl;
         
         console.log('Attempting to connect to WebSocket:', wsUrl);
         const socket = new WebSocket(wsUrl);
