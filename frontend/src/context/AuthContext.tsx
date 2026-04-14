@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabaseClient';
+import { LoadingScreen } from '@/components/LoadingScreen';
 
 interface User {
   id: string;
@@ -154,17 +155,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{
-      user,
-      loading,
-      isAuthenticated,
-      signUp,
-      signIn,
-      signOut,
-      updateProfile,
-    }}>
-      {children}
-    </AuthContext.Provider>
+    <>
+      {loading && <LoadingScreen />}
+      <AuthContext.Provider value={{
+        user,
+        loading,
+        isAuthenticated,
+        signUp,
+        signIn,
+        signOut,
+        updateProfile,
+      }}>
+        <div className={loading ? 'auth-loading' : 'auth-loaded'}>
+          {children}
+        </div>
+      </AuthContext.Provider>
+    </>
   );
 };
 

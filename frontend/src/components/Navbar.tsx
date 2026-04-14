@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
+import { useAuth } from '@/context/AuthContext';
 import { 
   LayoutDashboard, 
   FileText, 
@@ -11,7 +12,8 @@ import {
   ShieldAlert,
   Bell,
   Settings,
-  X
+  X,
+  Menu
 } from 'lucide-react';
 
 interface NavbarProps {
@@ -22,8 +24,10 @@ interface NavbarProps {
 export default function Navbar({ activeView = '', setActiveView = () => {} }: NavbarProps) {
   const router = useRouter();
   const pathname = usePathname();
+  const { isAuthenticated } = useAuth();
   const [notificationOpen, setNotificationOpen] = useState(false);
-  const isHomepage = pathname === '/';
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const isHomepage = pathname === '/' && !isAuthenticated;
 
   const menuItems = [
     { id: 'overview', label: 'Overview', icon: LayoutDashboard },
@@ -38,7 +42,7 @@ export default function Navbar({ activeView = '', setActiveView = () => {} }: Na
       background: 'linear-gradient(90deg, rgba(6, 13, 26, 0.95), rgba(15, 23, 42, 0.95))',
       backdropFilter: 'blur(30px)',
       borderBottom: '1px solid rgba(6, 182, 212, 0.1)',
-      padding: '0 2rem',
+      padding: '0 clamp(1rem, 3vw, 2rem)',
       height: '72px',
       display: 'flex',
       alignItems: 'center',
@@ -53,8 +57,8 @@ export default function Navbar({ activeView = '', setActiveView = () => {} }: Na
         style={{ 
           display: 'flex', 
           alignItems: 'center', 
-          gap: '14px', 
-          minWidth: '200px',
+          gap: 'clamp(8px, 2vw, 14px)', 
+          minWidth: 'clamp(150px, 20vw, 200px)',
           cursor: 'pointer',
           transition: 'all 0.3s ease'
         }}
@@ -76,8 +80,8 @@ export default function Navbar({ activeView = '', setActiveView = () => {} }: Na
       >
         <div style={{ 
           background: 'linear-gradient(135deg, #0ea5e9, #06b6d4)',
-          padding: '10px', 
-          borderRadius: '10px',
+          padding: 'clamp(6px, 2vw, 10px)', 
+          borderRadius: 'clamp(6px, 2vw, 10px)',
           boxShadow: '0 0 24px rgba(6, 182, 212, 0.4)',
           display: 'flex',
           alignItems: 'center',
@@ -88,7 +92,7 @@ export default function Navbar({ activeView = '', setActiveView = () => {} }: Na
           <ShieldAlert size={22} color="white" strokeWidth={2.5} />
         </div>
         <div>
-          <h1 style={{ fontSize: '1.35rem', fontWeight: 800, letterSpacing: '-1px', margin: 0, color: '#ffffff' }}>
+          <h1 style={{ fontSize: 'clamp(1rem, 3vw, 1.35rem)', fontWeight: 800, letterSpacing: '-1px', margin: 0, color: '#ffffff' }}>
             Blo<span style={{ background: 'linear-gradient(90deg, #0ea5e9, #06b6d4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Shield</span>
           </h1>
         </div>
@@ -96,6 +100,11 @@ export default function Navbar({ activeView = '', setActiveView = () => {} }: Na
 
       {/* Center Menu - Dashboard Only */}
       {!isHomepage && (
+        <div className="navbar-center-menu" style={{
+          display: 'flex',
+          gap: '2rem',
+          alignItems: 'center'
+        }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1, justifyContent: 'center' }}>
           {menuItems.map(({ id, label, icon: Icon }) => (
             <button
@@ -134,6 +143,7 @@ export default function Navbar({ activeView = '', setActiveView = () => {} }: Na
             </button>
           ))}
         </div>
+      </div>
       )}
 
       {/* Right Actions */}
@@ -295,6 +305,7 @@ export default function Navbar({ activeView = '', setActiveView = () => {} }: Na
               boxShadow: '0 0 12px rgba(6, 182, 212, 0.2)',
               transition: 'all 0.3s ease'
             }}
+            onClick={() => router.push('/profile')}
             onMouseEnter={(e) => {
               e.currentTarget.style.boxShadow = '0 0 20px rgba(6, 182, 212, 0.4)';
               e.currentTarget.style.transform = 'scale(1.05)';
@@ -331,7 +342,89 @@ export default function Navbar({ activeView = '', setActiveView = () => {} }: Na
             </button>
           </>
         )}
+
+        {/* Mobile menu button - shown on mobile devices */}
+        <button
+          className="navbar-mobile-toggle"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          style={{
+            display: 'none',
+            background: 'transparent',
+            border: 'none',
+            color: '#0ea5e9',
+            cursor: 'pointer',
+            padding: '8px',
+            borderRadius: '6px',
+            transition: 'all 0.3s ease'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = 'rgba(6, 182, 212, 0.1)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = 'transparent';
+          }}
+        >
+          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
       </div>
+
+      {/* Mobile Menu */}
+      {mobileMenuOpen && !isHomepage && (
+        <div style={{
+          position: 'absolute',
+          top: '72px',
+          left: 0,
+          right: 0,
+          background: 'linear-gradient(90deg, rgba(6, 13, 26, 0.98), rgba(15, 23, 42, 0.98))',
+          backdropFilter: 'blur(30px)',
+          borderBottom: '1px solid rgba(6, 182, 212, 0.1)',
+          padding: '1rem',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '0.5rem',
+          zIndex: 999
+        }}>
+          {menuItems.map((item) => {
+            const Icon = item.icon;
+            return (
+              <button
+                key={item.id}
+                onClick={() => {
+                  setActiveView(item.id);
+                  setMobileMenuOpen(false);
+                }}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '1rem',
+                  padding: '1rem',
+                  background: activeView === item.id ? 'rgba(6, 182, 212, 0.15)' : 'transparent',
+                  border: 'none',
+                  borderRadius: '8px',
+                  color: activeView === item.id ? '#06b6d4' : '#cbd5e1',
+                  cursor: 'pointer',
+                  fontSize: '1rem',
+                  fontWeight: 600,
+                  textAlign: 'left',
+                  transition: 'all 0.3s ease',
+                  width: '100%'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(6, 182, 212, 0.1)';
+                  e.currentTarget.style.color = '#06b6d4';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = activeView === item.id ? 'rgba(6, 182, 212, 0.15)' : 'transparent';
+                  e.currentTarget.style.color = activeView === item.id ? '#06b6d4' : '#cbd5e1';
+                }}
+              >
+                <Icon size={20} strokeWidth={2} />
+                {item.label}
+              </button>
+            );
+          })}
+        </div>
+      )}
     </nav>
   );
 }

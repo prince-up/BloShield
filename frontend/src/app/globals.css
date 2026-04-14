@@ -39,6 +39,60 @@ body {
   color: var(--foreground);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 13px;
+  }
+}
+
+/* Prevent layout shifts */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Loading states to prevent blinking */
+.auth-loading {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.auth-loaded {
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 0.3s ease;
+}
+
+/* Responsive Navbar */
+@media (max-width: 768px) {
+  .navbar-center-menu {
+    display: none !important;
+  }
+  
+  .navbar-mobile-toggle {
+    display: block !important;
+  }
+}
+
+@media (min-width: 769px) {
+  .navbar-mobile-toggle {
+    display: none !important;
+  }
 }
 
 @keyframes fadeInUp {

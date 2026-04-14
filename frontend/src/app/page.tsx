@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import { useWebSocket } from '@/hooks/useWebSocket';
+import { useAuth } from '@/context/AuthContext';
 import { Shield, AlertTriangle, TrendingUp, Lock, Zap, ArrowRight, BarChart3, CheckCircle, Gauge, Cpu, ArrowLeft } from 'lucide-react';
 
 // Mobile Carousel Component with Auto-Changing Screens
@@ -50,7 +51,16 @@ const MobileCarousel = () => {
   const screen = screens[currentScreen];
 
   return (
-    <div style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '700px', perspective: '1000px' }}>
+    <div style={{
+      position: 'relative',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      minHeight: 'clamp(500px, 80vw, 700px)',
+      perspective: '1000px',
+      width: '100%',
+      maxWidth: '400px'
+    }}>
       {/* Left Arrows - Features pointing from phone */}
       <div style={{ position: 'absolute', left: '-200px', top: '50%', transform: 'translateY(-50%)', display: 'flex', flexDirection: 'column', gap: '3rem', zIndex: 5 }}>
         {[
@@ -91,13 +101,13 @@ const MobileCarousel = () => {
       {/* iPhone Frame */}
       <div style={{
         position: 'relative',
-        width: '320px',
-        height: '640px',
+        width: 'clamp(280px, 80vw, 320px)',
+        height: 'clamp(560px, 160vw, 640px)',
         background: '#000',
-        borderRadius: '50px',
-        padding: '12px',
+        borderRadius: 'clamp(40px, 12vw, 50px)',
+        padding: 'clamp(8px, 2vw, 12px)',
         boxShadow: `0 30px 80px ${screen.color}40, 0 0 0 1px ${screen.color}20`,
-        border: '8px solid #1a1a1a',
+        border: `clamp(6px, 2vw, 8px) solid #1a1a1a`,
         transition: 'all 0.6s ease'
       }}>
         {/* Notch */}
@@ -106,13 +116,13 @@ const MobileCarousel = () => {
           top: 0,
           left: '50%',
           transform: 'translateX(-50%)',
-          width: '140px',
-          height: '28px',
+          width: 'clamp(120px, 40vw, 140px)',
+          height: 'clamp(24px, 8vw, 28px)',
           background: '#000',
-          borderBottomLeftRadius: '35px',
-          borderBottomRightRadius: '35px',
+          borderBottomLeftRadius: 'clamp(30px, 10vw, 35px)',
+          borderBottomRightRadius: 'clamp(30px, 10vw, 35px)',
           zIndex: 10,
-          border: '8px solid #1a1a1a',
+          border: `clamp(6px, 2vw, 8px) solid #1a1a1a`,
           borderTop: 'none'
         }} />
 
@@ -126,15 +136,15 @@ const MobileCarousel = () => {
           overflow: 'hidden',
           display: 'flex',
           flexDirection: 'column',
-          paddingTop: '8px',
+          paddingTop: 'clamp(6px, 2vw, 8px)',
           justifyContent: 'center',
           alignItems: 'center',
           textAlign: 'center',
-          padding: '2rem 1.5rem'
+          padding: 'clamp(1rem, 3vw, 2rem) clamp(1rem, 2vw, 1.5rem)'
         }}>
           <div style={{ fontSize: '4rem', marginBottom: '1rem', animation: 'fadeIn 0.6s ease-out' }}>{screen.icon}</div>
           <h2 style={{ 
-            fontSize: '1.5rem', 
+            fontSize: 'clamp(1rem, 4vw, 1.5rem)', 
             fontWeight: 900, 
             color: '#fff',
             marginBottom: '0.5rem',
@@ -143,7 +153,7 @@ const MobileCarousel = () => {
             {screen.title}
           </h2>
           <p style={{ 
-            fontSize: '0.9rem', 
+            fontSize: 'clamp(0.7rem, 2.5vw, 0.9rem)', 
             color: '#94a3b8',
             marginBottom: '2rem',
             animation: 'fadeIn 0.6s ease-out 0.2s backwards'
@@ -153,19 +163,19 @@ const MobileCarousel = () => {
 
           <div style={{ 
             display: 'flex', 
-            gap: '1.5rem',
+            gap: 'clamp(1rem, 3vw, 1.5rem)',
             flexDirection: 'column',
             width: '100%',
             animation: 'fadeIn 0.6s ease-out 0.3s backwards'
           }}>
             {screen.features.map((feature, i) => (
               <div key={i} style={{
-                padding: '1rem',
+                padding: 'clamp(0.75rem, 2vw, 1rem)',
                 background: `${screen.color}20`,
                 border: `1px solid ${screen.color}40`,
-                borderRadius: '10px',
+                borderRadius: 'clamp(6px, 2vw, 10px)',
                 color: '#e2e8f0',
-                fontSize: '0.85rem',
+                fontSize: 'clamp(0.7rem, 2vw, 0.85rem)',
                 fontWeight: 600
               }}>
                 ✓ {feature}
@@ -826,6 +836,7 @@ export default function Home() {
   const [stats, setStats] = useState({ transactions: 0, success: 0, threats: 0 });
   const [liveActivities, setLiveActivities] = useState<any[]>([]);
   const { isConnected, subscribe } = useWebSocket('ws://localhost:8000/ws');
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -907,20 +918,26 @@ export default function Home() {
       </section>
 
       {/* Hero Section */}
-      <section style={{ flex: 1, display: 'flex', alignItems: 'center', padding: '2rem 1rem 3rem' }}>
+      <section style={{
+        flex: 1,
+        display: 'flex',
+        alignItems: 'center',
+        padding: 'clamp(1rem, 4vw, 3rem) clamp(1rem, 3vw, 2rem)',
+        minHeight: '70vh'
+      }}>
         <div style={{ 
           maxWidth: '1400px', 
           margin: '0 auto',
           width: '100%',
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
-          gap: '3rem',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(350px, 100%), 1fr))',
+          gap: 'clamp(2rem, 5vw, 3rem)',
           alignItems: 'center'
         }}>
           <div style={{ animation: 'fadeInUp 0.8s ease-out' }}>
             {/* Main Headline */}
             <h1 style={{ 
-              fontSize: '5.5rem', 
+              fontSize: 'clamp(2.5rem, 8vw, 5.5rem)', 
               fontWeight: 900, 
               lineHeight: 1.1, 
               marginBottom: '1.5rem', 
@@ -941,7 +958,7 @@ export default function Home() {
 
             {/* Subheading */}
             <p style={{ 
-              fontSize: '1.25rem', 
+              fontSize: 'clamp(1rem, 2.5vw, 1.25rem)', 
               color: '#cbd5e1', 
               marginBottom: '2rem', 
               lineHeight: 1.8,
@@ -1033,7 +1050,12 @@ export default function Home() {
           </div>
 
           {/* Right Side - iPhone Carousel */}
-          <div style={{ animation: 'fadeInScale 1s ease-out', display: 'flex', justifyContent: 'center', position: 'relative' }}>
+          <div style={{
+            animation: 'fadeInScale 1s ease-out',
+            display: 'flex',
+            justifyContent: 'center',
+            position: 'relative'
+          }}>
             <MobileCarousel />
           </div>
         </div>
@@ -1809,7 +1831,17 @@ export default function Home() {
   return (
     <div style={{ background: 'linear-gradient(135deg, #060d1a 0%, #0f1729 100%)', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <Navbar activeView={activeView} setActiveView={setActiveView} />
-      {activeView === 'home' || activeView === 'overview' ? <OverviewView /> : activeView === 'logs' ? <APILogsView /> : activeView === 'alerts' ? <AlertsView /> : activeView === 'insights' ? <InsightsView /> : <AnalyticsView />}
+      {isAuthenticated ? (
+        // Dashboard views for authenticated users
+        activeView === 'home' || activeView === 'overview' ? <OverviewView /> : 
+        activeView === 'logs' ? <APILogsView /> : 
+        activeView === 'alerts' ? <AlertsView /> : 
+        activeView === 'insights' ? <InsightsView /> : 
+        <AnalyticsView />
+      ) : (
+        // Marketing homepage for non-authenticated users
+        <OverviewView />
+      )}
     </div>
   );
 }
