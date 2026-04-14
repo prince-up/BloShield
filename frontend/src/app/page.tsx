@@ -835,8 +835,9 @@ export default function Home() {
   const [activeView, setActiveView] = useState('home');
   const [stats, setStats] = useState({ transactions: 0, success: 0, threats: 0 });
   const [liveActivities, setLiveActivities] = useState<any[]>([]);
+  const [isDarkMode, setIsDarkMode] = useState(true);
   const { isConnected, subscribe } = useWebSocket('ws://localhost:8000/ws');
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, loading: authLoading } = useAuth();
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -895,24 +896,31 @@ export default function Home() {
   const OverviewView = () => {
     return (
       <>
-      {/* Top Badge */}
-      <section style={{ padding: '2rem 1rem 0.5rem', background: 'transparent' }}>
+      {/* Partner Banner - Pro Redesign */}
+      <section style={{ 
+        padding: '2rem 0', 
+        background: 'rgba(255, 255, 255, 0.01)', 
+        borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
+        position: 'relative',
+        overflow: 'hidden'
+      }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', justifyContent: 'center' }}>
           <div style={{
             display: 'inline-flex',
             alignItems: 'center',
-            gap: '0.75rem',
-            padding: '0.75rem 1.5rem',
-            background: 'rgba(6, 182, 212, 0.1)',
-            border: '1px solid rgba(6, 182, 212, 0.3)',
-            borderRadius: '50px',
-            fontSize: '0.9rem',
-            color: '#06b6d4',
-            fontWeight: 600,
+            gap: '1rem',
+            padding: '0.6rem 1.5rem',
+            background: 'rgba(6, 182, 212, 0.05)',
+            border: '1px solid rgba(6, 182, 212, 0.1)',
+            borderRadius: '100px',
+            fontSize: '0.85rem',
+            color: '#94a3b8',
+            fontWeight: 500,
             animation: 'fadeInDown 0.6s ease-out'
           }}>
-            <span>✨</span>
-            <span>Trusted by leading fintech & banks across India</span>
+            <span style={{ color: '#06b6d4', fontWeight: 800 }}>TRUSTED BY</span>
+            <div style={{ height: '4px', width: '4px', borderRadius: '50%', background: '#334155' }} />
+            <span>Leading Neo-Banks & Fintech Unicorns</span>
           </div>
         </div>
       </section>
@@ -922,129 +930,165 @@ export default function Home() {
         flex: 1,
         display: 'flex',
         alignItems: 'center',
-        padding: 'clamp(1rem, 4vw, 3rem) clamp(1rem, 3vw, 2rem)',
-        minHeight: '70vh'
+        padding: 'clamp(2rem, 6vw, 5rem) 2rem',
+        minHeight: '85vh',
+        position: 'relative',
+        overflow: 'hidden'
       }}>
+        {/* Background Glows for Hero */}
+        <div style={{
+          position: 'absolute',
+          top: '10%',
+          left: '-5%',
+          width: '500px',
+          height: '500px',
+          background: 'radial-gradient(circle, rgba(14, 165, 233, 0.15), transparent 70%)',
+          filter: 'blur(80px)',
+          zIndex: 0,
+          pointerEvents: 'none'
+        }} />
+        
         <div style={{ 
-          maxWidth: '1400px', 
+          maxWidth: '1300px', 
           margin: '0 auto',
           width: '100%',
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(min(350px, 100%), 1fr))',
-          gap: 'clamp(2rem, 5vw, 3rem)',
-          alignItems: 'center'
+          gridTemplateColumns: '1.1fr 0.9fr',
+          gap: '4rem',
+          alignItems: 'center',
+          position: 'relative',
+          zIndex: 1
         }}>
           <div style={{ animation: 'fadeInUp 0.8s ease-out' }}>
+            {/* Top Badge - Refined */}
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              padding: '0.4rem 1rem',
+              background: 'rgba(6, 182, 212, 0.1)',
+              border: '1px solid rgba(6, 182, 212, 0.2)',
+              borderRadius: '100px',
+              fontSize: '0.75rem',
+              color: '#06b6d4',
+              fontWeight: 700,
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em',
+              marginBottom: '2rem'
+            }}>
+              <span style={{ fontSize: '1rem' }}>⚡</span>
+              Next-Gen Fraud Detection
+            </div>
+
             {/* Main Headline */}
             <h1 style={{ 
-              fontSize: 'clamp(2.5rem, 8vw, 5.5rem)', 
-              fontWeight: 900, 
-              lineHeight: 1.1, 
+              fontSize: 'clamp(2.5rem, 6vw, 5rem)', 
+              fontWeight: 950, 
+              lineHeight: 1, 
               marginBottom: '1.5rem', 
-              letterSpacing: '-2px',
+              letterSpacing: '-0.04em',
               color: '#fff'
             }}>
-              Real-Time Fraud
-              <br />
+              Protect Your 
               <span style={{ 
-                background: 'linear-gradient(90deg, #06b6d4, #0ea5e9)', 
+                background: 'linear-gradient(135deg, #0ea5e9, #a78bfa)', 
                 WebkitBackgroundClip: 'text', 
                 WebkitTextFillColor: 'transparent',
-                display: 'inline-block'
+                display: 'block'
               }}>
-                Detection Engine
+                Assets In Real-Time
               </span>
             </h1>
 
             {/* Subheading */}
             <p style={{ 
-              fontSize: 'clamp(1rem, 2.5vw, 1.25rem)', 
-              color: '#cbd5e1', 
-              marginBottom: '2rem', 
-              lineHeight: 1.8,
-              maxWidth: '550px',
+              fontSize: 'clamp(1rem, 1.2vw, 1.25rem)', 
+              color: '#94a3b8', 
+              marginBottom: '2.5rem', 
+              lineHeight: 1.6,
+              maxWidth: '540px',
               fontWeight: 400
             }}>
-              One powerful API delivers 99.8% fraud detection accuracy. Deploy securely in minutes with our enterprise-grade infrastructure.
+              Deploy our AI-powered gateway in minutes. Achieving <strong style={{ color: '#fff' }}>99.8% precision</strong> in detecting anomalies across millions of transactions.
             </p>
 
-            {/* Trust Badges */}
+            {/* Trust Badges - Improved Design */}
             <div style={{ 
               display: 'flex', 
-              gap: '2rem', 
+              gap: '1.5rem', 
               marginBottom: '3rem',
-              flexWrap: 'wrap',
-              alignItems: 'center'
+              flexWrap: 'wrap'
             }}>
               {[
-                { icon: '✓', text: 'ISO 27001 Certified' },
-                { icon: '🔐', text: 'Bank-Grade Security' },
-                { icon: '⚙️', text: 'Single Integration' }
+                { icon: '🛡️', text: 'ISO 27001' },
+                { icon: '⛓️', text: 'End-to-End Encrypted' },
+                { icon: '🏦', text: 'RBI Compliant' }
               ].map((badge, i) => (
                 <div key={i} style={{ 
                   display: 'flex', 
                   alignItems: 'center', 
-                  gap: '0.5rem',
-                  color: '#cbd5e1',
-                  fontSize: '0.95rem',
-                  fontWeight: 500
+                  gap: '0.4rem',
+                  padding: '0.5rem 0.8rem',
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  border: '1px solid rgba(255, 255, 255, 0.05)',
+                  borderRadius: '10px',
+                  color: '#e2e8f0',
+                  fontSize: '0.85rem',
+                  fontWeight: 600
                 }}>
-                  <span style={{ color: '#06b6d4', fontSize: '1.2rem' }}>{badge.icon}</span>
+                  <span>{badge.icon}</span>
                   {badge.text}
                 </div>
               ))}
             </div>
 
             {/* CTA Buttons */}
-            <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
               <button style={{
-                padding: '14px 32px',
-                borderRadius: '8px',
+                padding: '16px 36px',
+                borderRadius: '12px',
                 border: 'none',
                 background: 'linear-gradient(135deg, #0ea5e9, #06b6d4)',
                 color: '#fff',
                 fontSize: '1rem',
                 fontWeight: 700,
                 cursor: 'pointer',
-                transition: 'all 0.3s ease',
-                boxShadow: '0 10px 30px rgba(6, 182, 212, 0.3)',
-                letterSpacing: '0px',
-                fontFamily: 'Inter, sans-serif'
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                boxShadow: '0 10px 30px rgba(6, 182, 212, 0.4)',
+                fontFamily: 'inherit'
               }}
               onMouseEnter={e => {
-                e.currentTarget.style.transform = 'translateY(-2px)';
-                e.currentTarget.style.boxShadow = '0 15px 40px rgba(6, 182, 212, 0.4)';
+                e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)';
+                e.currentTarget.style.boxShadow = '0 15px 40px rgba(6, 182, 212, 0.5)';
               }}
               onMouseLeave={e => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 10px 30px rgba(6, 182, 212, 0.3)';
+                e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                e.currentTarget.style.boxShadow = '0 10px 30px rgba(6, 182, 212, 0.4)';
               }}>
-                Book a Demo
+                Book a Live Demo
               </button>
               <button style={{
-                padding: '14px 32px',
-                borderRadius: '8px',
-                border: '1px solid rgba(6, 182, 212, 0.4)',
-                background: 'transparent',
+                padding: '16px 36px',
+                borderRadius: '12px',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                background: 'rgba(255, 255, 255, 0.03)',
                 color: '#e2e8f0',
                 fontSize: '1rem',
                 fontWeight: 700,
                 cursor: 'pointer',
                 transition: 'all 0.3s ease',
-                letterSpacing: '0px',
-                fontFamily: 'Inter, sans-serif'
+                fontFamily: 'inherit',
+                backdropFilter: 'blur(10px)'
               }}
               onMouseEnter={e => {
-                e.currentTarget.style.borderColor = 'rgba(6, 182, 212, 0.8)';
-                e.currentTarget.style.background = 'rgba(6, 182, 212, 0.1)';
-                e.currentTarget.style.color = '#06b6d4';
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
               }}
               onMouseLeave={e => {
-                e.currentTarget.style.borderColor = 'rgba(6, 182, 212, 0.4)';
-                e.currentTarget.style.background = 'transparent';
-                e.currentTarget.style.color = '#e2e8f0';
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)';
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
               }}>
-                See How It Works
+                Interactive Explorer
               </button>
             </div>
           </div>
@@ -1062,10 +1106,15 @@ export default function Home() {
       </section>
 
       {/* Dashboard Intelligence Section */}
-      <section style={{ padding: '3rem 1rem', background: 'linear-gradient(180deg, rgba(6, 13, 26, 0.3), rgba(6, 13, 26, 0.5))', borderTop: '1px solid rgba(6, 182, 212, 0.1)' }}>
+      <section style={{ 
+        padding: '5rem 1rem', 
+        background: 'var(--card-bg)', 
+        borderTop: '1px solid var(--card-border)',
+        transition: 'var(--theme-transition)'
+      }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-          <h2 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '1rem', letterSpacing: '-1px', background: 'linear-gradient(90deg, #0ea5e9, #06b6d4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Smart Security Dashboard</h2>
-          <p style={{ fontSize: '1rem', color: '#94a3b8', marginBottom: '3rem' }}>Real-time AI monitoring with instant threat detection</p>
+          <h2 style={{ fontSize: '3rem', fontWeight: 950, marginBottom: '1rem', letterSpacing: '-2px', background: 'var(--gradient-cyan)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Smart Security Dashboard</h2>
+          <p style={{ fontSize: '1.1rem', color: '#64748b', marginBottom: '4rem', fontWeight: 500 }}>Real-time AI monitoring with instant threat detection and behavioral analysis.</p>
           
           {/* Risk & Behavior Metrics Grid */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', marginBottom: '3rem' }}>
@@ -1086,9 +1135,14 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section style={{ padding: '3rem 1rem', background: 'linear-gradient(180deg, rgba(6, 13, 26, 0.5), rgba(6, 13, 26, 0.8))', borderTop: '1px solid rgba(6, 182, 212, 0.1)' }}>
+      <section style={{ 
+        padding: '5rem 1rem', 
+        background: 'var(--background)',
+        borderTop: '1px solid var(--card-border)',
+        transition: 'var(--theme-transition)'
+      }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-          <h2 style={{ fontSize: '3rem', fontWeight: 800, marginBottom: '4rem', letterSpacing: '-1px', textAlign: 'center', background: 'linear-gradient(90deg, #0ea5e9, #06b6d4, #a78bfa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+          <h2 style={{ fontSize: '3.5rem', fontWeight: 950, marginBottom: '5rem', letterSpacing: '-2px', textAlign: 'center', background: 'linear-gradient(90deg, #0ea5e9, #06b6d4, #a78bfa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
             Enterprise Features
           </h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
@@ -1111,192 +1165,151 @@ export default function Home() {
 
           <div style={{ 
             display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', 
-            gap: '2rem', 
-            padding: '2rem',
-            background: 'rgba(255, 255, 255, 0.03)',
-            borderRadius: '12px',
-            border: '1px solid rgba(255, 255, 255, 0.05)',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', 
+            gap: '2.5rem', 
+            padding: '3rem',
+            background: isDarkMode ? 'rgba(255, 255, 255, 0.02)' : 'rgba(15, 23, 42, 0.02)',
+            borderRadius: '24px',
+            border: '1px solid var(--card-border)',
             alignItems: 'center'
           }}>
             {[
-              { name: 'Google Pay', emoji: '🔵' },
-              { name: 'PayPal', emoji: '💳' },
-              { name: 'Mobikwik', emoji: '📱' },
-              { name: 'PhonePe', emoji: '📲' },
-              { name: 'Razorpay', emoji: '💰' },
-              { name: 'Amazon Pay', emoji: '🛒' },
+              { name: 'Google Pay', logo: 'https://upload.wikimedia.org/wikipedia/commons/c/c7/Google_Pay_Logo_%282020%29.svg' },
+              { name: 'PayPal', logo: 'https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg' },
+              { name: 'PhonePe', logo: 'https://upload.wikimedia.org/wikipedia/commons/7/71/PhonePe_Logo.svg' },
+              { name: 'Razorpay', logo: 'https://upload.wikimedia.org/wikipedia/commons/8/89/Razorpay_logo.svg' },
+              { name: 'Amazon Pay', logo: 'https://upload.wikimedia.org/wikipedia/commons/2/29/Amazon_Pay_logo.svg' },
+              { name: 'MobiKwik', logo: 'https://upload.wikimedia.org/wikipedia/commons/7/7b/MobiKwik_Logo.svg' },
             ].map((partner, i) => (
               <div key={i} style={{
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                padding: '1.5rem 1rem',
-                background: 'rgba(255, 255, 255, 0.05)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                borderRadius: '10px',
+                padding: '2.5rem 1.5rem',
+                background: isDarkMode ? 'rgba(255, 255, 255, 0.05)' : '#fff',
+                border: '1px solid var(--card-border)',
+                borderRadius: '20px',
                 cursor: 'pointer',
-                transition: 'all 0.3s ease',
-                fontSize: '3rem',
-                textAlign: 'center'
+                transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+                textAlign: 'center',
+                boxShadow: isDarkMode ? '0 10px 30px rgba(0,0,0,0.3)' : '0 10px 30px rgba(0,0,0,0.05)',
               }}
               onMouseEnter={e => {
-                e.currentTarget.style.background = 'rgba(6, 182, 212, 0.15)';
-                e.currentTarget.style.borderColor = 'rgba(6, 182, 212, 0.5)';
-                e.currentTarget.style.transform = 'translateY(-4px)';
+                e.currentTarget.style.transform = 'translateY(-12px) scale(1.05)';
+                e.currentTarget.style.borderColor = 'var(--primary)';
+                e.currentTarget.style.boxShadow = isDarkMode ? '0 20px 40px rgba(6, 182, 212, 0.2)' : '0 15px 35px rgba(0,0,0,0.1)';
               }}
               onMouseLeave={e => {
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
-                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
-                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                e.currentTarget.style.borderColor = 'var(--card-border)';
+                e.currentTarget.style.boxShadow = isDarkMode ? '0 10px 30px rgba(0,0,0,0.3)' : '0 10px 30px rgba(0,0,0,0.05)';
               }}>
-                <div>{partner.emoji}</div>
-                <div style={{ fontSize: '0.8rem', color: '#cbd5e1', marginTop: '0.5rem', fontWeight: 600 }}>{partner.name}</div>
+                <div style={{
+                  height: '40px',
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: '1.25rem'
+                }}>
+                  <img src={partner.logo} alt={partner.name} style={{ 
+                    maxHeight: '100%', 
+                    maxWidth: '120px', 
+                    objectFit: 'contain',
+                    filter: isDarkMode ? 'brightness(1.2)' : 'none'
+                  }} />
+                </div>
+                <div style={{ fontSize: '0.8rem', color: 'var(--foreground)', opacity: 0.7, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em' }}>{partner.name}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer style={{ padding: '3rem 1rem', background: 'linear-gradient(180deg, #0a1117 0%, #0f1729 100%)', borderTop: '1px solid rgba(6, 182, 212, 0.1)' }}>
+      <footer style={{ 
+        padding: '8rem 2rem 4rem', 
+        background: 'linear-gradient(180deg, transparent 0%, rgba(6, 182, 212, 0.03) 100%)', 
+        borderTop: '1px solid rgba(255, 255, 255, 0.05)',
+        position: 'relative',
+        zIndex: 10
+      }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '3rem', marginBottom: '3rem' }}>
-            {/* Brand */}
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: '1.5fr 1fr 1fr 1.5fr', 
+            gap: '5rem', 
+            marginBottom: '6rem'
+          }}>
+            {/* Brand Section */}
             <div>
-              <h3 style={{ fontSize: '1.5rem', fontWeight: 800, marginBottom: '1rem', background: 'linear-gradient(90deg, #0ea5e9, #06b6d4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                BloShield
-              </h3>
-              <p style={{ color: '#94a3b8', fontSize: '0.95rem', lineHeight: '1.6' }}>
-                Enterprise-grade fraud detection and financial security. Protecting your users with AI-powered real-time monitoring.
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
+                <div style={{ width: '45px', height: '45px', background: 'linear-gradient(135deg, #0ea5e9, #06b6d4)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 20px rgba(6, 182, 212, 0.3)' }}>
+                  <Shield size={26} color="#fff" />
+                </div>
+                <h3 style={{ fontSize: '2rem', fontWeight: 900, margin: 0, color: '#fff', letterSpacing: '-1px' }}>BloShield</h3>
+              </div>
+              <p style={{ color: '#94a3b8', fontSize: '1.1rem', lineHeight: '1.7', marginBottom: '2.5rem', maxWidth: '300px' }}>
+                Next-generation fraud prevention infrastructure for modern financial institutions.
               </p>
+              <div style={{ display: 'flex', gap: '1.2rem' }}>
+                {['🐙', '🐦', '💼', '📸'].map((icon, i) => (
+                  <div key={i} style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'all 0.3s ease' }}
+                    onMouseEnter={e => { e.currentTarget.style.background = 'rgba(6, 182, 212, 0.1)'; e.currentTarget.style.borderColor = '#06b6d4'; }}
+                    onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)'; e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)'; }}>
+                    {icon}
+                  </div>
+                ))}
+              </div>
             </div>
 
             {/* Quick Links */}
             <div>
-              <h4 style={{ fontSize: '0.95rem', fontWeight: 700, marginBottom: '1rem', color: '#e2e8f0', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                Product
-              </h4>
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                {['Features', 'Pricing', 'Security', 'API Docs'].map(link => (
-                  <li key={link}>
-                    <a href="#" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '0.9rem', transition: 'color 0.3s ease' }}
-                      onMouseEnter={e => e.currentTarget.style.color = '#0ea5e9'}
-                      onMouseLeave={e => e.currentTarget.style.color = '#94a3b8'}>
-                      {link}
-                    </a>
-                  </li>
+              <h4 style={{ color: '#fff', fontSize: '1rem', fontWeight: 800, marginBottom: '2.5rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Platform</h4>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
+                {['Intelligence', 'API Gateway', 'Compliance', 'Pricing'].map(link => (
+                  <li key={link}><a href="#" style={{ color: '#64748b', textDecoration: 'none', fontSize: '1rem', transition: 'color 0.3s ease' }} onMouseEnter={e => e.currentTarget.style.color = '#fff'} onMouseLeave={e => e.currentTarget.style.color = '#64748b'}>{link}</a></li>
                 ))}
               </ul>
             </div>
 
-            {/* Company */}
             <div>
-              <h4 style={{ fontSize: '0.95rem', fontWeight: 700, marginBottom: '1rem', color: '#e2e8f0', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                Company
-              </h4>
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                {['About', 'Blog', 'Careers', 'Contact'].map(link => (
-                  <li key={link}>
-                    <a href="#" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '0.9rem', transition: 'color 0.3s ease' }}
-                      onMouseEnter={e => e.currentTarget.style.color = '#0ea5e9'}
-                      onMouseLeave={e => e.currentTarget.style.color = '#94a3b8'}>
-                      {link}
-                    </a>
-                  </li>
+              <h4 style={{ color: '#fff', fontSize: '1rem', fontWeight: 800, marginBottom: '2.5rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Resources</h4>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
+                {['Documentation', 'Developer API', 'System Status', 'Security'].map(link => (
+                  <li key={link}><a href="#" style={{ color: '#64748b', textDecoration: 'none', fontSize: '1rem', transition: 'color 0.3s ease' }} onMouseEnter={e => e.currentTarget.style.color = '#fff'} onMouseLeave={e => e.currentTarget.style.color = '#64748b'}>{link}</a></li>
                 ))}
               </ul>
             </div>
 
-            {/* Developer */}
+            {/* Newsletter */}
             <div>
-              <h4 style={{ fontSize: '0.95rem', fontWeight: 700, marginBottom: '1rem', color: '#e2e8f0', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                Developer
-              </h4>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                <a href="https://github.com/prince-up" target="_blank" rel="noopener noreferrer" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '0.9rem', transition: 'color 0.3s ease', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
-                  onMouseEnter={e => e.currentTarget.style.color = '#0ea5e9'}
-                  onMouseLeave={e => e.currentTarget.style.color = '#94a3b8'}>
-                  <span>👨‍💻 GitHub</span>
-                </a>
-                <a href="https://www.linkedin.com/in/prince-yadav-4t/" target="_blank" rel="noopener noreferrer" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '0.9rem', transition: 'color 0.3s ease', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
-                  onMouseEnter={e => e.currentTarget.style.color = '#0ea5e9'}
-                  onMouseLeave={e => e.currentTarget.style.color = '#94a3b8'}>
-                  <span>💼 LinkedIn</span>
-                </a>
-                <a href="https://x.com/prince__up" target="_blank" rel="noopener noreferrer" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '0.9rem', transition: 'color 0.3s ease', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
-                  onMouseEnter={e => e.currentTarget.style.color = '#0ea5e9'}
-                  onMouseLeave={e => e.currentTarget.style.color = '#94a3b8'}>
-                  <span>🐦 Twitter/X</span>
-                </a>
+              <h4 style={{ color: '#fff', fontSize: '1rem', fontWeight: 800, marginBottom: '2.5rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Join Our Network</h4>
+              <p style={{ color: '#64748b', fontSize: '1rem', marginBottom: '1.5rem' }}>Stay updated with the latest in AI-driven fraud security.</p>
+              <div style={{ position: 'relative' }}>
+                <input type="email" placeholder="Email Address" style={{ width: '100%', background: 'rgba(255, 255, 255, 0.02)', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '12px', padding: '16px 20px', color: '#fff', outline: 'none' }} />
+                <button style={{ position: 'absolute', right: '6px', top: '6px', bottom: '6px', padding: '0 20px', background: 'linear-gradient(135deg, #0ea5e9, #06b6d4)', border: 'none', borderRadius: '8px', color: '#fff', fontWeight: 700, cursor: 'pointer' }}>Join</button>
               </div>
             </div>
           </div>
 
-          {/* Divider */}
-          <div style={{ borderTop: '1px solid rgba(6, 182, 212, 0.1)', paddingTop: '2rem', marginTop: '3rem' }}>
-            {/* Creator Info */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem', marginBottom: '2rem' }}>
+          {/* Bottom Bar */}
+          <div style={{ borderTop: '1px solid rgba(255, 255, 255, 0.05)', paddingTop: '3rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '2rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+              <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'linear-gradient(135deg, #1e293b, #0f172a)', border: '1px solid rgba(255, 255, 255, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem' }}>👨‍💻</div>
               <div>
-                <h4 style={{ fontSize: '0.95rem', fontWeight: 700, marginBottom: '0.75rem', color: '#0ea5e9' }}>
-                  👨‍💻 Creator
-                </h4>
-                <p style={{ color: '#cbd5e1', fontSize: '0.9rem', marginBottom: '0.25rem' }}>
-                  <strong>Name:</strong> Prince Yadav
-                </p>
-                <p style={{ color: '#cbd5e1', fontSize: '0.9rem', marginBottom: '0.25rem' }}>
-                  <strong>Email:</strong> <a href="mailto:princeyadav76001@gmail.com" style={{ color: '#0ea5e9', textDecoration: 'none' }}>princeyadav76001@gmail.com</a>
-                </p>
-                <p style={{ color: '#cbd5e1', fontSize: '0.9rem', marginBottom: '0.25rem' }}>
-                  <strong>Education:</strong> B.Tech 3rd Year Student
-                </p>
-              </div>
-
-              <div>
-                <h4 style={{ fontSize: '0.95rem', fontWeight: 700, marginBottom: '0.75rem', color: '#0ea5e9' }}>
-                  🔗 Connect
-                </h4>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                  <a href="https://github.com/prince-up" target="_blank" rel="noopener noreferrer" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '0.9rem', transition: 'color 0.3s ease' }}
-                    onMouseEnter={e => e.currentTarget.style.color = '#0ea5e9'}
-                    onMouseLeave={e => e.currentTarget.style.color = '#94a3b8'}>
-                    🐙 GitHub: github.com/prince-up
-                  </a>
-                  <a href="https://www.linkedin.com/in/prince-yadav-4t/" target="_blank" rel="noopener noreferrer" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '0.9rem', transition: 'color 0.3s ease' }}
-                    onMouseEnter={e => e.currentTarget.style.color = '#0ea5e9'}
-                    onMouseLeave={e => e.currentTarget.style.color = '#94a3b8'}>
-                    💼 LinkedIn: /in/prince-yadav-4t/
-                  </a>
-                  <a href="https://x.com/prince__up" target="_blank" rel="noopener noreferrer" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '0.9rem', transition: 'color 0.3s ease' }}
-                    onMouseEnter={e => e.currentTarget.style.color = '#0ea5e9'}
-                    onMouseLeave={e => e.currentTarget.style.color = '#94a3b8'}>
-                    🐦 Twitter/X: @prince__up
-                  </a>
-                </div>
-              </div>
-
-              <div>
-                <h4 style={{ fontSize: '0.95rem', fontWeight: 700, marginBottom: '0.75rem', color: '#0ea5e9' }}>
-                  � About BloShield
-                </h4>
-                <p style={{ color: '#cbd5e1', fontSize: '0.9rem', marginBottom: '0.25rem' }}>
-                  Enterprise fraud detection platform protecting millions of transactions
-                </p>
-                <p style={{ color: '#64748b', fontSize: '0.85rem', marginTop: '0.75rem' }}>
-                  BloShield uses advanced AI/ML to detect fraudulent patterns in real-time, helping fintech companies and banks reduce fraud by 99%.
-                </p>
+                <div style={{ fontSize: '0.9rem', fontWeight: 800, color: '#fff' }}>Prince Yadav</div>
+                <div style={{ fontSize: '0.75rem', color: '#64748b' }}>Creator & Lead Architect • BloShield Labs</div>
               </div>
             </div>
-
-            {/* Copyright */}
-            <div style={{ textAlign: 'center', paddingTop: '2rem', borderTop: '1px solid rgba(6, 182, 212, 0.1)' }}>
-              <p style={{ color: '#64748b', fontSize: '0.85rem' }}>
-                © 2026 BloShield. Built by Prince Yadav | All rights reserved.
-              </p>
-              <p style={{ color: '#64748b', fontSize: '0.85rem', marginTop: '0.5rem' }}>
-                Made with ❤️ for enterprise-grade financial security
-              </p>
+            
+            <div style={{ display: 'flex', gap: '2.5rem' }}>
+              <p style={{ color: '#475569', fontSize: '0.9rem', margin: 0 }}>© 2026 BloShield Infrastructure. All rights reserved.</p>
+              <div style={{ display: 'flex', gap: '1.5rem' }}>
+                {['Privacy', 'Terms', 'Cookie Policy'].map(item => (
+                  <a key={item} href="#" style={{ color: '#475569', fontSize: '0.9rem', textDecoration: 'none' }} onMouseEnter={e => e.currentTarget.style.color = '#fff'} onMouseLeave={e => e.currentTarget.style.color = '#475569'}>{item}</a>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -1665,53 +1678,67 @@ export default function Home() {
 
           <FilterBar onFilterChange={() => {}} />
 
-        {/* Top KPIs */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem', marginBottom: '3rem' }}>
+        {/* Top KPIs - Engineer Professional Look */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem', marginBottom: '4rem' }}>
           {[
-            { label: 'Total Transactions', value: '12,458', icon: '💳', change: '+18.3%', gradient: 'linear-gradient(135deg, #0ea5e9, #06b6d4)' },
-            { label: 'Success Rate', value: '99.82%', icon: '✅', change: '+0.5%', gradient: 'linear-gradient(135deg, #22c55e, #059669)' },
-            { label: 'Threats Blocked', value: '347', icon: '🛡️', change: '+24.1%', gradient: 'linear-gradient(135deg, #ef4444, #dc2626)' },
-            { label: 'Avg Response Time', value: '42ms', icon: '⚡', change: '-8.2%', gradient: 'linear-gradient(135deg, #f59e0b, #d97706)' },
+            { label: 'Network Throughput', value: '1.2 GB/s', icon: '📡', change: 'Optimized', gradient: 'linear-gradient(135deg, #0ea5e9, #06b6d4)' },
+            { label: 'AI Accuracy Delta', value: '99.98%', icon: '🧠', change: '+0.02%', gradient: 'linear-gradient(135deg, #a78bfa, #8b5cf6)' },
+            { label: 'Security Handshakes', value: '842k', icon: '🤝', change: 'Secure', gradient: 'linear-gradient(135deg, #22c55e, #10b981)' },
+            { label: 'System Uptime', value: '99.99%', icon: '⚙️', change: 'Stable', gradient: 'linear-gradient(135deg, #f59e0b, #f97316)' },
           ].map((metric, i) => (
             <div key={i} style={{
-              background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(10, 165, 233, 0.05))',
-              border: '1px solid rgba(6, 182, 212, 0.2)',
-              borderRadius: '16px',
-              padding: '2rem',
-              animation: `fadeInUp 0.6s ease-out ${i * 0.1}s`,
-              transition: 'all 0.3s ease',
-              cursor: 'pointer',
+              background: 'rgba(255, 255, 255, 0.02)',
+              border: '1px solid rgba(255, 255, 255, 0.05)',
+              borderRadius: '24px',
+              padding: '2.5rem 2rem',
               position: 'relative',
-              overflow: 'hidden'
+              overflow: 'hidden',
+              transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+              cursor: 'pointer'
             }}
             onMouseEnter={e => {
-              e.currentTarget.style.borderColor = 'rgba(6, 182, 212, 0.4)';
-              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(10, 165, 233, 0.08))';
-              e.currentTarget.style.transform = 'translateY(-4px)';
-              e.currentTarget.style.boxShadow = '0 0 30px rgba(6, 182, 212, 0.2)';
+              e.currentTarget.style.transform = 'translateY(-8px) scale(1.02)';
+              e.currentTarget.style.borderColor = 'rgba(6, 182, 212, 0.3)';
+              e.currentTarget.style.background = 'rgba(6, 182, 212, 0.02)';
+              e.currentTarget.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(6, 182, 212, 0.1)';
             }}
             onMouseLeave={e => {
-              e.currentTarget.style.borderColor = 'rgba(6, 182, 212, 0.2)';
-              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(10, 165, 233, 0.05))';
-              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.transform = 'translateY(0) scale(1)';
+              e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.05)';
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)';
               e.currentTarget.style.boxShadow = 'none';
             }}>
               <div style={{
                 position: 'absolute',
                 top: 0,
-                left: 0,
                 right: 0,
-                height: '4px',
-                background: metric.gradient
+                width: '100px',
+                height: '100px',
+                background: metric.gradient,
+                filter: 'blur(60px)',
+                opacity: 0.1,
+                zIndex: 0
               }} />
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
-                <span style={{ fontSize: '2.5rem' }}>{metric.icon}</span>
-                <span style={{ fontSize: '0.8rem', fontWeight: 600, color: metric.change.startsWith('+') ? '#22c55e' : '#f59e0b', background: metric.change.startsWith('+') ? 'rgba(34, 197, 94, 0.2)' : 'rgba(245, 158, 11, 0.2)', padding: '4px 10px', borderRadius: '6px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', position: 'relative', zIndex: 1 }}>
+                <div style={{ 
+                  width: '48px', 
+                  height: '48px', 
+                  borderRadius: '12px', 
+                  background: 'rgba(255, 255, 255, 0.03)', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center',
+                  fontSize: '1.5rem',
+                  border: '1px solid rgba(255, 255, 255, 0.05)'
+                }}>
+                  {metric.icon}
+                </div>
+                <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#fff', background: 'rgba(255, 255, 255, 0.05)', padding: '4px 12px', borderRadius: '100px', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
                   {metric.change}
                 </span>
               </div>
-              <div style={{ fontSize: '0.85rem', color: '#94a3b8', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>{metric.label}</div>
-              <div style={{ fontSize: '2.2rem', fontWeight: 900, background: metric.gradient, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', letterSpacing: '-1px' }}>
+              <div style={{ fontSize: '0.8rem', color: '#64748b', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.15em', fontWeight: 800 }}>{metric.label}</div>
+              <div style={{ fontSize: '2.5rem', fontWeight: 950, color: '#fff', letterSpacing: '-1px' }}>
                 {metric.value}
               </div>
             </div>
@@ -1829,19 +1856,36 @@ export default function Home() {
   };
 
   return (
-    <div style={{ background: 'linear-gradient(135deg, #060d1a 0%, #0f1729 100%)', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <Navbar activeView={activeView} setActiveView={setActiveView} />
-      {isAuthenticated ? (
-        // Dashboard views for authenticated users
-        activeView === 'home' || activeView === 'overview' ? <OverviewView /> : 
-        activeView === 'logs' ? <APILogsView /> : 
-        activeView === 'alerts' ? <AlertsView /> : 
-        activeView === 'insights' ? <InsightsView /> : 
-        <AnalyticsView />
-      ) : (
-        // Marketing homepage for non-authenticated users
-        <OverviewView />
-      )}
+    <div className={isDarkMode ? 'dark-theme' : 'light-theme'} style={{ 
+      background: 'var(--background)', 
+      minHeight: '100vh', 
+      display: 'flex', 
+      flexDirection: 'column',
+      transition: 'var(--theme-transition)'
+    }}>
+
+      <Navbar 
+        activeView={activeView} 
+        setActiveView={setActiveView} 
+        isDarkMode={isDarkMode} 
+        toggleTheme={() => setIsDarkMode(!isDarkMode)} 
+      />
+      
+      <main style={{ position: 'relative', zIndex: 2 }}>
+        {authLoading ? (
+          <div style={{ height: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ width: '40px', height: '40px', border: '3px solid rgba(6, 182, 212, 0.2)', borderTopColor: '#06b6d4', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
+          </div>
+        ) : isAuthenticated ? (
+          activeView === 'home' || activeView === 'overview' ? <OverviewView /> : 
+          activeView === 'logs' ? <APILogsView /> : 
+          activeView === 'alerts' ? <AlertsView /> : 
+          activeView === 'insights' ? <InsightsView /> : 
+          <AnalyticsView />
+        ) : (
+          <OverviewView />
+        )}
+      </main>
     </div>
   );
 }

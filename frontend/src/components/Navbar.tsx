@@ -13,15 +13,24 @@ import {
   Bell,
   Settings,
   X,
-  Menu
+  Menu,
+  Sun,
+  Moon
 } from 'lucide-react';
 
 interface NavbarProps {
   activeView?: string;
   setActiveView?: (view: string) => void;
+  isDarkMode?: boolean;
+  toggleTheme?: () => void;
 }
 
-export default function Navbar({ activeView = '', setActiveView = () => {} }: NavbarProps) {
+export default function Navbar({ 
+  activeView = '', 
+  setActiveView = () => {},
+  isDarkMode = true,
+  toggleTheme = () => {}
+}: NavbarProps) {
   const router = useRouter();
   const pathname = usePathname();
   const { isAuthenticated } = useAuth();
@@ -39,9 +48,9 @@ export default function Navbar({ activeView = '', setActiveView = () => {} }: Na
 
   return (
     <nav style={{
-      background: 'linear-gradient(90deg, rgba(6, 13, 26, 0.95), rgba(15, 23, 42, 0.95))',
+      background: 'var(--card-bg)',
       backdropFilter: 'blur(30px)',
-      borderBottom: '1px solid rgba(6, 182, 212, 0.1)',
+      borderBottom: '1px solid var(--card-border)',
       padding: '0 clamp(1rem, 3vw, 2rem)',
       height: '72px',
       display: 'flex',
@@ -50,7 +59,8 @@ export default function Navbar({ activeView = '', setActiveView = () => {} }: Na
       position: 'sticky',
       top: 0,
       zIndex: 1000,
-      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)'
+      boxShadow: isDarkMode ? '0 8px 32px rgba(0, 0, 0, 0.4)' : '0 4px 12px rgba(0, 0, 0, 0.05)',
+      transition: 'var(--theme-transition)'
     }}>
       {/* Logo */}
       <div 
@@ -92,7 +102,7 @@ export default function Navbar({ activeView = '', setActiveView = () => {} }: Na
           <ShieldAlert size={22} color="white" strokeWidth={2.5} />
         </div>
         <div>
-          <h1 style={{ fontSize: 'clamp(1rem, 3vw, 1.35rem)', fontWeight: 800, letterSpacing: '-1px', margin: 0, color: '#ffffff' }}>
+          <h1 style={{ fontSize: 'clamp(1rem, 3vw, 1.35rem)', fontWeight: 800, letterSpacing: '-1px', margin: 0, color: 'var(--foreground)' }}>
             Blo<span style={{ background: 'linear-gradient(90deg, #0ea5e9, #06b6d4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Shield</span>
           </h1>
         </div>
@@ -202,6 +212,36 @@ export default function Navbar({ activeView = '', setActiveView = () => {} }: Na
             </button>
           </>
         )}
+
+        {/* Theme Toggle */}
+        <button
+          onClick={toggleTheme}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '40px',
+            height: '40px',
+            borderRadius: '10px',
+            border: '1px solid var(--card-border)',
+            background: 'var(--card-bg)',
+            color: 'var(--foreground)',
+            cursor: 'pointer',
+            transition: 'all 0.3s ease',
+            position: 'relative',
+            overflow: 'hidden'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.borderColor = 'var(--primary)';
+            e.currentTarget.style.transform = 'rotate(15deg)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.borderColor = 'var(--card-border)';
+            e.currentTarget.style.transform = 'rotate(0deg)';
+          }}
+        >
+          {isDarkMode ? <Sun size={20} fill="#f59e0b" color="#f59e0b" /> : <Moon size={20} fill="#0ea5e9" color="#0ea5e9" />}
+        </button>
 
         {/* Dashboard: Notification & Settings */}
         {!isHomepage && (
