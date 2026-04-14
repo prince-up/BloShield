@@ -62,7 +62,7 @@ const MobileCarousel = () => {
       maxWidth: '400px'
     }}>
       {/* Left Arrows - Features pointing from phone */}
-      <div style={{ position: 'absolute', left: '-200px', top: '50%', transform: 'translateY(-50%)', display: 'flex', flexDirection: 'column', gap: '3rem', zIndex: 5 }}>
+      <div style={{ position: 'absolute', left: 'clamp(-160px, -15vw, -120px)', top: '50%', transform: 'translateY(-50%)', display: 'flex', flexDirection: 'column', gap: '3rem', zIndex: 5 }}>
         {[
           { label: 'Real-Time Detection', icon: '⚡', color: '#06b6d4' },
           { label: 'Single SDK', icon: '🔧', color: '#0ea5e9' },
@@ -207,7 +207,7 @@ const MobileCarousel = () => {
       </div>
 
       {/* Right Info Labels */}
-      <div style={{ position: 'absolute', right: '-220px', top: '50%', transform: 'translateY(-50%)', display: 'flex', flexDirection: 'column', gap: '2rem', zIndex: 5 }}>
+      <div style={{ position: 'absolute', right: 'clamp(-180px, -15vw, -140px)', top: '50%', transform: 'translateY(-50%)', display: 'flex', flexDirection: 'column', gap: '2rem', zIndex: 5 }}>
         {[
           { label: '10+ Banks Connected', value: '100%', icon: '🏦' },
           { label: 'White-Label Ready', value: 'Ready', icon: '🎨' },
@@ -219,7 +219,11 @@ const MobileCarousel = () => {
             gap: '1.5rem',
             animation: 'fadeInRight 0.6s ease-out',
             paddingLeft: '1.5rem',
-            borderLeft: '2px solid rgba(6, 182, 212, 0.3)'
+            borderLeft: '2px solid rgba(6, 182, 212, 0.3)',
+            background: 'rgba(15, 23, 42, 0.4)',
+            backdropFilter: 'blur(8px)',
+            borderRadius: '0 12px 12px 0',
+            padding: '0.5rem 1rem 0.5rem 1rem',
           }}>
             {/* Arrow from phone */}
             <svg width="40" height="30" viewBox="0 0 40 30" style={{ color: '#06b6d4' }}>
