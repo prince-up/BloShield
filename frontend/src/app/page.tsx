@@ -56,13 +56,24 @@ const MobileCarousel = () => {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      minHeight: 'clamp(500px, 80vw, 700px)',
+      minHeight: 'clamp(450px, 70vh, 600px)',
       perspective: '1000px',
       width: '100%',
-      maxWidth: '400px'
+      maxWidth: '450px',
+      margin: '0 auto'
     }}>
-      {/* Left Arrows - Features pointing from phone */}
-      <div style={{ position: 'absolute', left: 'clamp(-160px, -15vw, -120px)', top: '50%', transform: 'translateY(-50%)', display: 'flex', flexDirection: 'column', gap: '3rem', zIndex: 5 }}>
+      {/* Left Arrows - Features pointing from phone - hidden on small tablets/mobile */}
+      <div style={{ 
+        position: 'absolute', 
+        left: 'clamp(-140px, -12vw, -100px)', 
+        top: '50%', 
+        transform: 'translateY(-50%)', 
+        display: 'flex', 
+        flexDirection: 'column', 
+        gap: '2.5rem', 
+        zIndex: 5,
+        visibility: 'visible'
+      }} className="carousel-labels-left">
         {[
           { label: 'Real-Time Detection', icon: '⚡', color: '#06b6d4' },
           { label: 'Single SDK', icon: '🔧', color: '#0ea5e9' },
@@ -206,8 +217,18 @@ const MobileCarousel = () => {
         </div>
       </div>
 
-      {/* Right Info Labels */}
-      <div style={{ position: 'absolute', right: 'clamp(-180px, -15vw, -140px)', top: '50%', transform: 'translateY(-50%)', display: 'flex', flexDirection: 'column', gap: '2rem', zIndex: 5 }}>
+      {/* Right Info Labels - hidden on small tablets/mobile */}
+      <div style={{ 
+        position: 'absolute', 
+        right: 'clamp(-160px, -12vw, -120px)', 
+        top: '50%', 
+        transform: 'translateY(-50%)', 
+        display: 'flex', 
+        flexDirection: 'column', 
+        gap: '2rem', 
+        zIndex: 5,
+        visibility: 'visible'
+      }} className="carousel-labels-right">
         {[
           { label: '10+ Banks Connected', value: '100%', icon: '🏦' },
           { label: 'White-Label Ready', value: 'Ready', icon: '🎨' },
@@ -903,11 +924,12 @@ export default function Home() {
       <>
       {/* Partner Banner - Pro Redesign */}
       <section style={{ 
-        padding: '2rem 0', 
+        padding: '0.75rem 0', 
         background: 'rgba(255, 255, 255, 0.01)', 
         borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
         position: 'relative',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        width: '100%'
       }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', justifyContent: 'center' }}>
           <div style={{
@@ -935,8 +957,8 @@ export default function Home() {
         flex: 1,
         display: 'flex',
         alignItems: 'center',
-        padding: 'clamp(2rem, 6vw, 5rem) 2rem',
-        minHeight: '85vh',
+        padding: 'clamp(1rem, 4vw, 3rem) 2rem',
+        minHeight: '80vh',
         position: 'relative',
         overflow: 'hidden'
       }}>
@@ -954,17 +976,17 @@ export default function Home() {
         }} />
         
         <div style={{ 
-          maxWidth: '1200px', 
+          maxWidth: '1400px', 
           margin: '0 auto',
           width: '100%',
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-          gap: 'clamp(2rem, 5vw, 4rem)',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 450px), 1fr))',
+          gap: 'clamp(2rem, 6vw, 5rem)',
           alignItems: 'center',
           position: 'relative',
           zIndex: 1
         }}>
-          <div style={{ animation: 'fadeInUp 0.8s ease-out' }}>
+          <div style={{ animation: 'fadeInUp 0.8s ease-out', maxWidth: '750px' }}>
             {/* Top Badge - Refined */}
             <div style={{
               display: 'inline-flex',
@@ -987,10 +1009,10 @@ export default function Home() {
 
             {/* Main Headline */}
             <h1 style={{ 
-              fontSize: 'clamp(2.5rem, 6vw, 5rem)', 
+              fontSize: 'clamp(1.5rem, 5vw, 4.2rem)', 
               fontWeight: 950, 
               lineHeight: 1, 
-              marginBottom: '1.5rem', 
+              marginBottom: '1rem', 
               letterSpacing: '-0.04em',
               color: '#fff'
             }}>
@@ -1534,6 +1556,39 @@ export default function Home() {
 
   const InsightsView = () => {
     const [filters, setFilters] = useState({ risk: 'all', date: 'today' });
+    const [rbiAlerts, setRbiAlerts] = useState([]);
+    const [trendingScams, setTrendingScams] = useState([]);
+    const [liveFeed, setLiveFeed] = useState([]);
+    const [selectedAlert, setSelectedAlert] = useState(null);
+
+    useEffect(() => {
+      const fetchRbiData = async () => {
+        try {
+          // Fetch active alerts
+          const alertsResponse = await fetch('http://localhost:8000/rbi/active-alerts');
+          const alertsData = await alertsResponse.json();
+          setRbiAlerts(alertsData.alerts || []);
+
+          // Fetch trending scams
+          const trendingResponse = await fetch('http://localhost:8000/rbi/trending-scams');
+          const trendingData = await trendingResponse.json();
+          setTrendingScams(trendingData.trending_scams || []);
+
+          // Fetch live feed
+          const feedResponse = await fetch('http://localhost:8000/rbi/live-feed');
+          const feedData = await feedResponse.json();
+          setLiveFeed(feedData.live_feed || []);
+        } catch (error) {
+          console.error('Failed to fetch RBI data:', error);
+        }
+      };
+
+      fetchRbiData();
+
+      // Set up live updates every 30 seconds
+      const interval = setInterval(fetchRbiData, 30000);
+      return () => clearInterval(interval);
+    }, []);
 
     return (
       <section style={{ padding: '3rem 2rem', flex: 1 }}>
@@ -1545,7 +1600,294 @@ export default function Home() {
 
           <FilterBar onFilterChange={() => {}} />
 
+          {/* RBI Live Intelligence Dashboard */}
+          <div style={{ marginBottom: '3rem' }}>
+            <h2 style={{ fontSize: '1.8rem', fontWeight: 700, marginBottom: '1.5rem', color: '#f1f5f9' }}>
+              🔴 RBI Live Fraud Intelligence
+            </h2>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', marginBottom: '2rem' }}>
+              {/* Trending Scams */}
+              <div style={{ background: 'linear-gradient(135deg, #dc262615, #dc262606)', border: '1px solid #dc262630', borderRadius: '16px', padding: '2rem' }}>
+                <h3 style={{ fontSize: '1.3rem', fontWeight: 700, marginBottom: '1rem', color: '#f1f5f9', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  📈 Trending Scams
+                </h3>
+                <div style={{ spaceY: '1rem' }}>
+                  {trendingScams.slice(0, 3).map((scam, i) => (
+                    <div key={scam.alert_id} style={{ 
+                      padding: '1rem', 
+                      background: 'rgba(255,255,255,0.05)', 
+                      borderRadius: '8px',
+                      marginBottom: '0.5rem',
+                      border: '1px solid rgba(220, 38, 38, 0.2)'
+                    }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                        <span style={{ fontWeight: 600, color: '#f1f5f9', fontSize: '0.9rem' }}>{scam.title}</span>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                          <span style={{ 
+                            fontSize: '0.8rem', 
+                            color: scam.trend_direction === 'up' ? '#dc2626' : '#22c55e',
+                            fontWeight: 600
+                          }}>
+                            {scam.trend_score}%
+                          </span>
+                          <span style={{ fontSize: '0.7rem', color: '#94a3b8' }}>
+                            {scam.trend_direction === 'up' ? '↗️' : '↘️'}
+                          </span>
+                        </div>
+                      </div>
+                      <div style={{ fontSize: '0.8rem', color: '#94a3b8' }}>
+                        {scam.weekly_incidents} incidents • {scam.affected_users} affected
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Live Fraud Feed */}
+              <div style={{ background: 'linear-gradient(135deg, #f59e0b15, #f59e0b06)', border: '1px solid #f59e0b30', borderRadius: '16px', padding: '2rem' }}>
+                <h3 style={{ fontSize: '1.3rem', fontWeight: 700, marginBottom: '1rem', color: '#f1f5f9', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  🔔 Live Fraud Feed
+                  <span style={{ 
+                    width: '8px', 
+                    height: '8px', 
+                    background: '#f59e0b', 
+                    borderRadius: '50%', 
+                    animation: 'pulse 2s infinite' 
+                  }} />
+                </h3>
+                <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                  {liveFeed.slice(0, 5).map((item, i) => (
+                    <div key={item.id} style={{ 
+                      padding: '0.75rem', 
+                      background: 'rgba(255,255,255,0.05)', 
+                      borderRadius: '6px',
+                      marginBottom: '0.5rem',
+                      borderLeft: `3px solid ${item.severity === 'HIGH' ? '#dc2626' : item.severity === 'MEDIUM' ? '#f59e0b' : '#22c55e'}`
+                    }}>
+                      <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#f1f5f9', marginBottom: '0.25rem' }}>
+                        {item.title}
+                      </div>
+                      <div style={{ fontSize: '0.75rem', color: '#94a3b8', marginBottom: '0.25rem' }}>
+                        {item.description}
+                      </div>
+                      <div style={{ fontSize: '0.7rem', color: '#64748b' }}>
+                        {new Date(item.timestamp).toLocaleTimeString()} • {item.affected_count} affected
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Risk Intelligence Summary */}
+              <div style={{ background: 'linear-gradient(135deg, #22c55e15, #22c55e06)', border: '1px solid #22c55e30', borderRadius: '16px', padding: '2rem' }}>
+                <h3 style={{ fontSize: '1.3rem', fontWeight: 700, marginBottom: '1rem', color: '#f1f5f9', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  🛡️ Risk Intelligence
+                </h3>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                  <div style={{ textAlign: 'center', padding: '1rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px' }}>
+                    <div style={{ fontSize: '1.5rem', fontWeight: 700, color: '#22c55e' }}>{rbiAlerts.length}</div>
+                    <div style={{ fontSize: '0.8rem', color: '#94a3b8' }}>Active Alerts</div>
+                  </div>
+                  <div style={{ textAlign: 'center', padding: '1rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px' }}>
+                    <div style={{ fontSize: '1.5rem', fontWeight: 700, color: '#f59e0b' }}>
+                      {trendingScams.length > 0 ? Math.max(...trendingScams.map(s => s.trend_score)) : 0}%
+                    </div>
+                    <div style={{ fontSize: '0.8rem', color: '#94a3b8' }}>Peak Trend</div>
+                  </div>
+                  <div style={{ textAlign: 'center', padding: '1rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px' }}>
+                    <div style={{ fontSize: '1.5rem', fontWeight: 700, color: '#dc2626' }}>
+                      {liveFeed.length > 0 ? liveFeed.filter(f => f.severity === 'HIGH').length : 0}
+                    </div>
+                    <div style={{ fontSize: '0.8rem', color: '#94a3b8' }}>Critical Feeds</div>
+                  </div>
+                  <div style={{ textAlign: 'center', padding: '1rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px' }}>
+                    <div style={{ fontSize: '1.5rem', fontWeight: 700, color: '#8b5cf6' }}>
+                      {rbiAlerts.length > 0 ? Math.round(rbiAlerts.reduce((sum, a) => sum + a.severity_score, 0) / rbiAlerts.length) : 0}
+                    </div>
+                    <div style={{ fontSize: '0.8rem', color: '#94a3b8' }}>Avg Severity</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+            {/* RBI Compliance Guidelines */}
+            {[
+              { 
+                icon: '⚖️', 
+                title: 'RBI Compliance Guidelines', 
+                score: 'RBI 2024',
+                metric: 'Regulatory Framework',
+                content: 'LEGAL: KYC-compliant transactions, verified merchant payments, RBI-regulated apps. ILLEGAL: Unverified P2P transfers >₹1L/day, fake investment schemes, unauthorized data sharing.',
+                trend: '📋 RBI Guidelines',
+                color: '#059669'
+              },
+              { 
+                icon: '🚫', 
+                title: 'Prohibited Activities', 
+                score: 'High Risk',
+                metric: 'Fraud Prevention',
+                content: 'ILLEGAL: Money laundering, terrorist financing, fake loan apps, unauthorized ATM skimming, cryptocurrency scams without RBI approval. Report suspicious activities immediately.',
+                trend: '🚨 Report Now',
+                color: '#dc2626'
+              },
+              { 
+                icon: '✅', 
+                title: 'Permitted Transactions', 
+                score: 'Safe',
+                metric: 'Compliance Status',
+                content: 'LEGAL: UPI payments up to ₹1L/day, NEFT/RTGS transfers, verified e-commerce purchases, RBI-licensed banking apps. Always verify merchant authenticity.',
+                trend: '🛡️ Protected',
+                color: '#16a34a'
+              },
+            ].map((insight, i) => (
+              <div key={`compliance-${i}`} style={{
+                background: `linear-gradient(135deg, ${insight.color}15, ${insight.color}06)`,
+                border: `1px solid ${insight.color}30`,
+                borderRadius: '16px',
+                padding: '2rem',
+                position: 'relative',
+                overflow: 'hidden',
+                transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                cursor: 'pointer',
+                animation: `fadeInUp 0.6s ease-out ${i * 0.1}s`,
+                display: 'flex',
+                flexDirection: 'column'
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.background = `linear-gradient(135deg, ${insight.color}25, ${insight.color}10)`;
+                e.currentTarget.style.transform = 'translateY(-8px)';
+                e.currentTarget.style.boxShadow = `0 20px 60px ${insight.color}30`;
+                e.currentTarget.style.borderColor = `${insight.color}50`;
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.background = `linear-gradient(135deg, ${insight.color}15, ${insight.color}06)`;
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.borderColor = `${insight.color}30`;
+              }}>
+                <div style={{ position: 'absolute', top: '-20px', right: '-20px', fontSize: '4rem', opacity: 0.1 }}>{insight.icon}</div>
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', marginBottom: '1.5rem' }}>
+                  <div style={{ fontSize: '2.5rem' }}>{insight.icon}</div>
+                  <div style={{ flex: 1 }}>
+                    <h3 style={{ fontSize: '1.15rem', fontWeight: 700, marginBottom: '0.3rem' }}>{insight.title}</h3>
+                    <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                      <div style={{ 
+                        fontSize: '1.8rem', 
+                        fontWeight: 900, 
+                        background: `linear-gradient(135deg, ${insight.color}, ${insight.color}dd)`,
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        letterSpacing: '-1px'
+                      }}>
+                        {insight.score}
+                      </div>
+                      <div style={{ fontSize: '0.75rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 600 }}>{insight.metric}</div>
+                    </div>
+                  </div>
+                </div>
+                <p style={{ color: '#cbd5e1', fontSize: '0.95rem', lineHeight: 1.6, marginBottom: '1.5rem', flex: 1 }}>{insight.content}</p>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '1rem', borderTop: `1px solid ${insight.color}20` }}>
+                  <span style={{ fontSize: '0.85rem', color: insight.color, fontWeight: 600 }}>{insight.trend}</span>
+                  <button style={{ padding: '6px 14px', borderRadius: '6px', border: `1px solid ${insight.color}40`, background: `${insight.color}15`, color: insight.color, cursor: 'pointer', fontWeight: 600, fontSize: '0.8rem', transition: 'all 0.3s ease' }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.background = `${insight.color}25`;
+                    e.currentTarget.style.transform = 'translateX(4px)';
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.background = `${insight.color}15`;
+                    e.currentTarget.style.transform = 'translateX(0)';
+                  }}>
+                    Learn More →
+                  </button>
+                </div>
+              </div>
+            ))}
+
+            {/* RBI Active Fraud Alerts with Enhanced Data */}
+            {rbiAlerts.map((alert, i) => (
+              <div key={`rbi-${alert.alert_id}`} style={{
+                background: `linear-gradient(135deg, #dc262615, #dc262606)`,
+                border: `1px solid #dc262630`,
+                borderRadius: '16px',
+                padding: '2rem',
+                position: 'relative',
+                overflow: 'hidden',
+                transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                cursor: 'pointer',
+                animation: `fadeInUp 0.6s ease-out ${(i + 3) * 0.1}s`,
+                display: 'flex',
+                flexDirection: 'column'
+              }}
+              onClick={() => setSelectedAlert(alert)}
+              onMouseEnter={e => {
+                e.currentTarget.style.background = `linear-gradient(135deg, #dc262625, #dc262610)`;
+                e.currentTarget.style.transform = 'translateY(-8px)';
+                e.currentTarget.style.boxShadow = `0 20px 60px #dc262630`;
+                e.currentTarget.style.borderColor = `#dc262650`;
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.background = `linear-gradient(135deg, #dc262615, #dc262606)`;
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.borderColor = `#dc262630`;
+              }}>
+                <div style={{ position: 'absolute', top: '-20px', right: '-20px', fontSize: '4rem', opacity: 0.1 }}>🚨</div>
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', marginBottom: '1.5rem' }}>
+                  <div style={{ fontSize: '2.5rem' }}>🚨</div>
+                  <div style={{ flex: 1 }}>
+                    <h3 style={{ fontSize: '1.15rem', fontWeight: 700, marginBottom: '0.3rem' }}>{alert.title}</h3>
+                    <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                      <div style={{ 
+                        fontSize: '1.2rem', 
+                        fontWeight: 900, 
+                        background: `linear-gradient(135deg, #dc2626, #dc2626dd)`,
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        letterSpacing: '-1px'
+                      }}>
+                        {alert.alert_id}
+                      </div>
+                      <div style={{ fontSize: '0.75rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 600 }}>{alert.risk_level} RISK</div>
+                    </div>
+                  </div>
+                </div>
+                <p style={{ color: '#cbd5e1', fontSize: '0.95rem', lineHeight: 1.6, marginBottom: '1.5rem', flex: 1 }}>{alert.description}</p>
+                
+                {/* Enhanced Alert Data */}
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
+                  <div style={{ textAlign: 'center', padding: '0.75rem', background: 'rgba(255,255,255,0.05)', borderRadius: '6px' }}>
+                    <div style={{ fontSize: '1.1rem', fontWeight: 700, color: '#f59e0b' }}>{alert.trend_score}%</div>
+                    <div style={{ fontSize: '0.7rem', color: '#94a3b8' }}>Trend Score</div>
+                  </div>
+                  <div style={{ textAlign: 'center', padding: '0.75rem', background: 'rgba(255,255,255,0.05)', borderRadius: '6px' }}>
+                    <div style={{ fontSize: '1.1rem', fontWeight: 700, color: '#dc2626' }}>{alert.severity_score}</div>
+                    <div style={{ fontSize: '0.7rem', color: '#94a3b8' }}>Severity</div>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '1rem', borderTop: `1px solid #dc262620` }}>
+                  <span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>
+                    {alert.weekly_incidents} incidents • {alert.affected_users} affected
+                  </span>
+                  <button style={{ padding: '6px 14px', borderRadius: '6px', border: `1px solid #dc262640`, background: `#dc262615`, color: '#dc2626', cursor: 'pointer', fontWeight: 600, fontSize: '0.8rem', transition: 'all 0.3s ease' }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.background = `#dc262625`;
+                    e.currentTarget.style.transform = 'translateX(4px)';
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.background = `#dc262615`;
+                    e.currentTarget.style.transform = 'translateX(0)';
+                  }}>
+                    View Details →
+                  </button>
+                </div>
+              </div>
+            ))}
+
+            {/* Existing AI Insights */}
             {[
               { 
                 icon: '📉',
@@ -1602,7 +1944,7 @@ export default function Home() {
               color: '#ec4899'
             },
           ].map((insight, i) => (
-            <div key={i} style={{
+            <div key={`ai-${i}`} style={{
               background: `linear-gradient(135deg, ${insight.color}15, ${insight.color}06)`,
               border: `1px solid ${insight.color}30`,
               borderRadius: '16px',
@@ -1611,7 +1953,7 @@ export default function Home() {
               overflow: 'hidden',
               transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
               cursor: 'pointer',
-              animation: `fadeInUp 0.6s ease-out ${i * 0.1}s`,
+              animation: `fadeInUp 0.6s ease-out ${(i + rbiAlerts.length + 3) * 0.1}s`,
               display: 'flex',
               flexDirection: 'column'
             }}
@@ -1665,8 +2007,491 @@ export default function Home() {
             </div>
           ))}
         </div>
+
+        {/* Selected Alert Details Modal */}
+        {selectedAlert && (
+          <div style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'rgba(0,0,0,0.8)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+            padding: '2rem'
+          }}
+          onClick={() => setSelectedAlert(null)}>
+            <div style={{
+              background: 'linear-gradient(135deg, #1e293b, #0f172a)',
+              borderRadius: '20px',
+              padding: '2rem',
+              maxWidth: '600px',
+              width: '100%',
+              maxHeight: '80vh',
+              overflowY: 'auto',
+              border: '1px solid #dc262630'
+            }}
+            onClick={e => e.stopPropagation()}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+                <h2 style={{ fontSize: '1.8rem', fontWeight: 700, color: '#f1f5f9' }}>
+                  🚨 {selectedAlert.title}
+                </h2>
+                <button 
+                  onClick={() => setSelectedAlert(null)}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: '#94a3b8',
+                    fontSize: '1.5rem',
+                    cursor: 'pointer',
+                    padding: '0.5rem',
+                    borderRadius: '50%',
+                    transition: 'all 0.3s ease'
+                  }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.background = 'rgba(220, 38, 38, 0.1)';
+                    e.currentTarget.style.color = '#dc2626';
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.background = 'none';
+                    e.currentTarget.style.color = '#94a3b8';
+                  }}>
+                  ✕
+                </button>
+              </div>
+
+              <div style={{ marginBottom: '2rem' }}>
+                <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
+                  <span style={{
+                    padding: '0.25rem 0.75rem',
+                    borderRadius: '20px',
+                    fontSize: '0.8rem',
+                    fontWeight: 600,
+                    background: selectedAlert.risk_level === 'HIGH' ? '#dc262615' : selectedAlert.risk_level === 'MEDIUM' ? '#f59e0b15' : '#22c55e15',
+                    color: selectedAlert.risk_level === 'HIGH' ? '#dc2626' : selectedAlert.risk_level === 'MEDIUM' ? '#f59e0b' : '#22c55e',
+                    border: `1px solid ${selectedAlert.risk_level === 'HIGH' ? '#dc262630' : selectedAlert.risk_level === 'MEDIUM' ? '#f59e0b30' : '#22c55e30'}`
+                  }}>
+                    {selectedAlert.risk_level} RISK
+                  </span>
+                  <span style={{
+                    padding: '0.25rem 0.75rem',
+                    borderRadius: '20px',
+                    fontSize: '0.8rem',
+                    fontWeight: 600,
+                    background: 'rgba(139, 92, 246, 0.1)',
+                    color: '#8b5cf6',
+                    border: '1px solid rgba(139, 92, 246, 0.3)'
+                  }}>
+                    {selectedAlert.fraud_type}
+                  </span>
+                </div>
+
+                <p style={{ color: '#cbd5e1', fontSize: '1rem', lineHeight: 1.6, marginBottom: '1.5rem' }}>
+                  {selectedAlert.description}
+                </p>
+              </div>
+
+              {/* Alert Statistics */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
+                <div style={{ textAlign: 'center', padding: '1rem', background: 'rgba(245, 158, 11, 0.1)', borderRadius: '12px', border: '1px solid rgba(245, 158, 11, 0.3)' }}>
+                  <div style={{ fontSize: '1.5rem', fontWeight: 700, color: '#f59e0b' }}>{selectedAlert.trend_score}%</div>
+                  <div style={{ fontSize: '0.8rem', color: '#94a3b8' }}>Trend Score</div>
+                  <div style={{ fontSize: '0.7rem', color: selectedAlert.trend_direction === 'up' ? '#22c55e' : '#dc2626', marginTop: '0.25rem' }}>
+                    {selectedAlert.trend_direction === 'up' ? '↗️ Rising' : '↘️ Falling'}
+                  </div>
+                </div>
+                <div style={{ textAlign: 'center', padding: '1rem', background: 'rgba(220, 38, 38, 0.1)', borderRadius: '12px', border: '1px solid rgba(220, 38, 38, 0.3)' }}>
+                  <div style={{ fontSize: '1.5rem', fontWeight: 700, color: '#dc2626' }}>{selectedAlert.severity_score}</div>
+                  <div style={{ fontSize: '0.8rem', color: '#94a3b8' }}>Severity Score</div>
+                  <div style={{ fontSize: '0.7rem', color: '#64748b', marginTop: '0.25rem' }}>Out of 100</div>
+                </div>
+                <div style={{ textAlign: 'center', padding: '1rem', background: 'rgba(6, 182, 212, 0.1)', borderRadius: '12px', border: '1px solid rgba(6, 182, 212, 0.3)' }}>
+                  <div style={{ fontSize: '1.5rem', fontWeight: 700, color: '#06b6d4' }}>{selectedAlert.weekly_incidents}</div>
+                  <div style={{ fontSize: '0.8rem', color: '#94a3b8' }}>Weekly Incidents</div>
+                  <div style={{ fontSize: '0.7rem', color: '#64748b', marginTop: '0.25rem' }}>This Week</div>
+                </div>
+                <div style={{ textAlign: 'center', padding: '1rem', background: 'rgba(168, 85, 247, 0.1)', borderRadius: '12px', border: '1px solid rgba(168, 85, 247, 0.3)' }}>
+                  <div style={{ fontSize: '1.5rem', fontWeight: 700, color: '#a855f7' }}>{selectedAlert.affected_users.toLocaleString()}</div>
+                  <div style={{ fontSize: '0.8rem', color: '#94a3b8' }}>Affected Users</div>
+                  <div style={{ fontSize: '0.7rem', color: '#64748b', marginTop: '0.25rem' }}>Reported</div>
+                </div>
+              </div>
+
+              {/* Keywords */}
+              <div style={{ marginBottom: '2rem' }}>
+                <h3 style={{ fontSize: '1.1rem', fontWeight: 600, color: '#f1f5f9', marginBottom: '0.75rem' }}>
+                  🔍 Detection Keywords
+                </h3>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                  {selectedAlert.keywords.map((keyword, i) => (
+                    <span key={i} style={{
+                      padding: '0.25rem 0.75rem',
+                      background: 'rgba(6, 182, 212, 0.1)',
+                      color: '#06b6d4',
+                      borderRadius: '15px',
+                      fontSize: '0.8rem',
+                      fontWeight: 500,
+                      border: '1px solid rgba(6, 182, 212, 0.3)'
+                    }}>
+                      "{keyword}"
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
+                <button style={{
+                  padding: '0.75rem 1.5rem',
+                  borderRadius: '8px',
+                  border: '1px solid #dc262640',
+                  background: '#dc262615',
+                  color: '#dc2626',
+                  cursor: 'pointer',
+                  fontWeight: 600,
+                  fontSize: '0.9rem',
+                  transition: 'all 0.3s ease'
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.background = '#dc262625';
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.background = '#dc262615';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                }}>
+                  📞 Report Incident
+                </button>
+                <button style={{
+                  padding: '0.75rem 1.5rem',
+                  borderRadius: '8px',
+                  border: 'none',
+                  background: 'linear-gradient(135deg, #dc2626, #b91c1c)',
+                  color: 'white',
+                  cursor: 'pointer',
+                  fontWeight: 600,
+                  fontSize: '0.9rem',
+                  transition: 'all 0.3s ease'
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.boxShadow = '0 10px 25px rgba(220, 38, 38, 0.3)';
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}>
+                  🛡️ Learn Prevention
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </section>
+    );
+  };
+
+  const RiskProfilesView = () => {
+    const [userProfiles, setUserProfiles] = useState([]);
+    const [selectedUser, setSelectedUser] = useState(null);
+    const [userHistory, setUserHistory] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+      const fetchUserProfiles = async () => {
+        try {
+          // Get sample users for demo - in real app, this would come from backend
+          const sampleUsers = [
+            'User123', 'User456', 'UserABC', 'UserXYZ', 'User789', 'User999'
+          ];
+
+          const profiles = await Promise.all(
+            sampleUsers.map(async (userId) => {
+              try {
+                const response = await fetch(`http://localhost:8000/blostem-dashboard/${userId}`);
+                const data = await response.json();
+                
+                // Calculate risk score based on various factors
+                const successRate = data.transaction_stats?.success_rate || 0;
+                const anomalyCount = data.transaction_stats?.anomalies_detected || 0;
+                const limitExceeded = data.spending_status?.limit_exceeded || false;
+                const daysExceeded = data.weekly_summary?.days_exceeded || 0;
+                
+                // Risk calculation logic
+                let riskScore = 0;
+                let riskLevel = 'Safe';
+                let riskColor = '#22c55e';
+                let riskIcon = '🟢';
+                
+                // Factors contributing to risk
+                if (successRate < 95) riskScore += 20;
+                if (anomalyCount > 5) riskScore += 25;
+                if (limitExceeded) riskScore += 15;
+                if (daysExceeded > 2) riskScore += 20;
+                
+                // Determine risk level
+                if (riskScore >= 60) {
+                  riskLevel = 'High';
+                  riskColor = '#dc2626';
+                  riskIcon = '🔴';
+                } else if (riskScore >= 30) {
+                  riskLevel = 'Medium';
+                  riskColor = '#f59e0b';
+                  riskIcon = '🟡';
+                }
+                
+                return {
+                  userId,
+                  riskScore,
+                  riskLevel,
+                  riskColor,
+                  riskIcon,
+                  stats: data,
+                  lastActivity: new Date().toISOString()
+                };
+              } catch (error) {
+                // Return default profile if API fails
+                return {
+                  userId,
+                  riskScore: Math.floor(Math.random() * 100),
+                  riskLevel: ['Safe', 'Medium', 'High'][Math.floor(Math.random() * 3)],
+                  riskColor: ['#22c55e', '#f59e0b', '#dc2626'][Math.floor(Math.random() * 3)],
+                  riskIcon: ['🟢', '🟡', '🔴'][Math.floor(Math.random() * 3)],
+                  stats: null,
+                  lastActivity: new Date().toISOString()
+                };
+              }
+            })
+          );
+          
+          setUserProfiles(profiles);
+          setLoading(false);
+        } catch (error) {
+          console.error('Failed to fetch user profiles:', error);
+          setLoading(false);
+        }
+      };
+      
+      fetchUserProfiles();
+    }, []);
+
+    const fetchUserHistory = async (userId) => {
+      try {
+        const response = await fetch(`http://localhost:8000/recent-logs?user_id=${userId}&limit=20`);
+        const data = await response.json();
+        setUserHistory(data || []);
+        setSelectedUser(userId);
+      } catch (error) {
+        console.error('Failed to fetch user history:', error);
+        setUserHistory([]);
+        setSelectedUser(userId);
+      }
+    };
+
+    const getRiskDistribution = () => {
+      const safe = userProfiles.filter(p => p.riskLevel === 'Safe').length;
+      const medium = userProfiles.filter(p => p.riskLevel === 'Medium').length;
+      const high = userProfiles.filter(p => p.riskLevel === 'High').length;
+      return { safe, medium, high };
+    };
+
+    const distribution = getRiskDistribution();
+
+    return (
+      <section style={{ padding: '3rem 2rem', flex: 1 }}>
+        <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+          <div style={{ marginBottom: '3rem' }}>
+            <h1 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '0.5rem', letterSpacing: '-1px', background: 'linear-gradient(90deg, #dc2626, #f59e0b, #22c55e)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>User Risk Profile System</h1>
+            <p style={{ color: '#94a3b8', fontSize: '1rem' }}>Monitor user risk levels and transaction history</p>
+          </div>
+
+          {/* Risk Distribution Summary */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '2rem', marginBottom: '3rem' }}>
+            <div style={{ background: 'linear-gradient(135deg, #22c55e15, #22c55e06)', border: '1px solid #22c55e30', borderRadius: '16px', padding: '2rem', textAlign: 'center' }}>
+              <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🟢</div>
+              <div style={{ fontSize: '2.5rem', fontWeight: 900, color: '#22c55e', marginBottom: '0.5rem' }}>{distribution.safe}</div>
+              <div style={{ color: '#94a3b8', fontSize: '0.9rem', fontWeight: 600 }}>SAFE USERS</div>
+            </div>
+            <div style={{ background: 'linear-gradient(135deg, #f59e0b15, #f59e0b06)', border: '1px solid #f59e0b30', borderRadius: '16px', padding: '2rem', textAlign: 'center' }}>
+              <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🟡</div>
+              <div style={{ fontSize: '2.5rem', fontWeight: 900, color: '#f59e0b', marginBottom: '0.5rem' }}>{distribution.medium}</div>
+              <div style={{ color: '#94a3b8', fontSize: '0.9rem', fontWeight: 600 }}>MEDIUM RISK</div>
+            </div>
+            <div style={{ background: 'linear-gradient(135deg, #dc262615, #dc262606)', border: '1px solid #dc262630', borderRadius: '16px', padding: '2rem', textAlign: 'center' }}>
+              <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🔴</div>
+              <div style={{ fontSize: '2.5rem', fontWeight: 900, color: '#dc2626', marginBottom: '0.5rem' }}>{distribution.high}</div>
+              <div style={{ color: '#94a3b8', fontSize: '0.9rem', fontWeight: 600 }}>HIGH RISK</div>
+            </div>
+          </div>
+
+          {/* User Profiles Grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '2rem', marginBottom: '3rem' }}>
+            {loading ? (
+              <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '4rem' }}>
+                <div style={{ width: '40px', height: '40px', border: '3px solid rgba(6, 182, 212, 0.2)', borderTopColor: '#06b6d4', borderRadius: '50%', animation: 'spin 1s linear infinite', margin: '0 auto 1rem' }} />
+                <p style={{ color: '#94a3b8' }}>Loading user risk profiles...</p>
+              </div>
+            ) : (
+              userProfiles.map((profile, i) => (
+                <div key={profile.userId} style={{
+                  background: `linear-gradient(135deg, ${profile.riskColor}15, ${profile.riskColor}06)`,
+                  border: `1px solid ${profile.riskColor}30`,
+                  borderRadius: '16px',
+                  padding: '2rem',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                  cursor: 'pointer',
+                  animation: `fadeInUp 0.6s ease-out ${i * 0.1}s`
+                }}
+                onClick={() => fetchUserHistory(profile.userId)}
+                onMouseEnter={e => {
+                  e.currentTarget.style.background = `linear-gradient(135deg, ${profile.riskColor}25, ${profile.riskColor}10)`;
+                  e.currentTarget.style.transform = 'translateY(-8px)';
+                  e.currentTarget.style.boxShadow = `0 20px 60px ${profile.riskColor}30`;
+                  e.currentTarget.style.borderColor = `${profile.riskColor}50`;
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.background = `linear-gradient(135deg, ${profile.riskColor}15, ${profile.riskColor}06)`;
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = 'none';
+                  e.currentTarget.style.borderColor = `${profile.riskColor}30`;
+                }}>
+                  <div style={{ position: 'absolute', top: '-20px', right: '-20px', fontSize: '4rem', opacity: 0.1 }}>{profile.riskIcon}</div>
+                  
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
+                    <div style={{ fontSize: '2.5rem' }}>{profile.riskIcon}</div>
+                    <div style={{ flex: 1 }}>
+                      <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '0.3rem' }}>{profile.userId}</h3>
+                      <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                        <div style={{ 
+                          fontSize: '1.5rem', 
+                          fontWeight: 900, 
+                          background: `linear-gradient(135deg, ${profile.riskColor}, ${profile.riskColor}dd)`,
+                          WebkitBackgroundClip: 'text',
+                          WebkitTextFillColor: 'transparent',
+                          letterSpacing: '-1px'
+                        }}>
+                          {profile.riskScore}/100
+                        </div>
+                        <div style={{ fontSize: '0.8rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 600 }}>{profile.riskLevel} RISK</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {profile.stats && (
+                    <div style={{ marginBottom: '1.5rem' }}>
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+                        <div style={{ textAlign: 'center', padding: '0.75rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px' }}>
+                          <div style={{ fontSize: '1.2rem', fontWeight: 700, color: profile.riskColor }}>{profile.stats.transaction_stats?.total_transactions || 0}</div>
+                          <div style={{ fontSize: '0.7rem', color: '#94a3b8', textTransform: 'uppercase' }}>Transactions</div>
+                        </div>
+                        <div style={{ textAlign: 'center', padding: '0.75rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px' }}>
+                          <div style={{ fontSize: '1.2rem', fontWeight: 700, color: profile.riskColor }}>{profile.stats.transaction_stats?.anomalies_detected || 0}</div>
+                          <div style={{ fontSize: '0.7rem', color: '#94a3b8', textTransform: 'uppercase' }}>Anomalies</div>
+                        </div>
+                      </div>
+                      <div style={{ fontSize: '0.85rem', color: '#cbd5e1', textAlign: 'center' }}>
+                        Daily Spending: ₹{profile.stats.spending_status?.daily_spent?.toFixed(2) || '0.00'} / ₹{profile.stats.spending_status?.daily_limit?.toFixed(2) || '0.00'}
+                      </div>
+                    </div>
+                  )}
+
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '1rem', borderTop: `1px solid ${profile.riskColor}20` }}>
+                    <span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>Last Activity: {new Date(profile.lastActivity).toLocaleDateString()}</span>
+                    <button style={{ padding: '6px 14px', borderRadius: '6px', border: `1px solid ${profile.riskColor}40`, background: `${profile.riskColor}15`, color: profile.riskColor, cursor: 'pointer', fontWeight: 600, fontSize: '0.8rem', transition: 'all 0.3s ease' }}
+                    onMouseEnter={e => {
+                      e.currentTarget.style.background = `${profile.riskColor}25`;
+                      e.currentTarget.style.transform = 'translateX(4px)';
+                    }}
+                    onMouseLeave={e => {
+                      e.currentTarget.style.background = `${profile.riskColor}15`;
+                      e.currentTarget.style.transform = 'translateX(0)';
+                    }}>
+                      View History →
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+
+          {/* User History Modal/Section */}
+          {selectedUser && (
+            <div style={{ marginTop: '3rem' }}>
+              <h2 style={{ fontSize: '1.8rem', fontWeight: 700, marginBottom: '1.5rem', color: '#f1f5f9' }}>
+                Transaction History - {selectedUser}
+              </h2>
+              
+              <div style={{ background: 'rgba(255,255,255,0.05)', borderRadius: '12px', padding: '2rem' }}>
+                {userHistory.length === 0 ? (
+                  <div style={{ textAlign: 'center', padding: '2rem', color: '#94a3b8' }}>
+                    No transaction history available for this user.
+                  </div>
+                ) : (
+                  <div style={{ display: 'grid', gap: '1rem' }}>
+                    {userHistory.slice(0, 10).map((log, i) => (
+                      <div key={i} style={{ 
+                        display: 'flex', 
+                        justifyContent: 'space-between', 
+                        alignItems: 'center',
+                        padding: '1rem',
+                        background: 'rgba(255,255,255,0.03)',
+                        borderRadius: '8px',
+                        border: '1px solid rgba(255,255,255,0.1)'
+                      }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                          <div style={{ 
+                            width: '12px', 
+                            height: '12px', 
+                            borderRadius: '50%', 
+                            background: log.status === 'success' ? '#22c55e' : '#dc2626' 
+                          }} />
+                          <div>
+                            <div style={{ fontWeight: 600, color: '#f1f5f9' }}>{log.endpoint}</div>
+                            <div style={{ fontSize: '0.8rem', color: '#94a3b8' }}>
+                              {new Date(log.timestamp).toLocaleString()}
+                            </div>
+                          </div>
+                        </div>
+                        <div style={{ textAlign: 'right' }}>
+                          <div style={{ fontWeight: 600, color: log.status === 'success' ? '#22c55e' : '#dc2626' }}>
+                            {log.status?.toUpperCase()}
+                          </div>
+                          <div style={{ fontSize: '0.8rem', color: '#94a3b8' }}>
+                            {log.response_time_ms?.toFixed(1)}ms
+                          </div>
+                        </div>
+                        {log.amount && (
+                          <div style={{ fontWeight: 600, color: '#f59e0b' }}>
+                            ₹{log.amount.toFixed(2)}
+                          </div>
+                        )}
+                        {log.is_anomaly && (
+                          <div style={{ 
+                            padding: '4px 8px', 
+                            borderRadius: '4px', 
+                            background: '#dc2626', 
+                            color: 'white', 
+                            fontSize: '0.7rem', 
+                            fontWeight: 600 
+                          }}>
+                            ANOMALY
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
     );
   };
 
@@ -1860,6 +2685,8 @@ export default function Home() {
     );
   };
 
+
+
   return (
     <div className={isDarkMode ? 'dark-theme' : 'light-theme'} style={{ 
       background: 'var(--background)', 
@@ -1886,6 +2713,7 @@ export default function Home() {
           activeView === 'logs' ? <APILogsView /> : 
           activeView === 'alerts' ? <AlertsView /> : 
           activeView === 'insights' ? <InsightsView /> : 
+          activeView === 'risk-profiles' ? <RiskProfilesView /> : 
           <AnalyticsView />
         ) : (
           <OverviewView />
@@ -1894,4 +2722,6 @@ export default function Home() {
     </div>
   );
 }
+
+
 

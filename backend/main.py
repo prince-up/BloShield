@@ -360,16 +360,37 @@ async def get_spending_summary(user_id: str, days: int = 7):
 # RBI Fraud Alerts Endpoints
 @app.get("/rbi/active-alerts")
 async def get_rbi_alerts():
-    """Get all active RBI fraud alerts"""
+    """Get all active RBI fraud alerts with live intelligence"""
     alerts = rbi_alerts.get_active_alerts()
     return {
         "total_active_alerts": len(alerts),
-        "alerts": alerts
+        "alerts": alerts,
+        "last_updated": datetime.utcnow().isoformat()
+    }
+
+@app.get("/rbi/trending-scams")
+async def get_trending_scams(limit: int = 5):
+    """Get currently trending scams"""
+    trending = rbi_alerts.get_trending_scams(limit)
+    return {
+        "trending_scams": trending,
+        "total_trending": len(trending),
+        "generated_at": datetime.utcnow().isoformat()
+    }
+
+@app.get("/rbi/live-feed")
+async def get_live_fraud_feed(limit: int = 10):
+    """Get live fraud intelligence feed"""
+    feed = rbi_alerts.get_live_fraud_feed(limit)
+    return {
+        "live_feed": feed,
+        "feed_count": len(feed),
+        "last_updated": datetime.utcnow().isoformat()
     }
 
 @app.get("/rbi/alert/{alert_id}")
 async def get_rbi_alert(alert_id: str):
-    """Get specific RBI alert by ID"""
+    """Get specific RBI alert by ID with enhanced data"""
     alert = rbi_alerts.get_alert_by_id(alert_id)
     if not alert:
         raise HTTPException(status_code=404, detail="Alert not found")
@@ -377,12 +398,13 @@ async def get_rbi_alert(alert_id: str):
 
 @app.post("/rbi/check-transaction")
 async def check_transaction_against_rbi(description: str = "", amount: float = 0):
-    """Check if a transaction matches any RBI fraud alert"""
+    """Enhanced transaction checking with risk match percentage"""
     match = rbi_alerts.check_transaction_against_alerts(description, amount)
-    
+
     return {
         "matched": match is not None,
-        "alert": match if match else None
+        "match_data": match if match else None,
+        "checked_at": datetime.utcnow().isoformat()
     }
 
 # AI Insights Endpoints

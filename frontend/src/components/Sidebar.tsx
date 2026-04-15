@@ -30,6 +30,7 @@ export default function Sidebar({ activeView, setActiveView }: SidebarProps) {
     { id: 'logs', label: 'API Logs', icon: FileText },
     { id: 'alerts', label: 'Alerts', icon: AlertTriangle },
     { id: 'insights', label: 'AI Insights', icon: Zap },
+    { id: 'risk-profiles', label: 'Risk Profiles', icon: ShieldAlert },
     { id: 'analytics', label: 'Analytics', icon: PieChart },
   ];
 
