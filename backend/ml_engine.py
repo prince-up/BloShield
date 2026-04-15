@@ -43,3 +43,10 @@ def get_risk_level(score):
     if score < 0.3: return "LOW"
     if score < 0.7: return "MEDIUM"
     return "HIGH"
+
+def get_suggested_action(risk_level):
+    if risk_level == "HIGH":
+        return "Block Transaction & Notify User"
+    if risk_level == "MEDIUM":
+        return "Require MFA/OTP Verification"
+    return "Allow & Flag for Periodic Review"

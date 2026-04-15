@@ -7,7 +7,7 @@ import json
 import asyncio
 from models import SendMoneyRequest, PayBillRequest, TransactionLog, AnomalyResult
 from database import log_transaction, get_recent_logs, save_anomaly, db
-from ml_engine import ml_engine, get_risk_level
+from ml_engine import ml_engine, get_risk_level, get_suggested_action
 from spending_monitor import spending_monitor
 from rbi_alerts import rbi_alerts
 from gemini_engine import GeminiInsightEngine
@@ -60,7 +60,8 @@ async def simulate_transactions():
                     "user_id": user_id,
                     "amount": amount,
                     "status": "success",
-                    "risk_level": "high" if is_anomaly else "low",
+                    "risk_level": "HIGH" if is_anomaly else "LOW",
+                    "ai_decision": get_suggested_action("HIGH" if is_anomaly else "LOW"),
                     "is_anomaly": is_anomaly,
                     "timestamp": datetime.utcnow().isoformat()
                 }
@@ -176,6 +177,7 @@ async def send_money(req: SendMoneyRequest):
             "amount": req.amount,
             "status": status,
             "risk_level": get_risk_level(risk_score),
+            "ai_decision": get_suggested_action(get_risk_level(risk_score)),
             "is_anomaly": is_anomaly,
             "timestamp": datetime.utcnow().isoformat()
         }
@@ -187,6 +189,7 @@ async def send_money(req: SendMoneyRequest):
         "risk_assessment": {
             "score": risk_score,
             "level": get_risk_level(risk_score),
+            "decision": get_suggested_action(get_risk_level(risk_score)),
             "anomaly": is_anomaly
         }
     }

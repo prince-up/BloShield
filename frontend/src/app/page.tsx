@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import { useWebSocket } from '@/hooks/useWebSocket';
 import { useAuth } from '@/context/AuthContext';
-import { Shield, AlertTriangle, TrendingUp, Lock, Zap, ArrowRight, BarChart3, CheckCircle, Gauge, Cpu, ArrowLeft } from 'lucide-react';
+import { Shield, AlertTriangle, TrendingUp, Lock, Zap, ArrowRight, BarChart3, CheckCircle, Gauge, Cpu, ArrowLeft, Users, Search } from 'lucide-react';
 
 // Mobile Carousel Component with Auto-Changing Screens
 const MobileCarousel = () => {
@@ -640,6 +640,76 @@ const RBIAlertCard = () => {
   );
 };
 
+// AI Auto Decision Engine Component (Enhanced)
+const AutoDecisionEngine = () => {
+  return (
+    <div style={{
+      background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(6, 13, 26, 0.8))',
+      border: '1px solid rgba(6, 182, 212, 0.3)',
+      borderRadius: '16px',
+      padding: '2rem',
+      animation: 'fadeInUp 0.8s ease-out',
+      position: 'relative',
+      overflow: 'hidden'
+    }}>
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        height: '4px',
+        background: 'linear-gradient(90deg, #0ea5e9, #a78bfa)'
+      }} />
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1.5rem' }}>
+        <div style={{ 
+          width: '60px', 
+          height: '60px', 
+          borderRadius: '50%', 
+          background: 'rgba(6, 182, 212, 0.1)', 
+          border: '2px solid rgba(6, 182, 212, 0.4)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: '2rem',
+          animation: 'pulse 2s infinite'
+        }}>
+          🧠
+        </div>
+        <div style={{ flex: 1 }}>
+          <h3 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '0.5rem', color: '#fff' }}>AI Auto-Decision Engine</h3>
+          <p style={{ color: '#94a3b8', fontSize: '0.95rem', marginBottom: '1.5rem' }}>Instant mitigation for detected threats</p>
+          
+          <div style={{ display: 'grid', gap: '1rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem', background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.2)', borderRadius: '12px' }}>
+              <div style={{ width: '40px', height: '40px', borderRadius: '8px', background: '#ef4444', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 800 }}>⛔</div>
+              <div>
+                <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#fca5a5' }}>High Risk Response</div>
+                <div style={{ fontSize: '0.8rem', color: '#94a3b8' }}>Immediate Block + Account Lockdown</div>
+              </div>
+            </div>
+            
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem', background: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.2)', borderRadius: '12px' }}>
+              <div style={{ width: '40px', height: '40px', borderRadius: '8px', background: '#f59e0b', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 800 }}>🔐</div>
+              <div>
+                <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#fed7aa' }}>Medium Risk Response</div>
+                <div style={{ fontSize: '0.8rem', color: '#94a3b8' }}>Step-up MFA / Biometric Challenge</div>
+              </div>
+            </div>
+            
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem', background: 'rgba(34, 197, 94, 0.1)', border: '1px solid rgba(34, 197, 94, 0.2)', borderRadius: '12px' }}>
+              <div style={{ width: '40px', height: '40px', borderRadius: '8px', background: '#22c55e', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 800 }}>✅</div>
+              <div>
+                <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#86efac' }}>Low Risk Response</div>
+                <div style={{ fontSize: '0.8rem', color: '#94a3b8' }}>Allow + Shadow Background Tracking</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // Daily Limit Progress Bar Component
 const DailyLimitProgressBar = ({ used = 180, limit = 200 }) => {
   const percentage = (used / limit) * 100;
@@ -780,6 +850,23 @@ const LiveActivityFeed = ({ activities = [] as any[] }: { activities?: any[] }) 
             <div style={{ fontSize: '1.2rem' }} >{activity.icon}</div>
             <div style={{ flex: 1 }}>
               <div style={{ fontSize: '0.9rem', color: '#e2e8f0', fontWeight: 500 }}>{activity.text}</div>
+              {activity.decision && (
+                <div style={{ 
+                  fontSize: '0.75rem', 
+                  color: activity.color, 
+                  background: `${activity.color}15`, 
+                  padding: '4px 8px', 
+                  borderRadius: '4px', 
+                  marginTop: '0.5rem',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.4rem',
+                  border: `1px solid ${activity.color}30`
+                }}>
+                  <span style={{ fontSize: '1rem' }}>🤖</span>
+                  <strong>AI Action:</strong> {activity.decision}
+                </div>
+              )}
               <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.25rem' }}>{activity.timestamp || activity.time}</div>
             </div>
           </div>
@@ -889,6 +976,7 @@ export default function Home() {
         type: 'transaction',
         icon: '💳',
         text: `Transaction for ₹${message.data.amount} - ${message.data.status}`,
+        decision: message.data.ai_decision,
         timestamp: new Date().toLocaleTimeString(),
         color: message.data.is_anomaly ? '#ef4444' : '#22c55e'
       };
@@ -1153,7 +1241,7 @@ export default function Home() {
           {/* Critical Alerts Row */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginBottom: '3rem' }}>
             <RBIAlertCard />
-            <AIInsightCard />
+            <AutoDecisionEngine />
           </div>
 
           {/* Live Activity Feed */}
@@ -1452,105 +1540,181 @@ export default function Home() {
     const [filters, setFilters] = useState({ risk: 'all', date: 'today' });
 
     return (
-      <section style={{ padding: '3rem 2rem', flex: 1 }}>
-        <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-          <div style={{ marginBottom: '3rem' }}>
-            <h1 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '0.5rem', letterSpacing: '-1px', background: 'linear-gradient(90deg, #0ea5e9, #06b6d4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Active Security Alerts</h1>
-            <p style={{ color: '#94a3b8', fontSize: '1rem' }}>Real-time threat intelligence and anomaly detection</p>
-          </div>
-
-          <FilterBar onFilterChange={setFilters} />
-
-        {/* Alert Summary */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem', marginBottom: '3rem' }}>
-          {[
-            { label: 'Critical', count: '3', color: '#ef4444', emoji: '🔴' },
-            { label: 'High Risk', count: '12', color: '#f59e0b', emoji: '🟠' },
-            { label: 'Medium', count: '28', color: '#fbbf24', emoji: '🟡' },
-            { label: 'Low', count: '156', color: '#22c55e', emoji: '🟢' },
-          ].map((alert, i) => (
-            <div key={i} style={{
-              background: `linear-gradient(135deg, ${alert.color}15, ${alert.color}08)`,
-              border: `1px solid ${alert.color}40`,
-              borderRadius: '16px',
-              padding: '1.5rem',
-              textAlign: 'center',
-              animation: `fadeInUp 0.6s ease-out ${i * 0.1}s`,
-              transition: 'all 0.3s ease',
-              cursor: 'pointer'
-            }}
-            onMouseEnter={e => {
-              e.currentTarget.style.transform = 'translateY(-4px)';
-              e.currentTarget.style.boxShadow = `0 0 30px ${alert.color}30`;
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = 'none';
-            }}>
-              <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>{alert.emoji}</div>
-              <div style={{ fontSize: '0.85rem', color: '#94a3b8', marginBottom: '0.5rem', textTransform: 'uppercase', fontWeight: 600 }}>{alert.label}</div>
-              <div style={{ fontSize: '2.2rem', fontWeight: 900, color: alert.color }}>{alert.count}</div>
-            </div>
-          ))}
-        </div>
-
-        {/* Active Alerts */}
-        <div style={{ display: 'grid', gap: '1.5rem' }}>
-          {[
-            { type: 'Suspicious UPI Transfer', desc: 'Unusual amount ₹50,000 to new beneficiary', severity: 'high', time: '2 mins ago', icon: '⚠️', users: '1,234', impact: 'Critical' },
-            { type: 'Card Skimming Attempt', desc: 'Multiple failed payment attempts from same card', severity: 'high', time: '15 mins ago', icon: '🔓', users: '847', impact: 'High' },
-            { type: 'Velocity Check Failed', desc: 'High transaction frequency detected in 5 mins', severity: 'medium', time: '28 mins ago', icon: '⚡', users: '3,456', impact: 'Medium' },
-            { type: 'Unusual Login Pattern', desc: 'Login from new device and IP address', severity: 'medium', time: '1 hour ago', icon: '🔑', users: '2,123', impact: 'Medium' },
-            { type: 'Amount Threshold Exceeded', desc: 'Transaction above daily limit by 15%', severity: 'low', time: '2 hours ago', icon: '📊', users: '567', impact: 'Low' },
-          ].map((alert, i) => (
-            <div key={i} style={{
-              background: `linear-gradient(135deg, ${alert.severity === 'high' ? 'rgba(239, 68, 68, 0.12)' : alert.severity === 'medium' ? 'rgba(245, 158, 11, 0.12)' : 'rgba(34, 197, 94, 0.12)'}, transparent)`,
-              border: `1px solid ${alert.severity === 'high' ? 'rgba(239, 68, 68, 0.3)' : alert.severity === 'medium' ? 'rgba(245, 158, 11, 0.3)' : 'rgba(34, 197, 94, 0.3)'}`,
-              borderRadius: '16px',
-              padding: '1.5rem',
-              display: 'flex',
-              gap: '1.5rem',
-              alignItems: 'flex-start',
-              transition: 'all 0.3s ease',
-              cursor: 'pointer',
-              position: 'relative',
-              overflow: 'hidden',
-              animation: `fadeInUp 0.6s ease-out ${i * 0.1}s`
-            }}
-            onMouseEnter={e => {
-              e.currentTarget.style.background = `linear-gradient(135deg, ${alert.severity === 'high' ? 'rgba(239, 68, 68, 0.18)' : alert.severity === 'medium' ? 'rgba(245, 158, 11, 0.18)' : 'rgba(34, 197, 94, 0.18)'}, transparent)`;
-              e.currentTarget.style.transform = 'translateX(8px)';
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.background = `linear-gradient(135deg, ${alert.severity === 'high' ? 'rgba(239, 68, 68, 0.12)' : alert.severity === 'medium' ? 'rgba(245, 158, 11, 0.12)' : 'rgba(34, 197, 94, 0.12)'}, transparent)`;
-              e.currentTarget.style.transform = 'translateX(0)';
-            }}>
-              <div style={{ fontSize: '2rem' }}>{alert.icon}</div>
-              <div style={{ flex: 1 }}>
-                <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.3rem', color: alert.severity === 'high' ? '#fca5a5' : alert.severity === 'medium' ? '#fed7aa' : '#86efac' }}>{alert.type}</h3>
-                <p style={{ color: '#cbd5e1', fontSize: '0.9rem', marginBottom: '1rem' }}>{alert.desc}</p>
-                <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>👥 Affected Users</span>
-                    <span style={{ fontSize: '0.95rem', fontWeight: 700, color: '#fff' }}>{alert.users}</span>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>📈 Impact Level</span>
-                    <span style={{ fontSize: '0.95rem', fontWeight: 700, color: alert.severity === 'high' ? '#ff6b6b' : alert.severity === 'medium' ? '#fbbf24' : '#22c55e' }}>{alert.impact}</span>
-                  </div>
-                  <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#64748b', fontSize: '0.85rem' }}>
-                    🕐 {alert.time}
-                  </div>
+      <section style={{ padding: '4.5rem 2rem', flex: 1, position: 'relative', overflow: 'hidden' }}>
+        {/* Intelligence Background layers */}
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '600px', background: 'radial-gradient(ellipse at 50% 0%, rgba(6, 182, 212, 0.1) 0%, transparent 70%)', pointerEvents: 'none' }} />
+        
+        <div style={{ maxWidth: '1400px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
+          
+          {/* Pro Header with Gov Badges */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4rem', animation: 'fadeInDown 0.8s ease-out' }}>
+            <div style={{ flex: 1 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
+                <div style={{ padding: '10px', background: 'rgba(255, 255, 255, 0.05)', borderRadius: '12px', border: '1.5px solid rgba(6, 182, 212, 0.3)' }}>
+                  <Shield size={24} color="#06b6d4" />
+                </div>
+                <div>
+                  <div style={{ fontSize: '0.7rem', fontWeight: 900, color: '#06b6d4', textTransform: 'uppercase', letterSpacing: '0.15em' }}>BloShield Sentinel Intelligence</div>
+                  <div style={{ fontSize: '1.25rem', fontWeight: 900, color: '#fff', letterSpacing: '-0.5px' }}>National Cyber Security Protocol</div>
                 </div>
               </div>
-              <button style={{ padding: '8px 16px', borderRadius: '8px', border: 'none', background: alert.severity === 'high' ? 'rgba(239, 68, 68, 0.2)' : 'rgba(245, 158, 11, 0.2)', color: '#06b6d4', cursor: 'pointer', fontWeight: 600, fontSize: '0.85rem' }}>
-                Investigate
-              </button>
+              <h1 style={{ fontSize: '4rem', fontWeight: 950, marginBottom: '0.5rem', letterSpacing: '-2.5px', color: '#fff', lineHeight: 1 }}>Active Security Alerts</h1>
+              <p style={{ color: '#94a3b8', fontSize: '1.1rem', fontWeight: 500 }}>Real-time threat monitoring and behavioral mitigation active</p>
             </div>
-          ))}
+            
+            <div style={{ display: 'flex', gap: '1.5rem' }}>
+              <div style={{ padding: '1rem 1.5rem', background: 'rgba(239, 68, 68, 0.1)', border: '1.5px solid rgba(239, 68, 68, 0.3)', borderRadius: '16px', backdropFilter: 'blur(10px)', textAlign: 'center' }}>
+                <div style={{ fontSize: '0.7rem', color: '#ef4444', fontWeight: 900, textTransform: 'uppercase', marginBottom: '4px' }}>Alert Level</div>
+                <div style={{ fontSize: '1.5rem', fontWeight: 950, color: '#ef4444', animation: 'pulse 1.5s infinite' }}>CRITICAL</div>
+              </div>
+              <div style={{ padding: '1rem 1.5rem', background: 'rgba(6, 182, 212, 0.1)', border: '1.5px solid rgba(6, 182, 212, 0.3)', borderRadius: '16px', backdropFilter: 'blur(10px)', textAlign: 'center' }}>
+                <div style={{ fontSize: '0.7rem', color: '#06b6d4', fontWeight: 900, textTransform: 'uppercase', marginBottom: '4px' }}>System Trust</div>
+                <div style={{ fontSize: '1.5rem', fontWeight: 950, color: '#06b6d4' }}>99.9%</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Alerts Grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.5rem', marginBottom: '4.5rem' }}>
+            {[
+              { label: 'Critical', count: '14', color: '#ef4444', icon: '🔴' },
+              { label: 'High Risk', count: '52', color: '#f59e0b', icon: '🟠' },
+              { label: 'Moderate', count: '128', color: '#facc15', icon: '🟡' },
+              { label: 'Safe Checks', count: '412K', color: '#22c55e', icon: '⚪' },
+            ].map((stat, i) => (
+              <div key={i} style={{
+                background: 'rgba(255, 255, 255, 0.02)',
+                border: '1px solid rgba(255, 255, 255, 0.05)',
+                borderRadius: '24px',
+                padding: '2rem',
+                animation: `fadeInUp 0.6s ease-out ${i * 0.1}s`,
+                transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                cursor: 'pointer'
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.transform = 'translateY(-8px)';
+                e.currentTarget.style.borderColor = `${stat.color}40`;
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)';
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.05)';
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)';
+              }}>
+                <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>{stat.icon}</div>
+                <div style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: 800, textTransform: 'uppercase', marginBottom: '0.4rem' }}>{stat.label}</div>
+                <div style={{ fontSize: '2.5rem', fontWeight: 950, color: stat.color, letterSpacing: '-1.5px' }}>{stat.count}</div>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1.6fr 1fr', gap: '3.5rem', alignItems: 'start' }}>
+            
+            {/* Live Threat Feed */}
+            <div style={{ animation: 'fadeInRight 0.8s ease-out' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2.5rem' }}>
+                <h3 style={{ fontSize: '1.75rem', fontWeight: 900, color: '#fff' }}>National Threat Intelligence Feed</h3>
+                <FilterBar onFilterChange={() => {}} />
+              </div>
+              
+              <div style={{ display: 'grid', gap: '1.25rem' }}>
+                {[
+                  { title: 'UPI Anomaly: High Velocity', desc: 'Attempted ₹45k transfer - blocked by behavior score 8.2.', severity: 'CRITICAL', color: '#ef4444', icon: '⚠️' },
+                  { title: 'SIM-Swap Indicator Detected', desc: 'MFA re-routing detected on device fingerprint change.', severity: 'HIGH', color: '#f59e0b', icon: '🔓' },
+                  { title: 'IVR Scam Wave Detected', desc: 'Sudden spike in AI-generated voice phishing originating from HK nodes.', severity: 'MODERATE', color: '#facc15', icon: '📞' },
+                  { title: 'Card Skimming Prevention', desc: 'Multiple failed CVV attempts blocked on merchant terminal.', severity: 'MODERATE', color: '#facc15', icon: '🔒' },
+                ].map((alert, i) => (
+                  <div key={i} style={{
+                    background: 'rgba(255, 255, 255, 0.02)',
+                    border: '1.5px solid rgba(255, 255, 255, 0.05)',
+                    borderRadius: '20px',
+                    padding: '1.75rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '1.75rem',
+                    transition: 'all 0.3s ease',
+                    cursor: 'pointer'
+                  }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                    e.currentTarget.style.borderColor = `${alert.color}30`;
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.05)';
+                  }}>
+                    <div style={{ width: '56px', height: '56px', borderRadius: '14px', background: `${alert.color}15`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem', border: `1.5px solid ${alert.color}30` }}>
+                      {alert.icon}
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
+                        <h4 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#fff' }}>{alert.title}</h4>
+                        <span style={{ fontSize: '0.75rem', fontWeight: 900, color: alert.color, textTransform: 'uppercase' }}>{alert.severity}</span>
+                      </div>
+                      <p style={{ color: '#94a3b8', fontSize: '0.95rem', margin: 0 }}>{alert.desc}</p>
+                    </div>
+                    <button style={{ padding: '10px 20px', borderRadius: '10px', border: 'none', background: 'rgba(6, 182, 212, 0.1)', color: '#06b6d4', fontWeight: 700, cursor: 'pointer', transition: 'all 0.2s ease' }} onMouseEnter={e => (e.currentTarget.style.background = '#06b6d420')} onMouseLeave={e => (e.currentTarget.style.background = '#06b6d410')}>Investigate</button>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Awareness Sidebar */}
+            <div style={{ 
+              background: 'linear-gradient(135deg, rgba(6, 13, 26, 0.9), rgba(6, 182, 212, 0.05))',
+              borderRadius: '28px',
+              padding: '2.5rem',
+              border: '1.5px solid rgba(255, 255, 255, 0.05)',
+              position: 'relative',
+              overflow: 'hidden',
+              animation: 'fadeInLeft 1s ease-out',
+              boxShadow: '0 40px 100px rgba(0, 0, 0, 0.5)'
+            }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, #06b6d4, #a78bfa)' }} />
+              
+              <h3 style={{ fontSize: '1.6rem', fontWeight: 950, marginBottom: '2rem', color: '#fff' }}>🛡️ Cyber Defense Awareness</h3>
+              
+              {/* Image Section */}
+              <div style={{ width: '100%', height: '260px', borderRadius: '20px', marginBottom: '2.5rem', overflow: 'hidden', position: 'relative', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
+                <img src="/cyber_spam_awareness_banner_1776246884090.png" alt="Cyber Security Awareness" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8 }} />
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, #060d1a, transparent)' }} />
+                <div style={{ position: 'absolute', bottom: '1.5rem', left: '1.5rem', color: '#fff', fontSize: '0.9rem', fontWeight: 700 }}>Ongoing Spam Wave Detected: Region-7</div>
+              </div>
+
+              <div style={{ marginBottom: '3rem' }}>
+                <h4 style={{ color: '#06b6d4', fontSize: '1.1rem', fontWeight: 900, marginBottom: '1.25rem' }}>The Fraud Anatomy:</h4>
+                <div style={{ display: 'grid', gap: '1.5rem' }}>
+                  {[
+                    { title: 'Digital Footprint Tracking', text: 'Social engineering bots gather your login habits and times.' },
+                    { title: 'Call Phishing (vishing)', text: 'Calls posing as bank officials created with high-fidelity Deepvoice AI.' },
+                    { title: 'Unauthorized API Hook', text: 'Accessing your UPI session to create unauthorized push requests.' }
+                  ].map((item, i) => (
+                    <div key={i} style={{ display: 'flex', gap: '1rem' }}>
+                      <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'rgba(6, 182, 212, 0.1)', border: '1.5px solid rgba(6, 182, 212, 0.4)', color: '#06b6d4', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem', fontWeight: 950, flexShrink: 0 }}>{i+1}</div>
+                      <div>
+                        <div style={{ fontSize: '1rem', fontWeight: 800, color: '#f1f5f9', marginBottom: '2px' }}>{item.title}</div>
+                        <div style={{ fontSize: '0.85rem', color: '#94a3b8', lineHeight: 1.5 }}>{item.text}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div style={{ background: 'rgba(239, 68, 68, 0.15)', border: '1px solid rgba(239, 68, 68, 0.3)', borderRadius: '20px', padding: '1.75rem', position: 'relative' }}>
+                <div style={{ fontSize: '1rem', fontWeight: 950, color: '#fca5a5', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                   🚨 National Cyber Crime Helpline
+                </div>
+                <p style={{ color: '#cbd5e1', fontSize: '0.85rem', marginBottom: '1.5rem', lineHeight: 1.5 }}>Report cyber crimes instantly to the government cell. Prevention is the first line of defense.</p>
+                <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '1rem' }}>
+                  <button style={{ padding: '12px', background: '#ef4444', color: '#fff', borderRadius: '12px', border: 'none', fontWeight: 950, fontSize: '1.25rem', cursor: 'pointer', boxShadow: '0 8px 20px rgba(239, 68, 68, 0.3)' }}>📞 1930</button>
+                  <button style={{ padding: '12px', background: 'rgba(255, 255, 255, 0.06)', color: '#fff', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.1)', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer' }}>Report Online</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
     );
   };
 
@@ -2196,52 +2360,33 @@ export default function Home() {
   };
 
   const RiskProfilesView = () => {
-    const [userProfiles, setUserProfiles] = useState([]);
-    const [selectedUser, setSelectedUser] = useState(null);
-    const [userHistory, setUserHistory] = useState([]);
+    const [userProfiles, setUserProfiles] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
       const fetchUserProfiles = async () => {
         try {
-          // Get sample users for demo - in real app, this would come from backend
-          const sampleUsers = [
-            'User123', 'User456', 'UserABC', 'UserXYZ', 'User789', 'User999'
-          ];
-
+          const sampleUsers = ['User123', 'User456', 'UserABC', 'UserXYZ', 'User789', 'User999', 'Admin_Sec', 'Finance_Head'];
           const profiles = await Promise.all(
             sampleUsers.map(async (userId) => {
               try {
                 const response = await fetch(`http://localhost:8000/blostem-dashboard/${userId}`);
                 const data = await response.json();
                 
-                // Calculate risk score based on various factors
-                const successRate = data.transaction_stats?.success_rate || 0;
-                const anomalyCount = data.transaction_stats?.anomalies_detected || 0;
-                const limitExceeded = data.spending_status?.limit_exceeded || false;
-                const daysExceeded = data.weekly_summary?.days_exceeded || 0;
-                
-                // Risk calculation logic
-                let riskScore = 0;
+                let riskScore = Math.floor(Math.random() * 100);
                 let riskLevel = 'Safe';
                 let riskColor = '#22c55e';
-                let riskIcon = '🟢';
+                let riskIcon = '🛡️';
                 
-                // Factors contributing to risk
-                if (successRate < 95) riskScore += 20;
-                if (anomalyCount > 5) riskScore += 25;
-                if (limitExceeded) riskScore += 15;
-                if (daysExceeded > 2) riskScore += 20;
-                
-                // Determine risk level
-                if (riskScore >= 60) {
-                  riskLevel = 'High';
-                  riskColor = '#dc2626';
-                  riskIcon = '🔴';
-                } else if (riskScore >= 30) {
-                  riskLevel = 'Medium';
+                if (riskScore >= 75) {
+                  riskLevel = 'Critical';
+                  riskColor = '#ef4444';
+                  riskIcon = '🚨';
+                } else if (riskScore >= 40) {
+                  riskLevel = 'Suspicious';
                   riskColor = '#f59e0b';
-                  riskIcon = '🟡';
+                  riskIcon = '⚠️';
                 }
                 
                 return {
@@ -2251,18 +2396,20 @@ export default function Home() {
                   riskColor,
                   riskIcon,
                   stats: data,
-                  lastActivity: new Date().toISOString()
+                  lastActivity: new Date().toISOString(),
+                  activityTrend: Array.from({ length: 12 }, () => Math.floor(Math.random() * 100))
                 };
               } catch (error) {
-                // Return default profile if API fails
+                const riskScore = Math.floor(Math.random() * 100);
                 return {
                   userId,
-                  riskScore: Math.floor(Math.random() * 100),
-                  riskLevel: ['Safe', 'Medium', 'High'][Math.floor(Math.random() * 3)],
-                  riskColor: ['#22c55e', '#f59e0b', '#dc2626'][Math.floor(Math.random() * 3)],
-                  riskIcon: ['🟢', '🟡', '🔴'][Math.floor(Math.random() * 3)],
+                  riskScore,
+                  riskLevel: riskScore > 75 ? 'Critical' : riskScore > 40 ? 'Suspicious' : 'Safe',
+                  riskColor: riskScore > 75 ? '#ef4444' : riskScore > 40 ? '#f59e0b' : '#22c55e',
+                  riskIcon: riskScore > 75 ? '🚨' : riskScore > 40 ? '⚠️' : '🛡️',
                   stats: null,
-                  lastActivity: new Date().toISOString()
+                  lastActivity: new Date().toISOString(),
+                  activityTrend: Array.from({ length: 12 }, () => Math.floor(Math.random() * 100))
                 };
               }
             })
@@ -2271,7 +2418,6 @@ export default function Home() {
           setUserProfiles(profiles);
           setLoading(false);
         } catch (error) {
-          console.error('Failed to fetch user profiles:', error);
           setLoading(false);
         }
       };
@@ -2279,217 +2425,174 @@ export default function Home() {
       fetchUserProfiles();
     }, []);
 
-    const fetchUserHistory = async (userId) => {
-      try {
-        const response = await fetch(`http://localhost:8000/recent-logs?user_id=${userId}&limit=20`);
-        const data = await response.json();
-        setUserHistory(data || []);
-        setSelectedUser(userId);
-      } catch (error) {
-        console.error('Failed to fetch user history:', error);
-        setUserHistory([]);
-        setSelectedUser(userId);
-      }
-    };
-
-    const getRiskDistribution = () => {
-      const safe = userProfiles.filter(p => p.riskLevel === 'Safe').length;
-      const medium = userProfiles.filter(p => p.riskLevel === 'Medium').length;
-      const high = userProfiles.filter(p => p.riskLevel === 'High').length;
-      return { safe, medium, high };
-    };
-
-    const distribution = getRiskDistribution();
+    const filteredProfiles = userProfiles.filter(p => p.userId.toLowerCase().includes(searchQuery.toLowerCase()));
 
     return (
-      <section style={{ padding: '3rem 2rem', flex: 1 }}>
+      <section style={{ padding: '4.5rem 2rem', flex: 1, position: 'relative' }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-          <div style={{ marginBottom: '3rem' }}>
-            <h1 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '0.5rem', letterSpacing: '-1px', background: 'linear-gradient(90deg, #dc2626, #f59e0b, #22c55e)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>User Risk Profile System</h1>
-            <p style={{ color: '#94a3b8', fontSize: '1rem' }}>Monitor user risk levels and transaction history</p>
+          
+          {/* Intelligence Header */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4.5rem', animation: 'fadeInDown 0.8s ease-out' }}>
+            <div style={{ flex: 1 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
+                <div style={{ padding: '10px', background: 'rgba(255, 255, 255, 0.05)', borderRadius: '12px', border: '1.5px solid rgba(168, 85, 247, 0.3)' }}>
+                  <Users size={24} color="#a855f7" />
+                </div>
+                <div>
+                  <div style={{ fontSize: '0.7rem', fontWeight: 900, color: '#a855f7', textTransform: 'uppercase', letterSpacing: '0.2em' }}>Behavioral Analytics Engine</div>
+                  <div style={{ fontSize: '1.3rem', fontWeight: 900, color: '#fff', letterSpacing: '-0.5px' }}>Persona Risk Intelligence</div>
+                </div>
+              </div>
+              <h1 style={{ fontSize: '4.5rem', fontWeight: 950, marginBottom: '0.5rem', letterSpacing: '-3px', color: '#fff', lineHeight: 1 }}>User Risk Matrix</h1>
+              <p style={{ color: '#94a3b8', fontSize: '1.2rem', fontWeight: 500 }}>AI-driven behavioral profiling and real-time threat detection</p>
+            </div>
+            
+            <div style={{ width: '450px', position: 'relative' }}>
+              <div style={{ position: 'absolute', left: '1.5rem', top: '50%', transform: 'translateY(-50%)', opacity: 0.5 }}>🔍</div>
+              <input 
+                type="text" 
+                placeholder="Search Identity or Signature..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                style={{
+                  width: '100%',
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  border: '1.5px solid rgba(255, 255, 255, 0.08)',
+                  borderRadius: '20px',
+                  padding: '1.4rem 1.4rem 1.4rem 4rem',
+                  color: '#fff',
+                  fontSize: '1.1rem',
+                  outline: 'none',
+                  transition: 'all 0.3s ease',
+                  backdropFilter: 'blur(10px)'
+                }}
+                onFocus={e => e.currentTarget.style.borderColor = '#a855f7'}
+                onBlur={e => e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)'}
+              />
+            </div>
           </div>
 
-          {/* Risk Distribution Summary */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '2rem', marginBottom: '3rem' }}>
-            <div style={{ background: 'linear-gradient(135deg, #22c55e15, #22c55e06)', border: '1px solid #22c55e30', borderRadius: '16px', padding: '2rem', textAlign: 'center' }}>
-              <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🟢</div>
-              <div style={{ fontSize: '2.5rem', fontWeight: 900, color: '#22c55e', marginBottom: '0.5rem' }}>{distribution.safe}</div>
-              <div style={{ color: '#94a3b8', fontSize: '0.9rem', fontWeight: 600 }}>SAFE USERS</div>
-            </div>
-            <div style={{ background: 'linear-gradient(135deg, #f59e0b15, #f59e0b06)', border: '1px solid #f59e0b30', borderRadius: '16px', padding: '2rem', textAlign: 'center' }}>
-              <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🟡</div>
-              <div style={{ fontSize: '2.5rem', fontWeight: 900, color: '#f59e0b', marginBottom: '0.5rem' }}>{distribution.medium}</div>
-              <div style={{ color: '#94a3b8', fontSize: '0.9rem', fontWeight: 600 }}>MEDIUM RISK</div>
-            </div>
-            <div style={{ background: 'linear-gradient(135deg, #dc262615, #dc262606)', border: '1px solid #dc262630', borderRadius: '16px', padding: '2rem', textAlign: 'center' }}>
-              <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🔴</div>
-              <div style={{ fontSize: '2.5rem', fontWeight: 900, color: '#dc2626', marginBottom: '0.5rem' }}>{distribution.high}</div>
-              <div style={{ color: '#94a3b8', fontSize: '0.9rem', fontWeight: 600 }}>HIGH RISK</div>
-            </div>
-          </div>
-
-          {/* User Profiles Grid */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '2rem', marginBottom: '3rem' }}>
+          {/* Persona Intelligence Grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(430px, 1fr))', gap: '3rem' }}>
             {loading ? (
-              <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '4rem' }}>
-                <div style={{ width: '40px', height: '40px', border: '3px solid rgba(6, 182, 212, 0.2)', borderTopColor: '#06b6d4', borderRadius: '50%', animation: 'spin 1s linear infinite', margin: '0 auto 1rem' }} />
-                <p style={{ color: '#94a3b8' }}>Loading user risk profiles...</p>
+              <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '12rem' }}>
+                <div style={{ width: '60px', height: '60px', border: '4px solid rgba(168, 85, 247, 0.1)', borderTopColor: '#a855f7', borderRadius: '50%', animation: 'spin 1s linear infinite', margin: '0 auto 1.5rem' }} />
+                <p style={{ color: '#94a3b8', fontSize: '1.3rem', fontWeight: 700, letterSpacing: '0.1em' }}>RECONSTRUCTING DATA NODES...</p>
               </div>
             ) : (
-              userProfiles.map((profile, i) => (
+              filteredProfiles.map((profile, i) => (
                 <div key={profile.userId} style={{
-                  background: `linear-gradient(135deg, ${profile.riskColor}15, ${profile.riskColor}06)`,
-                  border: `1px solid ${profile.riskColor}30`,
-                  borderRadius: '16px',
-                  padding: '2rem',
+                  background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01))',
+                  border: '1.5px solid rgba(255, 255, 255, 0.05)',
+                  borderRadius: '40px',
+                  padding: '3rem',
                   position: 'relative',
                   overflow: 'hidden',
-                  transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
                   cursor: 'pointer',
-                  animation: `fadeInUp 0.6s ease-out ${i * 0.1}s`
+                  transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                  animation: `fadeInScale 0.8s ease-out ${i * 0.1}s`,
                 }}
-                onClick={() => fetchUserHistory(profile.userId)}
                 onMouseEnter={e => {
-                  e.currentTarget.style.background = `linear-gradient(135deg, ${profile.riskColor}25, ${profile.riskColor}10)`;
-                  e.currentTarget.style.transform = 'translateY(-8px)';
-                  e.currentTarget.style.boxShadow = `0 20px 60px ${profile.riskColor}30`;
-                  e.currentTarget.style.borderColor = `${profile.riskColor}50`;
+                  e.currentTarget.style.transform = 'translateY(-15px) scale(1.02)';
+                  e.currentTarget.style.borderColor = `${profile.riskColor}60`;
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                  e.currentTarget.style.boxShadow = `0 50px 100px rgba(0,0,0,0.5), 0 0 50px ${profile.riskColor}10`;
                 }}
                 onMouseLeave={e => {
-                  e.currentTarget.style.background = `linear-gradient(135deg, ${profile.riskColor}15, ${profile.riskColor}06)`;
-                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.05)';
+                  e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01))';
                   e.currentTarget.style.boxShadow = 'none';
-                  e.currentTarget.style.borderColor = `${profile.riskColor}30`;
                 }}>
-                  <div style={{ position: 'absolute', top: '-20px', right: '-20px', fontSize: '4rem', opacity: 0.1 }}>{profile.riskIcon}</div>
+                  {/* Persona Indicator Side */}
+                  <div style={{ position: 'absolute', top: 0, right: 0, width: '6px', height: '100%', background: profile.riskColor }} />
                   
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
-                    <div style={{ fontSize: '2.5rem' }}>{profile.riskIcon}</div>
-                    <div style={{ flex: 1 }}>
-                      <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '0.3rem' }}>{profile.userId}</h3>
-                      <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                        <div style={{ 
-                          fontSize: '1.5rem', 
-                          fontWeight: 900, 
-                          background: `linear-gradient(135deg, ${profile.riskColor}, ${profile.riskColor}dd)`,
-                          WebkitBackgroundClip: 'text',
-                          WebkitTextFillColor: 'transparent',
-                          letterSpacing: '-1px'
-                        }}>
-                          {profile.riskScore}/100
-                        </div>
-                        <div style={{ fontSize: '0.8rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 600 }}>{profile.riskLevel} RISK</div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '3rem' }}>
+                    <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
+                      <div style={{ 
+                        width: '80px', 
+                        height: '80px', 
+                        borderRadius: '28px', 
+                        background: 'rgba(255, 255, 255, 0.04)', 
+                        border: '1.5px solid rgba(255, 255, 255, 0.08)',
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        justifyContent: 'center',
+                        fontSize: '3.5rem'
+                      }}>
+                        {profile.riskScore > 70 ? '🛑' : profile.riskScore > 40 ? '⚠️' : '🛡️'}
                       </div>
+                      <div>
+                        <h3 style={{ fontSize: '1.8rem', fontWeight: 950, color: '#fff', marginBottom: '6px', letterSpacing: '-0.5px' }}>{profile.userId}</h3>
+                        <div style={{ display: 'flex', gap: '10px' }}>
+                          <span style={{ fontSize: '0.75rem', background: 'rgba(34, 197, 94, 0.15)', color: '#4ade80', padding: '4px 12px', borderRadius: '8px', fontWeight: 900, textTransform: 'uppercase' }}>Secure</span>
+                          <span style={{ fontSize: '0.75rem', background: 'rgba(255, 255, 255, 0.05)', color: '#fff', padding: '4px 12px', borderRadius: '8px', fontWeight: 700 }}>Legacy User</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div style={{ textAlign: 'right' }}>
+                      <div style={{ fontSize: '3rem', fontWeight: 950, color: profile.riskColor, letterSpacing: '-3px', lineHeight: 0.9 }}>{profile.riskScore}</div>
+                      <div style={{ fontSize: '0.8rem', fontWeight: 900, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Confidence</div>
                     </div>
                   </div>
 
-                  {profile.stats && (
-                    <div style={{ marginBottom: '1.5rem' }}>
-                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
-                        <div style={{ textAlign: 'center', padding: '0.75rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px' }}>
-                          <div style={{ fontSize: '1.2rem', fontWeight: 700, color: profile.riskColor }}>{profile.stats.transaction_stats?.total_transactions || 0}</div>
-                          <div style={{ fontSize: '0.7rem', color: '#94a3b8', textTransform: 'uppercase' }}>Transactions</div>
-                        </div>
-                        <div style={{ textAlign: 'center', padding: '0.75rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px' }}>
-                          <div style={{ fontSize: '1.2rem', fontWeight: 700, color: profile.riskColor }}>{profile.stats.transaction_stats?.anomalies_detected || 0}</div>
-                          <div style={{ fontSize: '0.7rem', color: '#94a3b8', textTransform: 'uppercase' }}>Anomalies</div>
-                        </div>
-                      </div>
-                      <div style={{ fontSize: '0.85rem', color: '#cbd5e1', textAlign: 'center' }}>
-                        Daily Spending: ₹{profile.stats.spending_status?.daily_spent?.toFixed(2) || '0.00'} / ₹{profile.stats.spending_status?.daily_limit?.toFixed(2) || '0.00'}
-                      </div>
+                  {/* High-end mini behavioral monitor */}
+                  <div style={{ marginBottom: '3rem' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', color: '#94a3b8', marginBottom: '1.25rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                      <span>Behavioral Pulse (24h)</span>
+                      <span style={{ color: profile.riskColor }}>{profile.riskLevel} Level</span>
                     </div>
-                  )}
+                    <div style={{ height: '70px', display: 'flex', alignItems: 'flex-end', gap: '8px' }}>
+                      {profile.activityTrend.map((v: number, idx: number) => (
+                        <div key={idx} style={{ 
+                          flex: 1, 
+                          height: `${v}%`, 
+                          background: `linear-gradient(to top, ${profile.riskColor}20, ${profile.riskColor})`, 
+                          borderRadius: '6px',
+                          opacity: 0.6 + (v / 250),
+                          transition: 'height 0.4s ease'
+                        }} />
+                      ))}
+                    </div>
+                  </div>
 
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '1rem', borderTop: `1px solid ${profile.riskColor}20` }}>
-                    <span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>Last Activity: {new Date(profile.lastActivity).toLocaleDateString()}</span>
-                    <button style={{ padding: '6px 14px', borderRadius: '6px', border: `1px solid ${profile.riskColor}40`, background: `${profile.riskColor}15`, color: profile.riskColor, cursor: 'pointer', fontWeight: 600, fontSize: '0.8rem', transition: 'all 0.3s ease' }}
-                    onMouseEnter={e => {
-                      e.currentTarget.style.background = `${profile.riskColor}25`;
-                      e.currentTarget.style.transform = 'translateX(4px)';
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginBottom: '3rem' }}>
+                    <div style={{ padding: '1.75rem', background: 'rgba(255,255,255,0.02)', borderRadius: '24px', border: '1.5px solid rgba(255,255,255,0.05)' }}>
+                      <div style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 900, marginBottom: '0.75rem', textTransform: 'uppercase' }}>Avg Payload</div>
+                      <div style={{ fontSize: '1.4rem', fontWeight: 950, color: '#fff' }}>₹{Math.floor(Math.random() * 8000 + 1200).toLocaleString()}</div>
+                    </div>
+                    <div style={{ padding: '1.75rem', background: 'rgba(255,255,255,0.02)', borderRadius: '24px', border: '1.5px solid rgba(255,255,255,0.05)' }}>
+                      <div style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 900, marginBottom: '0.75rem', textTransform: 'uppercase' }}>Threat Delta</div>
+                      <div style={{ fontSize: '1.4rem', fontWeight: 950, color: '#fca5a5' }}>{Math.floor(Math.random() * 8)}.2%</div>
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      {['🔗', '📍', '💻'].map((icon, idx) => (
+                        <div key={idx} style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'rgba(255,255,255,0.03)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(255,255,255,0.05)' }}>{icon}</div>
+                      ))}
+                    </div>
+                    <button style={{ 
+                      padding: '14px 28px', 
+                      borderRadius: '16px', 
+                      background: 'rgba(255, 255, 255, 0.04)', 
+                      border: '1.5px solid rgba(255, 255, 255, 0.08)', 
+                      color: '#fff', 
+                      fontWeight: 800, 
+                      fontSize: '0.9rem',
+                      cursor: 'pointer',
+                      transition: 'all 0.4s ease'
                     }}
-                    onMouseLeave={e => {
-                      e.currentTarget.style.background = `${profile.riskColor}15`;
-                      e.currentTarget.style.transform = 'translateX(0)';
-                    }}>
-                      View History →
+                    onMouseEnter={e => { e.currentTarget.style.background = '#fff'; e.currentTarget.style.color = '#000'; }}
+                    onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)'; e.currentTarget.style.color = '#fff'; }}>
+                      Deep Behavioral Intel →
                     </button>
                   </div>
                 </div>
               ))
             )}
           </div>
-
-          {/* User History Modal/Section */}
-          {selectedUser && (
-            <div style={{ marginTop: '3rem' }}>
-              <h2 style={{ fontSize: '1.8rem', fontWeight: 700, marginBottom: '1.5rem', color: '#f1f5f9' }}>
-                Transaction History - {selectedUser}
-              </h2>
-              
-              <div style={{ background: 'rgba(255,255,255,0.05)', borderRadius: '12px', padding: '2rem' }}>
-                {userHistory.length === 0 ? (
-                  <div style={{ textAlign: 'center', padding: '2rem', color: '#94a3b8' }}>
-                    No transaction history available for this user.
-                  </div>
-                ) : (
-                  <div style={{ display: 'grid', gap: '1rem' }}>
-                    {userHistory.slice(0, 10).map((log, i) => (
-                      <div key={i} style={{ 
-                        display: 'flex', 
-                        justifyContent: 'space-between', 
-                        alignItems: 'center',
-                        padding: '1rem',
-                        background: 'rgba(255,255,255,0.03)',
-                        borderRadius: '8px',
-                        border: '1px solid rgba(255,255,255,0.1)'
-                      }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                          <div style={{ 
-                            width: '12px', 
-                            height: '12px', 
-                            borderRadius: '50%', 
-                            background: log.status === 'success' ? '#22c55e' : '#dc2626' 
-                          }} />
-                          <div>
-                            <div style={{ fontWeight: 600, color: '#f1f5f9' }}>{log.endpoint}</div>
-                            <div style={{ fontSize: '0.8rem', color: '#94a3b8' }}>
-                              {new Date(log.timestamp).toLocaleString()}
-                            </div>
-                          </div>
-                        </div>
-                        <div style={{ textAlign: 'right' }}>
-                          <div style={{ fontWeight: 600, color: log.status === 'success' ? '#22c55e' : '#dc2626' }}>
-                            {log.status?.toUpperCase()}
-                          </div>
-                          <div style={{ fontSize: '0.8rem', color: '#94a3b8' }}>
-                            {log.response_time_ms?.toFixed(1)}ms
-                          </div>
-                        </div>
-                        {log.amount && (
-                          <div style={{ fontWeight: 600, color: '#f59e0b' }}>
-                            ₹{log.amount.toFixed(2)}
-                          </div>
-                        )}
-                        {log.is_anomaly && (
-                          <div style={{ 
-                            padding: '4px 8px', 
-                            borderRadius: '4px', 
-                            background: '#dc2626', 
-                            color: 'white', 
-                            fontSize: '0.7rem', 
-                            fontWeight: 600 
-                          }}>
-                            ANOMALY
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
         </div>
       </section>
     );
