@@ -1,4 +1,4 @@
-# BloShield → Blostem Sentinel 🛡️
+# BloShield → Blostem Sentinel 
 
 **AI-Powered Real-Time Financial Monitoring System**
 
